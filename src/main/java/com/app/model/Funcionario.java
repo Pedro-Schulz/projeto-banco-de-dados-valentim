@@ -3,36 +3,36 @@ package com.app.model;
 import java.time.LocalDate;
 
 public class Funcionario {
-    private Integer id_funcionario;
+    private Integer idFuncionario;
     private String nome;
-    private LocalDate data_aniversario;
+    private LocalDate dataAniversario;
     private String cpf;
     private String cep;
     private String email;
     private String telefone;
-    private String estado_civil;
+    private String estadoCivil;
     private String genero;
 
     public Funcionario() {};
 
-    public Funcionario(Integer id_funcionario, String nome, LocalDate data_aniversario, String cpf, String cep, String email, String telefone, String estado_civil, String genero) {
-        this.id_funcionario = id_funcionario;
+    public Funcionario(Integer idFuncionario, String nome, LocalDate dataAniversario, String cpf, String cep, String email, String telefone, String estadoCivil, String genero) {
+        this.idFuncionario = idFuncionario;
         this.nome = nome;
-        this.data_aniversario = data_aniversario;
+        this.dataAniversario = dataAniversario;
         this.cpf = cpf;
         this.cep = cep;
         this.email = email;
         this.telefone = telefone;
-        this.estado_civil = estado_civil;
+        this.estadoCivil = estadoCivil;
         this.genero = genero;
     }
 
-    public Integer getId_funcionario() {
-        return id_funcionario;
+    public Integer getIdFuncionario() {
+        return idFuncionario;
     }
 
-    public void setId_funcionario(Integer id_funcionario) {
-        this.id_funcionario = id_funcionario;
+    public void setIdFuncionario(Integer idFuncionario) {
+        this.idFuncionario = idFuncionario;
     }
 
     public String getNome() {
@@ -43,12 +43,12 @@ public class Funcionario {
         this.nome = nome;
     }
 
-    public LocalDate getData_aniversario() {
-        return data_aniversario;
+    public LocalDate getDataAniversario() {
+        return dataAniversario;
     }
 
-    public void setData_aniversario(LocalDate data_aniversario) {
-        this.data_aniversario = data_aniversario;
+    public void setDataAniversario(LocalDate dataAniversario) {
+        this.dataAniversario = dataAniversario;
     }
 
     public String getCpf() {
@@ -83,12 +83,12 @@ public class Funcionario {
         this.telefone = telefone;
     }
 
-    public String getEstado_civil() {
-        return estado_civil;
+    public String getEstadoCivil() {
+        return estadoCivil;
     }
 
-    public void setEstado_civil(String estado_civil) {
-        this.estado_civil = estado_civil;
+    public void setEstadoCivil(String estadoCivil) {
+        this.estadoCivil = estadoCivil;
     }
 
     public String getGenero() {
@@ -101,14 +101,14 @@ public class Funcionario {
 
     @Override
     public String toString() {
-        return "\n> ID: " + id_funcionario +
+        return "\n> ID: " + idFuncionario +
                 "\n> NOME: " + nome +
-                "\n> DATA DE ANIVERSÁRIO: " + data_aniversario +
+                "\n> DATA DE ANIVERSÁRIO: " + dataAniversario +
                 "\n> CPF: " + cpf +
                 "\n> CEP: " + cep +
                 "\n> E-MAIL: " + email +
                 "\n> TELEFONE: " + telefone +
-                "\n> ESTADO CIVIL: " + estado_civil +
+                "\n> ESTADO CIVIL: " + estadoCivil +
                 "\n> GÊNERO: " + genero;
     }
 }
