@@ -5,14 +5,16 @@ public class Vaga {
     private String turno;
     private String cargo;
     private Double salarioHora;
+    private Departamento departamento;
 
     public Vaga() {}
 
-    public Vaga(Integer idVaga, String turno, String cargo, Double salarioHora) {
+    public Vaga(Integer idVaga, String turno, String cargo, Double salarioHora, Departamento departamento) {
         this.idVaga = idVaga;
         this.turno = turno;
         this.cargo = cargo;
         this.salarioHora = salarioHora;
+        this.departamento = departamento;
     }
 
     public Integer getIdVaga() {
@@ -47,11 +49,20 @@ public class Vaga {
         this.salarioHora = salarioHora;
     }
 
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
+    }
+
     @Override
     public String toString() {
         return "\n> ID: " + idVaga +
                 "\n> TURNO: " + turno +
                 "\n> CARGO: " + cargo +
+                "\n> DEPARTAMENTO: " + departamento +
                 "\n> SALÁRIO P/ HORA: " + salarioHora;
     }
 }
