@@ -16,7 +16,7 @@ public class Funcionario {
 
     public Funcionario() {};
 
-    public Funcionario(Integer idFuncionario, String nome, LocalDate dataNascimento, String cpf, String cep, String email, String telefone, String estadoCivil, String genero) {
+    public Funcionario(Integer idFuncionario, String nome, LocalDate dataNascimento, String cpf, String cep, String email, String telefone, String estadoCivil, String genero, Vaga vaga) {
         this.idFuncionario = idFuncionario;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
@@ -26,6 +26,7 @@ public class Funcionario {
         this.telefone = telefone;
         this.estadoCivil = estadoCivil;
         this.genero = genero;
+        this.vaga = vaga;
     }
 
     public Integer getIdFuncionario() {
