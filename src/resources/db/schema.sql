@@ -72,7 +72,8 @@ CREATE TABLE candidatos(
     email VARCHAR(100),
     telefone CHAR(11),
     genero CHAR(1),
-    estado_civil VARCHAR(20)
+    estado_civil VARCHAR(20),
+    data_nascimento DATE
 );
 
 CREATE TABLE candidaturas(
