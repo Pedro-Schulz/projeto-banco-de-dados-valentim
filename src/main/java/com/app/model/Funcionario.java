@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class Funcionario {
     private Integer idFuncionario;
     private String nome;
-    private LocalDate dataAniversario;
+    private LocalDate dataNascimento;
     private String cpf;
     private String cep;
     private String email;
@@ -15,10 +15,10 @@ public class Funcionario {
 
     public Funcionario() {};
 
-    public Funcionario(Integer idFuncionario, String nome, LocalDate dataAniversario, String cpf, String cep, String email, String telefone, String estadoCivil, String genero) {
+    public Funcionario(Integer idFuncionario, String nome, LocalDate dataNascimento, String cpf, String cep, String email, String telefone, String estadoCivil, String genero) {
         this.idFuncionario = idFuncionario;
         this.nome = nome;
-        this.dataAniversario = dataAniversario;
+        this.dataNascimento = dataNascimento;
         this.cpf = cpf;
         this.cep = cep;
         this.email = email;
@@ -43,12 +43,12 @@ public class Funcionario {
         this.nome = nome;
     }
 
-    public LocalDate getDataAniversario() {
-        return dataAniversario;
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
     }
 
-    public void setDataAniversario(LocalDate dataAniversario) {
-        this.dataAniversario = dataAniversario;
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
     public String getCpf() {
@@ -103,7 +103,7 @@ public class Funcionario {
     public String toString() {
         return "\n> ID: " + idFuncionario +
                 "\n> NOME: " + nome +
-                "\n> DATA DE ANIVERSÁRIO: " + dataAniversario +
+                "\n> DATA DE NASCIMENTO: " + dataNascimento +
                 "\n> CPF: " + cpf +
                 "\n> CEP: " + cep +
                 "\n> E-MAIL: " + email +
