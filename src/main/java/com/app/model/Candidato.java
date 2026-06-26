@@ -27,77 +27,41 @@ public class Candidato {
         this.dataNascimento = dataNascimento;
     }
 
-    public String getEstadoCivil() {
-        return estadoCivil;
-    }
+    public String getEstadoCivil() { return estadoCivil; }
 
-    public void setEstadoCivil(String estadoCivil) {
-        this.estadoCivil = estadoCivil;
-    }
+    public void setEstadoCivil(String estadoCivil) { this.estadoCivil = estadoCivil; }
 
-    public Character getGenero() {
-        return genero;
-    }
+    public Character getGenero() { return genero; }
 
-    public void setGenero(Character genero) {
-        this.genero = genero;
-    }
+    public void setGenero(Character genero) { this.genero = genero; }
 
-    public String getTelefone() {
-        return telefone;
-    }
+    public String getTelefone() { return telefone; }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
+    public void setTelefone(String telefone) { this.telefone = telefone; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() { return email; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public void setEmail(String email) { this.email = email; }
 
-    public String getCep() {
-        return cep;
-    }
+    public String getCep() { return cep; }
 
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
+    public void setCep(String cep) { this.cep = cep; }
 
-    public String getCpf() {
-        return cpf;
-    }
+    public String getCpf() { return cpf; }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
+    public void setCpf(String cpf) { this.cpf = cpf; }
 
-    public String getNome() {
-        return nome;
-    }
+    public String getNome() { return nome; }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public Integer getIdCandidato() {
-        return idCandidato;
-    }
+    public Integer getIdCandidato() { return idCandidato; }
 
-    public void setIdCandidato(Integer idCandidato) {
-        this.idCandidato = idCandidato;
-    }
+    public void setIdCandidato(Integer idCandidato) { this.idCandidato = idCandidato; }
 
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
+    public LocalDate getDataNascimento() { return dataNascimento; }
 
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
+    public void setDataNascimento(LocalDate dataNascimento) { this.dataNascimento = dataNascimento; }
 
     @Override
     public String toString() {

@@ -15,37 +15,21 @@ public class Departamento {
         this.retorno = retorno;
     }
 
-    public Integer getIdDepartamento() {
-        return idDepartamento;
-    }
+    public Integer getIdDepartamento() { return idDepartamento; }
 
-    public void setIdDepartamento(Integer idDepartamento) {
-        this.idDepartamento = idDepartamento;
-    }
+    public void setIdDepartamento(Integer idDepartamento) { this.idDepartamento = idDepartamento; }
 
-    public String getNome() {
-        return nome;
-    }
+    public String getNome() { return nome; }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public Double getGastos() {
-        return gastos;
-    }
+    public Double getGastos() { return gastos; }
 
-    public void setGastos(Double gastos) {
-        this.gastos = gastos;
-    }
+    public void setGastos(Double gastos) { this.gastos = gastos; }
 
-    public Double getRetorno() {
-        return retorno;
-    }
+    public Double getRetorno() { return retorno; }
 
-    public void setRetorno(Double retorno) {
-        this.retorno = retorno;
-    }
+    public void setRetorno(Double retorno) { this.retorno = retorno; }
 
     @Override
     public String toString() {

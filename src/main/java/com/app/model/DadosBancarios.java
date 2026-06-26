@@ -15,37 +15,21 @@ public class DadosBancarios {
         this.agenciaBancaria = agenciaBancaria;
     }
 
-    public Integer getIdDadosBancarios() {
-        return idDadosBancarios;
-    }
+    public Integer getIdDadosBancarios() { return idDadosBancarios; }
 
-    public void setIdDadosBancarios(Integer idDadosBancarios) {
-        this.idDadosBancarios = idDadosBancarios;
-    }
+    public void setIdDadosBancarios(Integer idDadosBancarios) { this.idDadosBancarios = idDadosBancarios; }
 
-    public Integer getNumeroConta() {
-        return numeroConta;
-    }
+    public Integer getNumeroConta() { return numeroConta; }
 
-    public void setNumeroConta(Integer numeroConta) {
-        this.numeroConta = numeroConta;
-    }
+    public void setNumeroConta(Integer numeroConta) { this.numeroConta = numeroConta; }
 
-    public String getInstituicaoBancaria() {
-        return instituicaoBancaria;
-    }
+    public String getInstituicaoBancaria() { return instituicaoBancaria; }
 
-    public void setInstituicaoBancaria(String instituicaoBancaria) {
-        this.instituicaoBancaria = instituicaoBancaria;
-    }
+    public void setInstituicaoBancaria(String instituicaoBancaria) { this.instituicaoBancaria = instituicaoBancaria; }
 
-    public String getAgenciaBancaria() {
-        return agenciaBancaria;
-    }
+    public String getAgenciaBancaria() { return agenciaBancaria; }
 
-    public void setAgenciaBancaria(String agenciaBancaria) {
-        this.agenciaBancaria = agenciaBancaria;
-    }
+    public void setAgenciaBancaria(String agenciaBancaria) { this.agenciaBancaria = agenciaBancaria; }
 
     @Override
     public String toString() {

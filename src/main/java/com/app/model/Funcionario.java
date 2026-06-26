@@ -27,77 +27,41 @@ public class Funcionario {
         this.genero = genero;
     }
 
-    public Integer getIdFuncionario() {
-        return idFuncionario;
-    }
+    public Integer getIdFuncionario() { return idFuncionario; }
 
-    public void setIdFuncionario(Integer idFuncionario) {
-        this.idFuncionario = idFuncionario;
-    }
+    public void setIdFuncionario(Integer idFuncionario) { this.idFuncionario = idFuncionario; }
 
-    public String getNome() {
-        return nome;
-    }
+    public String getNome() { return nome; }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
+    public LocalDate getDataNascimento() { return dataNascimento; }
 
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
+    public void setDataNascimento(LocalDate dataNascimento) { this.dataNascimento = dataNascimento; }
 
-    public String getCpf() {
-        return cpf;
-    }
+    public String getCpf() { return cpf; }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
+    public void setCpf(String cpf) { this.cpf = cpf; }
 
-    public String getCep() {
-        return cep;
-    }
+    public String getCep() { return cep; }
 
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
+    public void setCep(String cep) { this.cep = cep; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() { return email; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public void setEmail(String email) { this.email = email; }
 
-    public String getTelefone() {
-        return telefone;
-    }
+    public String getTelefone() { return telefone; }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
+    public void setTelefone(String telefone) { this.telefone = telefone; }
 
-    public String getEstadoCivil() {
-        return estadoCivil;
-    }
+    public String getEstadoCivil() { return estadoCivil; }
 
-    public void setEstadoCivil(String estadoCivil) {
-        this.estadoCivil = estadoCivil;
-    }
+    public void setEstadoCivil(String estadoCivil) { this.estadoCivil = estadoCivil; }
 
-    public String getGenero() {
-        return genero;
-    }
+    public String getGenero() { return genero; }
 
-    public void setGenero(String genero) {
-        this.genero = genero;
-    }
+    public void setGenero(String genero) { this.genero = genero; }
 
     @Override
     public String toString() {

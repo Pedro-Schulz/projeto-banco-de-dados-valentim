@@ -15,37 +15,21 @@ public class Vaga {
         this.salarioHora = salarioHora;
     }
 
-    public Integer getIdVaga() {
-        return idVaga;
-    }
+    public Integer getIdVaga() { return idVaga; }
 
-    public void setIdVaga(Integer idVaga) {
-        this.idVaga = idVaga;
-    }
+    public void setIdVaga(Integer idVaga) { this.idVaga = idVaga; }
 
-    public String getTurno() {
-        return turno;
-    }
+    public String getTurno() { return turno; }
 
-    public void setTurno(String turno) {
-        this.turno = turno;
-    }
+    public void setTurno(String turno) { this.turno = turno; }
 
-    public String getCargo() {
-        return cargo;
-    }
+    public String getCargo() { return cargo; }
 
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
-    }
+    public void setCargo(String cargo) { this.cargo = cargo; }
 
-    public Double getSalarioHora() {
-        return salarioHora;
-    }
+    public Double getSalarioHora() { return salarioHora; }
 
-    public void setSalarioHora(Double salarioHora) {
-        this.salarioHora = salarioHora;
-    }
+    public void setSalarioHora(Double salarioHora) { this.salarioHora = salarioHora; }
 
     @Override
     public String toString() {
