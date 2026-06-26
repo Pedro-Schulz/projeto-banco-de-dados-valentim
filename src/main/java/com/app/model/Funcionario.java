@@ -12,6 +12,7 @@ public class Funcionario {
     private String telefone;
     private String estadoCivil;
     private String genero;
+    private Vaga vaga;
 
     public Funcionario() {};
 
@@ -99,6 +100,14 @@ public class Funcionario {
         this.genero = genero;
     }
 
+    public Vaga getVaga() {
+        return vaga;
+    }
+
+    public void setVaga(Vaga vaga) {
+        this.vaga = vaga;
+    }
+
     @Override
     public String toString() {
         return "\n> ID: " + idFuncionario +
@@ -109,6 +118,7 @@ public class Funcionario {
                 "\n> E-MAIL: " + email +
                 "\n> TELEFONE: " + telefone +
                 "\n> ESTADO CIVIL: " + estadoCivil +
-                "\n> GÊNERO: " + genero;
+                "\n> GÊNERO: " + genero +
+                "\n> VAGA: " + this.vaga;
     }
 }
