@@ -48,4 +48,12 @@ public class Contrato {
     public void setPrazo(Integer prazo) {
         this.prazo = prazo;
     }
+
+    @Override
+    public String toString() {
+        return "\n> ID: " + this.idContrato +
+                "\n> STATUS DO CONTRATO: " + this.statusContrato +
+                "\n> DATA DE EMISSÃO: " + this.dataEmissao +
+                "\n> PRAZO: " + this.prazo;
+    }
 }
