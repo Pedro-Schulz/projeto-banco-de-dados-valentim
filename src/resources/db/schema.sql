@@ -2,9 +2,9 @@ CREATE TABLE funcionarios(
 	id_funcionario INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
     data_nascimento DATE,
-    cpf VARCHAR(11),
-    cep VARCHAR(100),
-    telefone VARCHAR(20),
+    cpf CHAR(11),
+    cep CHAR(8),
+    telefone CHAR(11),
     email VARCHAR(50),
 
     id_vaga INT,
@@ -67,10 +67,10 @@ CREATE TABLE folhas_de_pagamentos(
 CREATE TABLE candidatos(
     id_candidato INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
-    cpf VARCHAR(11),
-    cep VARCHAR(50),
+    cpf CHAR(11),
+    cep CHAR(8),
     email VARCHAR(100),
-    telefone VARCHAR(11),
+    telefone CHAR(11),
     genero CHAR(1),
     estado_civil VARCHAR(20)
 );
