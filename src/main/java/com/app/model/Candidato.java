@@ -1,5 +1,7 @@
 package com.app.model;
 
+import java.time.LocalDate;
+
 public class Candidato {
     private Integer idCandidato;
     private String nome;
@@ -9,10 +11,11 @@ public class Candidato {
     private String telefone;
     private Character genero;
     private String estadoCivil;
+    private LocalDate dataNascimento;
 
     public Candidato() {};
 
-    public Candidato(Integer idCandidato, String nome, String cpf, String cep, String email, String telefone, Character genero, String estadoCivil) {
+    public Candidato(Integer idCandidato, String nome, String cpf, String cep, String email, String telefone, Character genero, String estadoCivil, LocalDate dataNascimento) {
         this.idCandidato = idCandidato;
         this.nome = nome;
         this.cpf = cpf;
@@ -21,6 +24,7 @@ public class Candidato {
         this.telefone = telefone;
         this.genero = genero;
         this.estadoCivil = estadoCivil;
+        this.dataNascimento = dataNascimento;
     }
 
     public String getEstadoCivil() {
@@ -87,11 +91,20 @@ public class Candidato {
         this.idCandidato = idCandidato;
     }
 
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
     @Override
     public String toString() {
         return "\n> ID: " + this.idCandidato +
                 "\n> NOME: " + this.nome +
                 "\n> CPF: " + this.cpf +
+                "\n> DATA DE NASCIMENTO: " + this.dataNascimento +
                 "\n> CEP: " + this.cep +
                 "\n> EMAIL: " + this.email +
                 "\n> TELEFONE: " + this.telefone +
