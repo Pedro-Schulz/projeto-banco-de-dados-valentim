@@ -4,8 +4,10 @@ CREATE TABLE funcionarios(
     data_nascimento DATE,
     cpf CHAR(11),
     cep CHAR(8),
-    telefone CHAR(11),
     email VARCHAR(50),
+    telefone CHAR(11),
+    estadoCivil VARCHAR(20),
+    genero CHAR(1)
 
     id_vaga INT,
 
