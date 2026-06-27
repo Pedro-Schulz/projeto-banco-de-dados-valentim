@@ -8,15 +8,19 @@ public class Candidatura {
     private LocalDate dataCandidatura;
     private LocalDate prazo;
     private String etapa;
+    private Vaga vaga;
+    private Candidato candidato;
 
     public Candidatura() {};
 
-    public Candidatura(Integer idCandidatura, Boolean statusCandidatura, LocalDate dataCandidatura, LocalDate prazo, String etapa) {
+    public Candidatura(Integer idCandidatura, Boolean statusCandidatura, LocalDate dataCandidatura, LocalDate prazo, String etapa, Vaga vaga, Candidato candidato) {
         this.idCandidatura = idCandidatura;
         this.statusCandidatura = statusCandidatura;
         this.dataCandidatura = dataCandidatura;
         this.prazo = prazo;
         this.etapa = etapa;
+        this.vaga = vaga;
+        this.candidato = candidato;
     }
 
     public Integer getIdCandidatura() {
@@ -59,9 +63,27 @@ public class Candidatura {
         this.etapa = etapa;
     }
 
+    public Vaga getVaga() {
+        return vaga;
+    }
+
+    public void setVaga(Vaga vaga) {
+        this.vaga = vaga;
+    }
+
+    public Candidato getCandidato() {
+        return candidato;
+    }
+
+    public void setCandidato(Candidato candidato) {
+        this.candidato = candidato;
+    }
+
     @Override
     public String toString() {
         return "\n> ID DA CANDIDATURA: " + this.idCandidatura +
+                "\n> VAGA: " + this.vaga +
+                "\n> CANDIDATO: " + this.candidato +
                 "\n> STATUS DA CANDIDATURA: " + this.statusCandidatura +
                 "\n> DATA DA CANDIDATURA: " + this.dataCandidatura +
                 "\n> PRAZO DA CANDIDATURA: " + this.prazo +

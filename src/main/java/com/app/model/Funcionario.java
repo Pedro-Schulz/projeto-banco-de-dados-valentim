@@ -12,10 +12,11 @@ public class Funcionario {
     private String telefone;
     private String estadoCivil;
     private String genero;
+    private Vaga vaga;
 
     public Funcionario() {};
 
-    public Funcionario(Integer idFuncionario, String nome, LocalDate dataNascimento, String cpf, String cep, String email, String telefone, String estadoCivil, String genero) {
+    public Funcionario(Integer idFuncionario, String nome, LocalDate dataNascimento, String cpf, String cep, String email, String telefone, String estadoCivil, String genero, Vaga vaga) {
         this.idFuncionario = idFuncionario;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
@@ -25,6 +26,7 @@ public class Funcionario {
         this.telefone = telefone;
         this.estadoCivil = estadoCivil;
         this.genero = genero;
+        this.vaga = vaga;
     }
 
     public Integer getIdFuncionario() { return idFuncionario; }
@@ -63,6 +65,14 @@ public class Funcionario {
 
     public void setGenero(String genero) { this.genero = genero; }
 
+    public Vaga getVaga() {
+        return vaga;
+    }
+
+    public void setVaga(Vaga vaga) {
+        this.vaga = vaga;
+    }
+
     @Override
     public String toString() {
         return "\n> ID: " + idFuncionario +
@@ -73,6 +83,7 @@ public class Funcionario {
                 "\n> E-MAIL: " + email +
                 "\n> TELEFONE: " + telefone +
                 "\n> ESTADO CIVIL: " + estadoCivil +
-                "\n> GÊNERO: " + genero;
+                "\n> GÊNERO: " + genero +
+                "\n> VAGA: " + this.vaga;
     }
 }
