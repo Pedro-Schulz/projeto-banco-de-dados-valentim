@@ -1,0 +1,13 @@
+# IntelliJ
+.idea/
+*.iml
+out/
+
+# Maven
+target/
+
+# DB config (local)
+src/resources/db.properties
+
+# Logs
+*.log
