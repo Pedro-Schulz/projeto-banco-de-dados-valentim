@@ -26,12 +26,12 @@ public class FuncionarioRepository {
             p.setString(6, funcionario.getTelefone());
             p.setString(7, funcionario.getEstadoCivil());
             p.setString(8, funcionario.getGenero());
-            p.setObject(9, funcionario.getVaga());
+            p.setObject(9, funcionario.getVaga().getIdVaga());
 
             p.executeUpdate();
 
-        } catch(SQLException e) {
-            throw new RuntimeException("Erro ao salvar usuário!", e);
+        } catch(Exception e) {
+            throw new RuntimeException("Erro ao salvar funcionário!", e);
         }
     }
 }
