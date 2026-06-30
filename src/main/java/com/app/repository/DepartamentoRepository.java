@@ -15,10 +15,10 @@ public class DepartamentoRepository {
             VALUES (?, ?, ?);
         """;
 
-        try (
+        try {
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-            ) {
+
             p.setString(1, departamento.getNome());
             p.setDouble(2, departamento.getGastos());
             p.setDouble(3, departamento.getRetorno());

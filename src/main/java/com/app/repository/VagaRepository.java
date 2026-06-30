@@ -16,10 +16,10 @@ public class VagaRepository {
             VALUES (?, ?, ?, ?);        
         """;
 
-        try (
+        try {
             Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
-            ) {
+            PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
             p.setString(1, vaga.getTurno());
             p.setString(2, vaga.getCargo());
             p.setDouble(3, vaga.getSalarioHora());
@@ -34,7 +34,7 @@ public class VagaRepository {
                 vaga.getDepartamento().setIdDepartamento(id);
             }
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao criar uma vaga!");
+            throw new RuntimeException("Erro ao criar uma vaga!", e);
         }
     }
 }

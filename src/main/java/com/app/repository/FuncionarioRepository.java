@@ -13,10 +13,10 @@ public class FuncionarioRepository {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
         """;
 
-        try (
-                Connection c = ConnectionFactory.getConnection();
-                PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ) {
+        try {
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
             p.setString(1, funcionario.getNome());
             p.setObject(2, funcionario.getDataNascimento());
             p.setString(3, funcionario.getCpf());

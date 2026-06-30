@@ -12,11 +12,10 @@ import java.sql.Connection;
 public class Main {
     public static void main(String[] args) {
 
-        Vaga v = new Vaga("Noturno", "Gerente", 100.0, null);
-        Funcionario f = new Funcionario("Pedro", null, "12345643543", "12487398", "emailfunc@gmail.com", "47999123421", "Solteiro", "M", v);
+        Vaga v = new Vaga("Matutino", "Diretor", 120.0, null);
+
         VagaRepository vf = new VagaRepository();
-        FuncionarioRepository ff = new FuncionarioRepository();
-        ff.salvar(f);
-        System.out.println(v.getIdVaga());
+
+        vf.salvar(v);
     }
 }
