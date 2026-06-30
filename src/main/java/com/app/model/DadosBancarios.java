@@ -9,8 +9,7 @@ public class DadosBancarios {
 
     public DadosBancarios() {}
 
-    public DadosBancarios(Integer idDadosBancarios, Integer numeroConta, String instituicaoBancaria, String agenciaBancaria, Funcionario funcionario) {
-        this.idDadosBancarios = idDadosBancarios;
+    public DadosBancarios(Integer numeroConta, String instituicaoBancaria, String agenciaBancaria, Funcionario funcionario) {
         this.numeroConta = numeroConta;
         this.instituicaoBancaria = instituicaoBancaria;
         this.agenciaBancaria = agenciaBancaria;

@@ -12,8 +12,7 @@ public class FolhaDePagamento {
 
     public FolhaDePagamento() {};
 
-    public FolhaDePagamento(Integer idFolha, Integer horasTrabalhadas, LocalDate dataEmissao, Double descontos, Integer horasExtras, Funcionario funcionario) {
-        this.idFolha = idFolha;
+    public FolhaDePagamento(Integer horasTrabalhadas, LocalDate dataEmissao, Double descontos, Integer horasExtras, Funcionario funcionario) {
         this.horasTrabalhadas = horasTrabalhadas;
         this.dataEmissao = dataEmissao;
         this.descontos = descontos;

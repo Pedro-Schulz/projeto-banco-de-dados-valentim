@@ -16,8 +16,7 @@ public class Funcionario {
 
     public Funcionario() {};
 
-    public Funcionario(Integer idFuncionario, String nome, LocalDate dataNascimento, String cpf, String cep, String email, String telefone, String estadoCivil, String genero, Vaga vaga) {
-        this.idFuncionario = idFuncionario;
+    public Funcionario(String nome, LocalDate dataNascimento, String cpf, String cep, String email, String telefone, String estadoCivil, String genero, Vaga vaga) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.cpf = cpf;

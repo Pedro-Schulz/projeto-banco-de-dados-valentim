@@ -11,8 +11,7 @@ public class Contrato {
 
     public Contrato() {};
 
-    public Contrato(Integer idContrato, Boolean statusContrato, LocalDate dataEmissao, Integer prazo, Funcionario funcionario) {
-        this.idContrato = idContrato;
+    public Contrato(Boolean statusContrato, LocalDate dataEmissao, Integer prazo, Funcionario funcionario) {
         this.statusContrato = statusContrato;
         this.dataEmissao = dataEmissao;
         this.prazo = prazo;

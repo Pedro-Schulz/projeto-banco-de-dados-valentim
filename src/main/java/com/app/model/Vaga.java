@@ -9,8 +9,7 @@ public class Vaga {
 
     public Vaga() {}
 
-    public Vaga(Integer idVaga, String turno, String cargo, Double salarioHora, Departamento departamento) {
-        this.idVaga = idVaga;
+    public Vaga(String turno, String cargo, Double salarioHora, Departamento departamento) {
         this.turno = turno;
         this.cargo = cargo;
         this.salarioHora = salarioHora;

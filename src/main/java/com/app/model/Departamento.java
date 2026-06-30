@@ -8,8 +8,7 @@ public class Departamento {
 
     public Departamento() {}
 
-    public Departamento(Integer idDepartamento, String nome, Double gastos, Double retorno) {
-        this.idDepartamento = idDepartamento;
+    public Departamento(String nome, Double gastos, Double retorno) {
         this.nome = nome;
         this.gastos = gastos;
         this.retorno = retorno;

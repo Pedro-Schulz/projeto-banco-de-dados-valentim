@@ -15,8 +15,7 @@ public class Candidato {
 
     public Candidato() {};
 
-    public Candidato(Integer idCandidato, String nome, String cpf, String cep, String email, String telefone, Character genero, String estadoCivil, LocalDate dataNascimento) {
-        this.idCandidato = idCandidato;
+    public Candidato(String nome, String cpf, String cep, String email, String telefone, Character genero, String estadoCivil, LocalDate dataNascimento) {
         this.nome = nome;
         this.cpf = cpf;
         this.cep = cep;

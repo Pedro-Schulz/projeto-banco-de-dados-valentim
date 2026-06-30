@@ -13,8 +13,7 @@ public class Candidatura {
 
     public Candidatura() {};
 
-    public Candidatura(Integer idCandidatura, Boolean statusCandidatura, LocalDate dataCandidatura, LocalDate prazo, String etapa, Vaga vaga, Candidato candidato) {
-        this.idCandidatura = idCandidatura;
+    public Candidatura(Boolean statusCandidatura, LocalDate dataCandidatura, LocalDate prazo, String etapa, Vaga vaga, Candidato candidato) {
         this.statusCandidatura = statusCandidatura;
         this.dataCandidatura = dataCandidatura;
         this.prazo = prazo;
