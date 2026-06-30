@@ -2,9 +2,8 @@ package com.app.repository;
 
 import com.app.config.ConnectionFactory;
 import com.app.model.Funcionario;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+
+import java.sql.*;
 
 public class FuncionarioRepository {
 
@@ -15,8 +14,8 @@ public class FuncionarioRepository {
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ) {
             p.setString(1, funcionario.getNome());
             p.setObject(2, funcionario.getDataNascimento());
@@ -29,6 +28,13 @@ public class FuncionarioRepository {
             p.setObject(9, funcionario.getVaga().getIdVaga());
 
             p.executeUpdate();
+
+            ResultSet rs = p.getGeneratedKeys();
+
+            if(rs.next()) {
+                int id = rs.getInt(1);
+                funcionario.getVaga().setIdVaga(id);
+            }
 
         } catch(Exception e) {
             throw new RuntimeException("Erro ao salvar funcionário!", e);
