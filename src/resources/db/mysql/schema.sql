@@ -1,3 +1,21 @@
+CREATE TABLE departamentos(
+	id_departamento INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    gastos DECIMAL(10, 2) NOT NULL,
+    retorno DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE vagas(
+	id_vaga INT AUTO_INCREMENT PRIMARY KEY,
+    turno VARCHAR(50) NOT NULL,
+    salario_hora DECIMAL(10, 2),
+    cargo VARCHAR(50),
+
+    id_departamento INT,
+
+    FOREIGN KEY(id_departamento) REFERENCES departamentos(id_departamento)
+);
+
 CREATE TABLE funcionarios(
 	id_funcionario INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
@@ -23,24 +41,6 @@ CREATE TABLE dados_bancarios(
     id_funcionario INT,
 
     FOREIGN KEY(id_funcionario) REFERENCES funcionarios(id_funcionario)
-);
-
-CREATE TABLE vagas(
-	id_vaga INT AUTO_INCREMENT PRIMARY KEY,
-    turno VARCHAR(50) NOT NULL,
-    salario_hora DECIMAL(10, 2),
-    cargo VARCHAR(50),
-
-    id_departamento INT,
-
-    FOREIGN KEY(id_departamento) REFERENCES departamentos(id_departamento)
-);
-
-CREATE TABLE departamentos(
-	id_departamento INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    gastos DECIMAL(10, 2) NOT NULL,
-    retorno DECIMAL(10, 2) NOT NULL
 );
 
 CREATE TABLE contratos(
