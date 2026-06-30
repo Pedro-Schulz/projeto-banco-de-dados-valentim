@@ -10,8 +10,8 @@ public class FuncionarioRepository {
 
     public void salvar(Funcionario funcionario) {
         String sql = """
-            INSERT INTO Funcionarios (nome, dataNascimento, cpf, cep, email, telefone, estadoCivil, genero, vaga)
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);
+            INSERT INTO funcionarios (nome, data_nascimento, cpf, cep, email, telefone, estadoCivil, genero, id_vaga)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
         """;
 
         try (
@@ -31,7 +31,7 @@ public class FuncionarioRepository {
             p.executeUpdate();
 
         } catch(SQLException e) {
-            throw new RuntimeException("Erro ao salvar usuário!");
+            throw new RuntimeException("Erro ao salvar usuário!", e);
         }
     }
 }
