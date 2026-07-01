@@ -1,7 +1,7 @@
 package com.app.model;
 
 public class Departamento {
-    private Integer idDepartamento;
+    private Long idDepartamento;
     private String nome;
     private Double gastos;
     private Double retorno;
@@ -14,9 +14,16 @@ public class Departamento {
         this.retorno = retorno;
     }
 
-    public Integer getIdDepartamento() { return idDepartamento; }
+    public Departamento(Long idDepartamento, String nome, Double gastos, Double retorno) {
+        this.idDepartamento = idDepartamento;
+        this.nome = nome;
+        this.gastos = gastos;
+        this.retorno = retorno;
+    }
 
-    public void setIdDepartamento(Integer idDepartamento) { this.idDepartamento = idDepartamento; }
+    public Long getIdDepartamento() { return idDepartamento; }
+
+    public void setIdDepartamento(Long idDepartamento) { this.idDepartamento = idDepartamento; }
 
     public String getNome() { return nome; }
 

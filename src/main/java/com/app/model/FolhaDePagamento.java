@@ -3,7 +3,7 @@ package com.app.model;
 import java.time.LocalDate;
 
 public class FolhaDePagamento {
-    private Integer idFolha;
+    private Long idFolha;
     private Integer horasTrabalhadas;
     private LocalDate dataEmissao;
     private Double descontos;
@@ -13,6 +13,15 @@ public class FolhaDePagamento {
     public FolhaDePagamento() {};
 
     public FolhaDePagamento(Integer horasTrabalhadas, LocalDate dataEmissao, Double descontos, Integer horasExtras, Funcionario funcionario) {
+        this.horasTrabalhadas = horasTrabalhadas;
+        this.dataEmissao = dataEmissao;
+        this.descontos = descontos;
+        this.horasExtras = horasExtras;
+        this.funcionario = funcionario;
+    }
+
+    public FolhaDePagamento(Long idFolha, Integer horasTrabalhadas, LocalDate dataEmissao, Double descontos, Integer horasExtras, Funcionario funcionario) {
+        this.idFolha = idFolha;
         this.horasTrabalhadas = horasTrabalhadas;
         this.dataEmissao = dataEmissao;
         this.descontos = descontos;
@@ -52,11 +61,11 @@ public class FolhaDePagamento {
         this.horasTrabalhadas = horasTrabalhadas;
     }
 
-    public Integer getIdFolha() {
+    public Long getIdFolha() {
         return idFolha;
     }
 
-    public void setIdFolha(Integer idFolha) {
+    public void setIdFolha(Long idFolha) {
         this.idFolha = idFolha;
     }
 

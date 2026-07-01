@@ -23,14 +23,14 @@ public class DadosBancariosRepository {
             p.setInt(1, dadosBancarios.getNumeroConta());
             p.setString(2, dadosBancarios.getAgenciaBancaria());
             p.setString(3, dadosBancarios.getInstituicaoBancaria());
-            p.setInt(4, dadosBancarios.getFuncionario().getIdFuncionario());
+            p.setLong(4, dadosBancarios.getFuncionario().getIdFuncionario());
 
             p.executeUpdate();
 
             ResultSet rs = p.getGeneratedKeys();
 
             if(rs.next()) {
-                int id = rs.getInt(1);
+                Long id = rs.getLong(1);
                 dadosBancarios.getFuncionario().setIdFuncionario(id);
             }
 

@@ -1,12 +1,12 @@
 package com.app.controller;
 
-import com.app.repository.FuncionarioRepository;
-import com.app.model.Funcionario;
+import com.app.model.*;
+import com.app.repository.*;
 
 public class Main {
     public static void main(String[] args) {
 
-        Funcionario f = FuncionarioRepository.buscarPorId(1L);
-        System.out.println(f.toString());
+        Vaga v = VagaRepository.buscarPorId(1L);
+        System.out.println(v.toString());
     }
 }

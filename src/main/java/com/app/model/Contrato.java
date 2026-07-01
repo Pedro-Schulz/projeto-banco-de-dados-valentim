@@ -3,7 +3,7 @@ package com.app.model;
 import java.time.LocalDate;
 
 public class Contrato {
-    private Integer idContrato;
+    private Long idContrato;
     private Boolean statusContrato;
     private LocalDate dataEmissao;
     private Integer prazo;
@@ -18,11 +18,19 @@ public class Contrato {
         this.funcionario = funcionario;
     }
 
-    public Integer getIdContrato() {
+    public Contrato(Long idContrato, Boolean statusContrato, LocalDate dataEmissao, Integer prazo, Funcionario funcionario) {
+        this.idContrato = idContrato;
+        this.statusContrato = statusContrato;
+        this.dataEmissao = dataEmissao;
+        this.prazo = prazo;
+        this.funcionario = funcionario;
+    }
+
+    public Long getIdContrato() {
         return idContrato;
     }
 
-    public void setIdContrato(Integer idContrato) {
+    public void setIdContrato(Long idContrato) {
         this.idContrato = idContrato;
     }
 

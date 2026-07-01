@@ -1,7 +1,9 @@
 package com.app.model;
 
+import com.mysql.cj.log.Log;
+
 public class DadosBancarios {
-    private Integer idDadosBancarios;
+    private Long idDadosBancarios;
     private Integer numeroConta;
     private String instituicaoBancaria;
     private String agenciaBancaria;
@@ -16,9 +18,17 @@ public class DadosBancarios {
         this.funcionario = funcionario;
     }
 
-    public Integer getIdDadosBancarios() { return idDadosBancarios; }
+    public DadosBancarios(Long idDadosBancarios, Integer numeroConta, String instituicaoBancaria, String agenciaBancaria, Funcionario funcionario) {
+        this.idDadosBancarios = idDadosBancarios;
+        this.numeroConta = numeroConta;
+        this.instituicaoBancaria = instituicaoBancaria;
+        this.agenciaBancaria = agenciaBancaria;
+        this.funcionario = funcionario;
+    }
 
-    public void setIdDadosBancarios(Integer idDadosBancarios) { this.idDadosBancarios = idDadosBancarios; }
+    public Long getIdDadosBancarios() { return idDadosBancarios; }
+
+    public void setIdDadosBancarios(Long idDadosBancarios) { this.idDadosBancarios = idDadosBancarios; }
 
     public Integer getNumeroConta() { return numeroConta; }
 

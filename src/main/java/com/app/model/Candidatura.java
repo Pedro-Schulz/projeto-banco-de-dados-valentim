@@ -3,7 +3,7 @@ package com.app.model;
 import java.time.LocalDate;
 
 public class Candidatura {
-    private Integer idCandidatura;
+    private Long idCandidatura;
     private Boolean statusCandidatura;
     private LocalDate dataCandidatura;
     private LocalDate prazo;
@@ -22,11 +22,21 @@ public class Candidatura {
         this.candidato = candidato;
     }
 
-    public Integer getIdCandidatura() {
+    public Candidatura(Long idCandidatura, Boolean statusCandidatura, LocalDate dataCandidatura, LocalDate prazo, String etapa, Vaga vaga, Candidato candidato) {
+        this.idCandidatura = idCandidatura;
+        this.statusCandidatura = statusCandidatura;
+        this.dataCandidatura = dataCandidatura;
+        this.prazo = prazo;
+        this.etapa = etapa;
+        this.vaga = vaga;
+        this.candidato = candidato;
+    }
+
+    public Long getIdCandidatura() {
         return idCandidatura;
     }
 
-    public void setIdCandidatura(Integer idCandidatura) {
+    public void setIdCandidatura(Long idCandidatura) {
         this.idCandidatura = idCandidatura;
     }
 

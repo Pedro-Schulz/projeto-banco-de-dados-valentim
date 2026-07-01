@@ -3,7 +3,7 @@ package com.app.model;
 import java.time.LocalDate;
 
 public class Candidato {
-    private Integer idCandidato;
+    private Long idCandidato;
     private String nome;
     private String cpf;
     private String cep;
@@ -25,6 +25,19 @@ public class Candidato {
         this.estadoCivil = estadoCivil;
         this.dataNascimento = dataNascimento;
     }
+
+    public Candidato(Long idCandidato, String nome, String cpf, String cep, String email, String telefone, Character genero, String estadoCivil, LocalDate dataNascimento) {
+        this.idCandidato = idCandidato;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.cep = cep;
+        this.email = email;
+        this.telefone = telefone;
+        this.genero = genero;
+        this.estadoCivil = estadoCivil;
+        this.dataNascimento = dataNascimento;
+    }
+
 
     public String getEstadoCivil() { return estadoCivil; }
 
@@ -54,9 +67,9 @@ public class Candidato {
 
     public void setNome(String nome) { this.nome = nome; }
 
-    public Integer getIdCandidato() { return idCandidato; }
+    public Long getIdCandidato() { return idCandidato; }
 
-    public void setIdCandidato(Integer idCandidato) { this.idCandidato = idCandidato; }
+    public void setIdCandidato(Long idCandidato) { this.idCandidato = idCandidato; }
 
     public LocalDate getDataNascimento() { return dataNascimento; }
 

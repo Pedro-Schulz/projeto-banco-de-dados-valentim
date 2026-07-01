@@ -33,7 +33,7 @@ public class FuncionarioRepository {
             ResultSet rs = p.getGeneratedKeys();
 
             if(rs.next()) {
-                int id = rs.getInt(1);
+                Long id = rs.getLong(1);
                 funcionario.getVaga().setIdVaga(id);
             }
 
