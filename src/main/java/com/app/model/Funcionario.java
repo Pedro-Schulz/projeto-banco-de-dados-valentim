@@ -3,7 +3,7 @@ package com.app.model;
 import java.time.LocalDate;
 
 public class Funcionario {
-    private Integer idFuncionario;
+    private Long idFuncionario;
     private String nome;
     private LocalDate dataNascimento;
     private String cpf;
@@ -28,9 +28,22 @@ public class Funcionario {
         this.vaga = vaga;
     }
 
-    public Integer getIdFuncionario() { return idFuncionario; }
+    public Funcionario(Long idFuncionario, String nome, LocalDate dataNascimento, String cpf, String cep, String email, String telefone, String estadoCivil, String genero, Vaga vaga) {
+        this.idFuncionario = idFuncionario;
+        this.nome = nome;
+        this.dataNascimento = dataNascimento;
+        this.cpf = cpf;
+        this.cep = cep;
+        this.email = email;
+        this.telefone = telefone;
+        this.estadoCivil = estadoCivil;
+        this.genero = genero;
+        this.vaga = vaga;
+    }
 
-    public void setIdFuncionario(Integer idFuncionario) { this.idFuncionario = idFuncionario; }
+    public Long getIdFuncionario() { return idFuncionario; }
+
+    public void setIdFuncionario(Long idFuncionario) { this.idFuncionario = idFuncionario; }
 
     public String getNome() { return nome; }
 
