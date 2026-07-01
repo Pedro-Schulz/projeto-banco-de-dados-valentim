@@ -10,7 +10,7 @@ public class FuncionarioRepository {
 
     public void salvar(Funcionario funcionario) {
         String sql = """
-            INSERT INTO funcionarios (nome, data_nascimento, cpf, cep, email, telefone, estadoCivil, genero, id_vaga)
+            INSERT INTO funcionarios (nome, data_nascimento, cpf, cep, email, telefone, estado_civil, genero, id_vaga)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
         """;
 
@@ -34,7 +34,7 @@ public class FuncionarioRepository {
 
             if(rs.next()) {
                 Long id = rs.getLong(1);
-                funcionario.getVaga().setIdVaga(id);
+                funcionario.setIdFuncionario(id);
             }
 
         } catch(Exception e) {
@@ -42,7 +42,7 @@ public class FuncionarioRepository {
         }
     }
 
-    public static Funcionario buscarPorId(Long id) {
+    public Funcionario buscarPorId(Long id) {
         String sql = """
             SELECT * 
             FROM funcionarios
@@ -58,9 +58,11 @@ public class FuncionarioRepository {
             ResultSet rs = p.executeQuery();
 
             if(rs.next()) {
+                VagaRepository vr = new VagaRepository();
                 LocalDate dataNascimento = rs.getDate("data_nascimento").toLocalDate();
+
                 Long idVaga = rs.getLong("id_vaga");
-                Vaga vaga = VagaRepository.buscarPorId(idVaga);
+                Vaga vaga = vr.buscarPorId(idVaga);
 
                 Funcionario funcionario = new Funcionario(
                     rs.getLong("id_funcionario"),
@@ -81,5 +83,24 @@ public class FuncionarioRepository {
             throw new RuntimeException("Erro ao buscar funcionário!", e);
         }
         return null;
+    }
+
+    public void deletar(Long id) {
+        String sql = """
+            DELETE FROM funcionarios
+            WHERE id_funcionario = ?;
+        """;
+
+        try {
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+
+            p.setLong(1, id);
+
+            p.executeUpdate();
+
+        } catch(Exception e) {
+            throw new RuntimeException("Erro ao deletar funcionário!", e);
+        }
     }
 }

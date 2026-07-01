@@ -13,7 +13,7 @@ public class VagaRepository {
 
     public void salvar(Vaga vaga) {
         String sql = """
-            INSERT INTO (turno, cargo, salario_hora, id_departamento)
+            INSERT INTO vagas (turno, cargo, salario_hora, id_departamento)
             VALUES (?, ?, ?, ?);        
         """;
 
@@ -32,14 +32,14 @@ public class VagaRepository {
 
             if(rs.next()) {
                 Long id = rs.getLong(1);
-                vaga.getDepartamento().setIdDepartamento(id);
+                vaga.setIdVaga(id);
             }
         } catch(Exception e) {
             throw new RuntimeException("Erro ao criar uma vaga!", e);
         }
     }
 
-    public static Vaga buscarPorId(Long id) {
+    public Vaga buscarPorId(Long id) {
         String sql = """
             SELECT *
             FROM vagas
@@ -55,8 +55,10 @@ public class VagaRepository {
             ResultSet rs = p.executeQuery();
 
             if(rs.next()) {
+                DepartamentoRepository dr = new DepartamentoRepository();
+
                 Long idVaga = rs.getLong("id_vaga");
-                Departamento departamento = DepartamentoRepository.buscarPorId(idVaga);
+                Departamento departamento = dr.buscarPorId(idVaga);
 
                 Vaga vaga = new Vaga(
                     rs.getLong("id_vaga"),
@@ -73,6 +75,24 @@ public class VagaRepository {
             throw new RuntimeException("Erro ao achar vaga pelo ID!", e);
         }
         return null;
+    }
 
+    public void deletar(Long id) {
+        String sql = """
+            DELETE FROM vagas
+            WHERE id_vaga = ?;
+        """;
+
+        try {
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+
+            p.setLong(1, id);
+
+            p.executeUpdate();
+
+        } catch(Exception e) {
+            throw new RuntimeException("Erro ao deletar vaga!", e);
+        }
     }
 }

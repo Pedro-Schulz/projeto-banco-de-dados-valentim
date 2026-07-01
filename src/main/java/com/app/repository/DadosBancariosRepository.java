@@ -33,7 +33,7 @@ public class DadosBancariosRepository {
 
             if(rs.next()) {
                 Long id = rs.getLong(1);
-                dadosBancarios.getFuncionario().setIdFuncionario(id);
+                dadosBancarios.setIdDadosBancarios(id);
             }
 
         } catch (Exception e) {
@@ -41,7 +41,7 @@ public class DadosBancariosRepository {
         }
     }
 
-    public static DadosBancarios buscarPorId(Long id) {
+    public DadosBancarios buscarPorId(Long id) {
         String sql = """
             SELECT *
             FROM dados_bancarios
@@ -57,8 +57,10 @@ public class DadosBancariosRepository {
             ResultSet rs = p.executeQuery();
 
             if(rs.next()) {
+                FuncionarioRepository fr = new FuncionarioRepository();
+
                 Long idFuncionario = rs.getLong("id_funcionario");
-                Funcionario funcionario = FuncionarioRepository.buscarPorId(idFuncionario);
+                Funcionario funcionario = fr.buscarPorId(idFuncionario);
 
                 DadosBancarios dadosBancarios = new DadosBancarios(
                     rs.getLong("id_dados_bancarios"),
@@ -71,8 +73,27 @@ public class DadosBancariosRepository {
                 return dadosBancarios;
             }
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao buscar um conjunto de dados bancários!");
+            throw new RuntimeException("Erro ao buscar um conjunto de dados bancários!", e);
         }
         return null;
+    }
+
+    public void deletar(Long id) {
+        String sql = """
+            DELETE FROM dados_bancarios
+            WHERE id_dados_bancarios = ?;
+        """;
+
+        try {
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+
+            p.setLong(1, id);
+
+            p.executeUpdate();
+
+        } catch(Exception e) {
+            throw new RuntimeException("Erro ao deletar dados bancários!", e);
+        }
     }
 }
