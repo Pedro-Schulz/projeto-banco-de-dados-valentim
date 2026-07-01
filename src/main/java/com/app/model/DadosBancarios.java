@@ -53,7 +53,7 @@ public class DadosBancarios {
     @Override
     public String toString() {
         return "\n> ID: " + idDadosBancarios +
-                "\n> FUNCIONÁRIO: " + funcionario +
+                "\n> ID FUNCIONÁRIO: " + funcionario.getIdFuncionario() +
                 "\n> NÚMERO DA CONTA: " + numeroConta +
                 "\n> INSTITUIÇÃO BANCÁRIA: " + instituicaoBancaria +
                 "\n> AGÊNCIA BANCÁRIA: " + agenciaBancaria;

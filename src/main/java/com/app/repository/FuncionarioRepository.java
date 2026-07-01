@@ -63,6 +63,7 @@ public class FuncionarioRepository {
                 Vaga vaga = VagaRepository.buscarPorId(idVaga);
 
                 Funcionario funcionario = new Funcionario(
+                    rs.getLong("id_funcionario"),
                     rs.getString("nome"),
                     dataNascimento,
                     rs.getString("cpf"),

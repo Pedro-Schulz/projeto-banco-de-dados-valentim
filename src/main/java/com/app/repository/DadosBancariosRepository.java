@@ -2,11 +2,13 @@ package com.app.repository;
 
 import com.app.config.ConnectionFactory;
 import com.app.model.DadosBancarios;
+import com.app.model.Funcionario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.concurrent.ExecutionException;
 
 public class DadosBancariosRepository {
 
@@ -37,5 +39,40 @@ public class DadosBancariosRepository {
         } catch (Exception e) {
             throw new RuntimeException("Erro ao criar um conjunto de dados bancários!", e);
         }
+    }
+
+    public static DadosBancarios buscarPorId(Long id) {
+        String sql = """
+            SELECT *
+            FROM dados_bancarios
+            WHERE id_dados_bancarios = ?;        
+        """;
+
+        try {
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+
+            p.setLong(1, id);
+
+            ResultSet rs = p.executeQuery();
+
+            if(rs.next()) {
+                Long idFuncionario = rs.getLong("id_funcionario");
+                Funcionario funcionario = FuncionarioRepository.buscarPorId(idFuncionario);
+
+                DadosBancarios dadosBancarios = new DadosBancarios(
+                    rs.getLong("id_dados_bancarios"),
+                    rs.getInt("numero_conta"),
+                    rs.getString("instituicao_bancaria"),
+                    rs.getString("agencia_bancaria"),
+                    funcionario
+                );
+
+                return dadosBancarios;
+            }
+        } catch(Exception e) {
+            throw new RuntimeException("Erro ao buscar um conjunto de dados bancários!");
+        }
+        return null;
     }
 }

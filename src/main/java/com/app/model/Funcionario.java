@@ -96,6 +96,6 @@ public class Funcionario {
                 "\n> TELEFONE: " + telefone +
                 "\n> ESTADO CIVIL: " + estadoCivil +
                 "\n> GÊNERO: " + genero +
-                "\n> VAGA: " + this.vaga;
+                "\n> VAGA: " + this.vaga.getIdVaga();
     }
 }
