@@ -24,14 +24,14 @@ public class VagaRepository {
             p.setString(1, vaga.getTurno());
             p.setString(2, vaga.getCargo());
             p.setDouble(3, vaga.getSalarioHora());
-            p.setInt(4, vaga.getDepartamento().getIdDepartamento());
+            p.setLong(4, vaga.getDepartamento().getIdDepartamento());
 
             p.executeUpdate();
 
             ResultSet rs = p.getGeneratedKeys();
 
             if(rs.next()) {
-                int id = rs.getInt(1);
+                Long id = rs.getLong(1);
                 vaga.getDepartamento().setIdDepartamento(id);
             }
         } catch(Exception e) {
@@ -41,7 +41,7 @@ public class VagaRepository {
 
     public static Vaga buscarPorId(Long id) {
         String sql = """
-            SELECT id_vaga, turno, cargo, salario_hora, id_departamento
+            SELECT *
             FROM vagas
             WHERE id_vaga = ?;
         """;
@@ -55,7 +55,7 @@ public class VagaRepository {
             ResultSet rs = p.executeQuery();
 
             if(rs.next()) {
-                Long idVaga = rs.getLong("id_vega");
+                Long idVaga = rs.getLong("id_vaga");
                 Departamento departamento = DepartamentoRepository.buscarPorId(idVaga);
 
                 Vaga vaga = new Vaga(
@@ -65,6 +65,8 @@ public class VagaRepository {
                     rs.getDouble("salario_hora"),
                     departamento
                 );
+
+                return vaga;
             }
 
         } catch(Exception e) {
