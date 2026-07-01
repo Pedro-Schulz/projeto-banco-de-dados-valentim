@@ -38,7 +38,7 @@ public class VagaRepository {
         }
     }
 
-    public Vaga buscarPorId(Long id) {
+    public static Vaga buscarPorId(Long id) {
         return new Vaga();
     }
 }

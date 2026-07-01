@@ -35,7 +35,7 @@ public class DadosBancariosRepository {
             }
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao criar um conjunto de dados bancários!");
+            throw new RuntimeException("Erro ao criar um conjunto de dados bancários!", e);
         }
     }
 }

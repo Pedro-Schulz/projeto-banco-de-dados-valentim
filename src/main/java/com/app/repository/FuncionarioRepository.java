@@ -42,7 +42,7 @@ public class FuncionarioRepository {
         }
     }
 
-    public Funcionario buscarPorId(Long id) {
+    public static Funcionario buscarPorId(Long id) {
         String sql = """
             SELECT * 
             FROM funcionarios
@@ -59,8 +59,8 @@ public class FuncionarioRepository {
 
             if(rs.next()) {
                 LocalDate dataNascimento = rs.getDate("data_nascimento").toLocalDate();
-                int idVaga = rs.getInt("id_vaga");
-                Vaga vaga = vagaRepository.buscarPorId(idVaga);
+                Long idVaga = rs.getLong("id_vaga");
+                Vaga vaga = VagaRepository.buscarPorId(idVaga);
 
                 Funcionario funcionario = new Funcionario(
                     rs.getString("nome"),
@@ -69,13 +69,16 @@ public class FuncionarioRepository {
                     rs.getString("cep"),
                     rs.getString("email"),
                     rs.getString("telefone"),
-                    rs.getString("estado_civil"),
+                    rs.getString("estadoCivil"),
                     rs.getString("genero"),
                     vaga
                 );
+
+                return funcionario;
             }
         } catch (Exception e) {
             throw new RuntimeException("Erro ao buscar funcionário!", e);
         }
+        return null;
     }
 }

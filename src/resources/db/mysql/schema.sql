@@ -24,7 +24,7 @@ CREATE TABLE funcionarios(
     cep CHAR(8),
     email VARCHAR(50),
     telefone CHAR(11),
-    estadoCivil VARCHAR(20),
+    estado_civil VARCHAR(20),
     genero CHAR(1)
 
     id_vaga INT,
