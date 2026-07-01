@@ -69,7 +69,7 @@ public class FuncionarioRepository {
                     rs.getString("cep"),
                     rs.getString("email"),
                     rs.getString("telefone"),
-                    rs.getString("estadoCivil"),
+                    rs.getString("estado_civil"),
                     rs.getString("genero"),
                     vaga
                 );

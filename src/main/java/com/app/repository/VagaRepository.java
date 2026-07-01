@@ -1,6 +1,7 @@
 package com.app.repository;
 
 import com.app.config.ConnectionFactory;
+import com.app.model.Departamento;
 import com.app.model.Vaga;
 
 import java.sql.Connection;
@@ -39,6 +40,37 @@ public class VagaRepository {
     }
 
     public static Vaga buscarPorId(Long id) {
-        return new Vaga();
+        String sql = """
+            SELECT id_vaga, turno, cargo, salario_hora, id_departamento
+            FROM vagas
+            WHERE id_vaga = ?;
+        """;
+
+        try {
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+
+            p.setLong(1, id);
+
+            ResultSet rs = p.executeQuery();
+
+            if(rs.next()) {
+                Long idVaga = rs.getLong("id_vega");
+                Departamento departamento = DepartamentoRepository.buscarPorId(idVaga);
+
+                Vaga vaga = new Vaga(
+                    rs.getLong("id_vaga"),
+                    rs.getString("turno"),
+                    rs.getString("cargo"),
+                    rs.getDouble("salario_hora"),
+                    departamento
+                );
+            }
+
+        } catch(Exception e) {
+            throw new RuntimeException("Erro ao achar vaga pelo ID!", e);
+        }
+        return null;
+
     }
 }

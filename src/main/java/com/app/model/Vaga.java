@@ -1,7 +1,7 @@
 package com.app.model;
 
 public class Vaga {
-    private Integer idVaga;
+    private Long idVaga;
     private String turno;
     private String cargo;
     private Double salarioHora;
@@ -16,9 +16,17 @@ public class Vaga {
         this.departamento = departamento;
     }
 
-    public Integer getIdVaga() { return idVaga; }
+    public Vaga(Long idVaga, String turno, String cargo, Double salarioHora, Departamento departamento) {
+        this.idVaga = idVaga;
+        this.turno = turno;
+        this.cargo = cargo;
+        this.salarioHora = salarioHora;
+        this.departamento = departamento;
+    }
 
-    public void setIdVaga(Integer idVaga) { this.idVaga = idVaga; }
+    public Long getIdVaga() { return idVaga; }
+
+    public void setIdVaga(Long idVaga) { this.idVaga = idVaga; }
 
     public String getTurno() { return turno; }
 

@@ -28,4 +28,8 @@ public class DepartamentoRepository {
             throw new RuntimeException("Erro ao salvar departamento!", e);
         }
     }
+
+    public static Departamento buscarPorId(Long id) {
+        return null;
+    }
 }
