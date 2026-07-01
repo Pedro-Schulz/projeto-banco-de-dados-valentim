@@ -37,4 +37,8 @@ public class VagaRepository {
             throw new RuntimeException("Erro ao criar uma vaga!", e);
         }
     }
+
+    public Vaga buscarPorId(Long id) {
+        return new Vaga();
+    }
 }

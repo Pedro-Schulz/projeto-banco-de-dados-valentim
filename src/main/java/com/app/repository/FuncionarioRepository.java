@@ -2,8 +2,9 @@ package com.app.repository;
 
 import com.app.config.ConnectionFactory;
 import com.app.model.Funcionario;
-
+import com.app.model.Vaga;
 import java.sql.*;
+import java.time.LocalDate;
 
 public class FuncionarioRepository {
 
@@ -38,6 +39,43 @@ public class FuncionarioRepository {
 
         } catch(Exception e) {
             throw new RuntimeException("Erro ao salvar funcionário!", e);
+        }
+    }
+
+    public Funcionario buscarPorId(Long id) {
+        String sql = """
+            SELECT * 
+            FROM funcionarios
+            WHERE id_funcionario = ?;
+        """;
+
+        try {
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+
+            p.setLong(1, id);
+
+            ResultSet rs = p.executeQuery();
+
+            if(rs.next()) {
+                LocalDate dataNascimento = rs.getDate("data_nascimento").toLocalDate();
+                int idVaga = rs.getInt("id_vaga");
+                Vaga vaga = vagaRepository.buscarPorId(idVaga);
+
+                Funcionario funcionario = new Funcionario(
+                    rs.getString("nome"),
+                    dataNascimento,
+                    rs.getString("cpf"),
+                    rs.getString("cep"),
+                    rs.getString("email"),
+                    rs.getString("telefone"),
+                    rs.getString("estado_civil"),
+                    rs.getString("genero"),
+                    vaga
+                );
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao buscar funcionário!", e);
         }
     }
 }
