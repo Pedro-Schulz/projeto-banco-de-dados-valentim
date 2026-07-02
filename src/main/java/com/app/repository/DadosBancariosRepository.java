@@ -99,7 +99,23 @@ public class DadosBancariosRepository {
 
     public boolean vinculoFuncionario(Long id_funcionario) {
         String sql = """
-                    
+            SELECT 1
+            FROM dados_bancarios
+            WHERE id_funcionario = ?
+            LIMIT 1;
         """;
+
+        try {
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+
+            p.setLong(1, id_funcionario);
+
+            ResultSet rs = p.executeQuery();
+
+            return rs.next();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao verificar vinculo dados bancários / funcionário");
+        }
     }
 }

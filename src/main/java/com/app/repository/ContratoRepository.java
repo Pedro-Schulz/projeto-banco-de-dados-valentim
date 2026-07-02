@@ -26,7 +26,7 @@ public class ContratoRepository {
 
             return rs.next();
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao verificar vinculo contrato -> funcionário");
+            throw new RuntimeException("Erro ao verificar vinculo contrato -> funcionário", e);
         }
     }
 }

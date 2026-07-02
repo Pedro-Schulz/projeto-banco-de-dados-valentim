@@ -1,7 +1,5 @@
 package com.app.service;
 
-import com.app.model.DadosBancarios;
-import com.app.model.Funcionario;
 import com.app.repository.ContratoRepository;
 import com.app.repository.DadosBancariosRepository;
 import com.app.repository.FuncionarioRepository;
@@ -16,6 +14,6 @@ public class FuncionarioService {
     }
 
     public boolean possuiDadosBancarios(Long id_funcionario) {
-
+        return dadosBancariosRepository.vinculoFuncionario(id_funcionario);
     }
 }
