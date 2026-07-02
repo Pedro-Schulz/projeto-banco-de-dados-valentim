@@ -96,4 +96,10 @@ public class DadosBancariosRepository {
             throw new RuntimeException("Erro ao deletar dados bancários!", e);
         }
     }
+
+    public boolean vinculoFuncionario(Long id_funcionario) {
+        String sql = """
+                    
+        """;
+    }
 }
