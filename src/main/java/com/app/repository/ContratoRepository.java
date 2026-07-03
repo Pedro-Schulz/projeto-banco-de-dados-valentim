@@ -25,7 +25,7 @@ public class ContratoRepository {
         String sql = """
             SELECT 1
             FROM contratos
-            WHERE id_funcionario = ?
+            WHERE id_funcionario = ? AND ativo = 1
             LIMIT 1;        
         """;
 

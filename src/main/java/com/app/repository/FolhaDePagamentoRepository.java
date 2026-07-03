@@ -30,7 +30,7 @@ public class FolhaDePagamentoRepository {
         String sql = """
             SELECT 1
             FROM folhas_de_pagamento
-            WHERE id_folha = ?
+            WHERE id_folha = ? AND ativo = 1
             LIMIT 1;
         """;
 

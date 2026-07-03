@@ -103,7 +103,7 @@ public class DadosBancariosRepository {
         String sql = """
             SELECT 1
             FROM dados_bancarios
-            WHERE id_funcionario = ?
+            WHERE id_funcionario = ? AND ativo = 1
             LIMIT 1;
         """;
 
