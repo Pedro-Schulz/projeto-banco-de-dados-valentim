@@ -12,7 +12,7 @@ public class FolhaDePagamentoRepository {
             UPDATE folhas_de_pagamento
             SET ativo = NOT ativo
             WHERE id_funcionario = ?;
-            """;
+        """;
 
         try (
             Connection c = ConnectionFactory.getConnection();

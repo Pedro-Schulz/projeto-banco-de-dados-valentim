@@ -6,22 +6,25 @@ public class Vaga {
     private String cargo;
     private Double salarioHora;
     private Departamento departamento;
+    private Boolean ativo;
 
     public Vaga() {}
 
-    public Vaga(String turno, String cargo, Double salarioHora, Departamento departamento) {
+    public Vaga(String turno, String cargo, Double salarioHora, Departamento departamento, Boolean ativo) {
         this.turno = turno;
         this.cargo = cargo;
         this.salarioHora = salarioHora;
         this.departamento = departamento;
+        this.ativo = ativo;
     }
 
-    public Vaga(Long idVaga, String turno, String cargo, Double salarioHora, Departamento departamento) {
+    public Vaga(Long idVaga, String turno, String cargo, Double salarioHora, Departamento departamento, Boolean ativo) {
         this.idVaga = idVaga;
         this.turno = turno;
         this.cargo = cargo;
         this.salarioHora = salarioHora;
         this.departamento = departamento;
+        this.ativo = ativo;
     }
 
     public Long getIdVaga() { return idVaga; }

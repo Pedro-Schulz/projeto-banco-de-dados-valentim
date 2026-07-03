@@ -5,20 +5,23 @@ public class Departamento {
     private String nome;
     private Double gastos;
     private Double retorno;
+    private Boolean ativo;
 
     public Departamento() {}
 
-    public Departamento(String nome, Double gastos, Double retorno) {
+    public Departamento(String nome, Double gastos, Double retorno, Boolean ativo) {
         this.nome = nome;
         this.gastos = gastos;
         this.retorno = retorno;
+        this.ativo = ativo;
     }
 
-    public Departamento(Long idDepartamento, String nome, Double gastos, Double retorno) {
+    public Departamento(Long idDepartamento, String nome, Double gastos, Double retorno, Boolean ativo) {
         this.idDepartamento = idDepartamento;
         this.nome = nome;
         this.gastos = gastos;
         this.retorno = retorno;
+        this.ativo = ativo;
     }
 
     public Long getIdDepartamento() { return idDepartamento; }
