@@ -9,11 +9,14 @@ public class FuncionarioService {
     private final ContratoRepository contratoRepository = new ContratoRepository();
     private final DadosBancariosRepository dadosBancariosRepository = new DadosBancariosRepository();
 
-    public boolean possuiContrato(Long id_funcionario) {
-        return contratoRepository.vinculoFuncionario(id_funcionario);
-    }
-
-    public boolean possuiDadosBancarios(Long id_funcionario) {
-        return dadosBancariosRepository.vinculoFuncionario(id_funcionario);
+    public String deletar(Long id_funcionario) {
+        if(dadosBancariosRepository.vinculoFuncionario(id_funcionario)) {
+            return "Vinculado a dados bancários";
+        } else if(contratoRepository.vinculoFuncionario(id_funcionario)) {
+            return "Vinculado a um contrato";
+        } else {
+            funcionarioRepository.desativar(id_funcionario);
+            return "Funcionário desativado com sucesso!";
+        }
     }
 }

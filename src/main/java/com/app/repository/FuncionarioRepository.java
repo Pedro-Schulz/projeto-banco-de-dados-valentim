@@ -85,9 +85,10 @@ public class FuncionarioRepository {
         return null;
     }
 
-    public void deletar(Long id) {
+    public void desativar(Long id) {
         String sql = """
-            DELETE FROM funcionarios
+            UPDATE funcionarios
+            SET ativo = NOT ativo
             WHERE id_funcionario = ?;
         """;
 
@@ -100,7 +101,7 @@ public class FuncionarioRepository {
             p.executeUpdate();
 
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao deletar funcionário!", e);
+            throw new RuntimeException("Erro ao dessativar funcionário!", e);
         }
     }
 }

@@ -2,15 +2,13 @@ package com.app.controller;
 
 import com.app.model.*;
 import com.app.repository.*;
-import java.time.LocalDate;
+import com.app.service.*;
 
 public class Main {
     public static void main(String[] args) {
-        FuncionarioRepository fr = new FuncionarioRepository();
-        VagaRepository vr = new VagaRepository();
-        DepartamentoRepository dr = new DepartamentoRepository();
+        FuncionarioService fs = new FuncionarioService();
+        if(fs.deletar(50L)) {
 
-        fr.deletar(50L);
-
+        }
     }
 }
