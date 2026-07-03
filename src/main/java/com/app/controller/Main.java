@@ -10,6 +10,8 @@ public class Main {
 
     public static void main(String[] args) {
         FuncionarioService funcionarioService = new FuncionarioService();
+        DadosBancariosService dadosBancariosService = new DadosBancariosService();
+        ContratoService contratoService = new ContratoService();
         Scanner scanner = new Scanner(System.in);
 
         int opcao = 0;
@@ -33,9 +35,9 @@ public class Main {
                         System.out.println("Deseja excluí-los? (S/N) ");
 
                         if(scanner.nextLine().equalsIgnoreCase("s") || scanner.nextLine().equalsIgnoreCase("sim")) {
-
+                            dadosBancariosService.desativar(id);
                         } else if(scanner.nextLine().equalsIgnoreCase("n") || scanner.nextLine().equalsIgnoreCase("nao")) {
-
+                            System.out.println("Para um funcionário ser desativado, seu grafo também precisa ser desativado!");
                         } else {
                             System.out.println("Comando inválido!");
                         }
@@ -43,9 +45,9 @@ public class Main {
                         System.out.println("Deseja excluí-lo? (S/N) ");
 
                         if(scanner.nextLine().equalsIgnoreCase("s") || scanner.nextLine().equalsIgnoreCase("sim")) {
-
+                            contratoService.desativar(id);
                         } else if(scanner.nextLine().equalsIgnoreCase("n") || scanner.nextLine().equalsIgnoreCase("nao")) {
-
+                            System.out.println("Para um funcionário ser desativado, seu grafo também precisa ser desativado!");
                         } else {
                             System.out.println("Comando inválido!");
                         }
