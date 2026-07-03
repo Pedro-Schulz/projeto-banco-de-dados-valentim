@@ -33,6 +33,7 @@ public class Main {
                     while(true) {
                         try {
                             funcionarioService.desativar(id);
+                            System.out.println("Funcionário desativado com sucesso!");
                             break;
                         } catch(DadosBancariosVinculadosException e) {
                             System.out.println(e.getMessage() + "\nDeseja excluí-los? (S/N) ");

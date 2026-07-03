@@ -12,7 +12,7 @@ public class FolhaDePagamentoRepository {
             UPDATE folhas_de_pagamento
             SET ativo = NOT ativo
             WHERE id_funcionario = ?;
-            """;
+        """;
 
         try (
             Connection c = ConnectionFactory.getConnection();
@@ -30,7 +30,7 @@ public class FolhaDePagamentoRepository {
         String sql = """
             SELECT 1
             FROM folhas_de_pagamento
-            WHERE id_folha = ?
+            WHERE id_folha = ? AND ativo = 1
             LIMIT 1;
         """;
 

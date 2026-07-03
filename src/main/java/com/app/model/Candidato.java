@@ -12,10 +12,11 @@ public class Candidato {
     private Character genero;
     private String estadoCivil;
     private LocalDate dataNascimento;
+    private Boolean ativo;
 
-    public Candidato() {};
+    public Candidato() {}
 
-    public Candidato(String nome, String cpf, String cep, String email, String telefone, Character genero, String estadoCivil, LocalDate dataNascimento) {
+    public Candidato(String nome, String cpf, String cep, String email, String telefone, Character genero, String estadoCivil, LocalDate dataNascimento, Boolean ativo) {
         this.nome = nome;
         this.cpf = cpf;
         this.cep = cep;
@@ -24,9 +25,10 @@ public class Candidato {
         this.genero = genero;
         this.estadoCivil = estadoCivil;
         this.dataNascimento = dataNascimento;
+        this.ativo = ativo;
     }
 
-    public Candidato(Long idCandidato, String nome, String cpf, String cep, String email, String telefone, Character genero, String estadoCivil, LocalDate dataNascimento) {
+    public Candidato(Long idCandidato, String nome, String cpf, String cep, String email, String telefone, Character genero, String estadoCivil, LocalDate dataNascimento, Boolean ativo) {
         this.idCandidato = idCandidato;
         this.nome = nome;
         this.cpf = cpf;
@@ -36,8 +38,8 @@ public class Candidato {
         this.genero = genero;
         this.estadoCivil = estadoCivil;
         this.dataNascimento = dataNascimento;
+        this.ativo = ativo;
     }
-
 
     public String getEstadoCivil() { return estadoCivil; }
 
@@ -74,6 +76,14 @@ public class Candidato {
     public LocalDate getDataNascimento() { return dataNascimento; }
 
     public void setDataNascimento(LocalDate dataNascimento) { this.dataNascimento = dataNascimento; }
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
 
     @Override
     public String toString() {

@@ -13,7 +13,7 @@ public class VagaRepository {
 
     public void salvar(Vaga vaga) throws RuntimeException {
         String sql = """
-            INSERT INTO vagas (turno, cargo, salario_hora, id_departamento)
+            INSERT INTO vagas (turno, cargo, salario_hora, id_departamento, ativo)
             VALUES (?, ?, ?, ?);        
         """;
 
@@ -25,6 +25,7 @@ public class VagaRepository {
             p.setString(2, vaga.getCargo());
             p.setDouble(3, vaga.getSalarioHora());
             p.setLong(4, vaga.getDepartamento().getIdDepartamento());
+            p.setBoolean(5, vaga.getAtivo());
 
             p.executeUpdate();
 
@@ -65,7 +66,8 @@ public class VagaRepository {
                     rs.getString("turno"),
                     rs.getString("cargo"),
                     rs.getDouble("salario_hora"),
-                    departamento
+                    departamento,
+                    rs.getBoolean("ativo")
                 );
 
                 return vaga;

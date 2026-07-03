@@ -13,10 +13,11 @@ public class Funcionario {
     private String estadoCivil;
     private String genero;
     private Vaga vaga;
+    private Boolean ativo;
 
     public Funcionario() {};
 
-    public Funcionario(String nome, LocalDate dataNascimento, String cpf, String cep, String email, String telefone, String estadoCivil, String genero, Vaga vaga) {
+    public Funcionario(String nome, LocalDate dataNascimento, String cpf, String cep, String email, String telefone, String estadoCivil, String genero, Vaga vaga, Boolean ativo) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.cpf = cpf;
@@ -26,9 +27,10 @@ public class Funcionario {
         this.estadoCivil = estadoCivil;
         this.genero = genero;
         this.vaga = vaga;
+        this.ativo = ativo;
     }
 
-    public Funcionario(Long idFuncionario, String nome, LocalDate dataNascimento, String cpf, String cep, String email, String telefone, String estadoCivil, String genero, Vaga vaga) {
+    public Funcionario(Long idFuncionario, String nome, LocalDate dataNascimento, String cpf, String cep, String email, String telefone, String estadoCivil, String genero, Vaga vaga, Boolean ativo) {
         this.idFuncionario = idFuncionario;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
@@ -39,6 +41,7 @@ public class Funcionario {
         this.estadoCivil = estadoCivil;
         this.genero = genero;
         this.vaga = vaga;
+        this.ativo = ativo;
     }
 
     public Long getIdFuncionario() { return idFuncionario; }
@@ -83,6 +86,14 @@ public class Funcionario {
 
     public void setVaga(Vaga vaga) {
         this.vaga = vaga;
+    }
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
     }
 
     @Override
