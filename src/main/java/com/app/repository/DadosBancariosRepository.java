@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutionException;
 
 public class DadosBancariosRepository {
 
-    public void salvar(DadosBancarios dadosBancarios) {
+    public void salvar(DadosBancarios dadosBancarios) throws RuntimeException {
         String sql = """
             INSERT INTO dados_bancarios (numero_conta, agencia_bancaria, instituicao_bancaria, id_funcionario)
             VALUES (?, ?, ?, ?);
@@ -41,7 +41,7 @@ public class DadosBancariosRepository {
         }
     }
 
-    public DadosBancarios buscarPorId(Long id) {
+    public DadosBancarios buscarPorId(Long id) throws RuntimeException {
         String sql = """
             SELECT *
             FROM dados_bancarios
@@ -78,7 +78,7 @@ public class DadosBancariosRepository {
         return null;
     }
 
-    public void deletar(Long id) {
+    public void desativar(Long id) throws RuntimeException {
         String sql = """
             DELETE FROM dados_bancarios
             WHERE id_dados_bancarios = ?;
@@ -97,7 +97,7 @@ public class DadosBancariosRepository {
         }
     }
 
-    public boolean vinculoFuncionario(Long id_funcionario) {
+    public boolean vinculoFuncionario(Long id_funcionario) throws RuntimeException {
         String sql = """
             SELECT 1
             FROM dados_bancarios

@@ -11,7 +11,7 @@ import java.sql.Statement;
 
 public class VagaRepository {
 
-    public void salvar(Vaga vaga) {
+    public void salvar(Vaga vaga) throws RuntimeException {
         String sql = """
             INSERT INTO vagas (turno, cargo, salario_hora, id_departamento)
             VALUES (?, ?, ?, ?);        
@@ -39,7 +39,7 @@ public class VagaRepository {
         }
     }
 
-    public Vaga buscarPorId(Long id) {
+    public Vaga buscarPorId(Long id) throws RuntimeException {
         String sql = """
             SELECT *
             FROM vagas
@@ -77,7 +77,7 @@ public class VagaRepository {
         return null;
     }
 
-    public void deletar(Long id) {
+    public void deletar(Long id) throws RuntimeException {
         String sql = """
             DELETE FROM vagas
             WHERE id_vaga = ?;

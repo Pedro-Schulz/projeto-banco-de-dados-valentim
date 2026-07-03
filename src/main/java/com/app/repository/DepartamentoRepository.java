@@ -7,7 +7,7 @@ import java.sql.*;
 
 public class DepartamentoRepository {
 
-    public void salvar(Departamento departamento) {
+    public void salvar(Departamento departamento) throws RuntimeException {
         String sql = """
             INSERT INTO departamentos (nome, gastos, retorno)
             VALUES (?, ?, ?);
@@ -34,7 +34,7 @@ public class DepartamentoRepository {
         }
     }
 
-    public Departamento buscarPorId(Long id) {
+    public Departamento buscarPorId(Long id) throws RuntimeException {
         String sql = """
             SELECT *
             FROM departamentos
@@ -65,7 +65,7 @@ public class DepartamentoRepository {
         return null;
     }
 
-    public void deletar(Long id) {
+    public void deletar(Long id) throws RuntimeException {
         String sql = """
             DELETE FROM departamentos
             WHERE id_departamento = ?;

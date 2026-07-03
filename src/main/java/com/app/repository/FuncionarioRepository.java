@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 public class FuncionarioRepository {
 
-    public void salvar(Funcionario funcionario) {
+    public void salvar(Funcionario funcionario) throws RuntimeException {
         String sql = """
             INSERT INTO funcionarios (nome, data_nascimento, cpf, cep, email, telefone, estado_civil, genero, id_vaga)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
@@ -42,7 +42,7 @@ public class FuncionarioRepository {
         }
     }
 
-    public Funcionario buscarPorId(Long id) {
+    public Funcionario buscarPorId(Long id) throws RuntimeException {
         String sql = """
             SELECT * 
             FROM funcionarios
@@ -85,7 +85,7 @@ public class FuncionarioRepository {
         return null;
     }
 
-    public void desativar(Long id) {
+    public void desativar(Long id) throws RuntimeException {
         String sql = """
             UPDATE funcionarios
             SET ativo = NOT ativo
