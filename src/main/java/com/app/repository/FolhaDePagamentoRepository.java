@@ -10,7 +10,7 @@ public class FolhaDePagamentoRepository {
     public void desativar(Long id_funcionario) throws RuntimeException {
         String sql = """
             UPDATE folhas_de_pagamento
-            SET ativo = NOT ativo
+            SET ativo = false
             WHERE id_funcionario = ?;
         """;
 
