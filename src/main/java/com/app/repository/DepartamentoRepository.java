@@ -69,7 +69,8 @@ public class DepartamentoRepository {
 
     public void deletar(Long id) throws RuntimeException {
         String sql = """
-            DELETE FROM departamentos
+            SELECT departamentos
+            SET ativo = false
             WHERE id_departamento = ?;
         """;
 

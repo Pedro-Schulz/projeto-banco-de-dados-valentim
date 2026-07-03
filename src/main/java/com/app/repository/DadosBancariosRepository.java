@@ -82,7 +82,8 @@ public class DadosBancariosRepository {
 
     public void desativar(Long id) throws RuntimeException {
         String sql = """
-            DELETE FROM dados_bancarios
+            UPDATE dados_bancarios
+            SET ativo = false
             WHERE id_dados_bancarios = ?;
         """;
 

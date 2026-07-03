@@ -10,7 +10,7 @@ public class ContratoRepository {
     public void desativar(Long id) throws RuntimeException {
         String sql = """
             UPDATE contratos
-            SET ativo = NOT ativo
+            SET ativo = false
             WHERE id_contrato = ?;
         """;
 

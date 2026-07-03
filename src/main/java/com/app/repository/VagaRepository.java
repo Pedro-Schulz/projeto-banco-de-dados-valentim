@@ -81,7 +81,8 @@ public class VagaRepository {
 
     public void deletar(Long id) throws RuntimeException {
         String sql = """
-            DELETE FROM vagas
+            SELECT vagas
+            SET ativo = false
             WHERE id_vaga = ?;
         """;
 

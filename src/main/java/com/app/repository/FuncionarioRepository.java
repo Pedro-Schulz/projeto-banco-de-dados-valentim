@@ -90,7 +90,7 @@ public class FuncionarioRepository {
     public void desativar(Long id) throws RuntimeException {
         String sql = """
             UPDATE funcionarios
-            SET ativo = NOT ativo
+            SET ativo = false
             WHERE id_funcionario = ?;
         """;
 
