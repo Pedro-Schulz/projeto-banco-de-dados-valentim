@@ -103,7 +103,7 @@ public class FuncionarioRepository {
             p.executeUpdate();
 
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao dessativar funcionário!", e);
+            throw new RuntimeException("Erro ao desativar funcionário!", e);
         }
     }
 }

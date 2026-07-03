@@ -1,5 +1,6 @@
 package com.app.service;
 
+import com.app.enums.StatusVinculos;
 import com.app.exception.ContratoVinculadoException;
 import com.app.exception.DadosBancariosVinculadosException;
 import com.app.exception.FolhaDePagamentoVinculadaException;
@@ -14,15 +15,11 @@ public class FuncionarioService {
     private final DadosBancariosRepository dadosBancariosRepository = new DadosBancariosRepository();
     private final FolhaDePagamentoRepository folhaDePagamentoRepository = new FolhaDePagamentoRepository();
 
-    public void desativar(Long id) throws RuntimeException {
-        if(dadosBancariosRepository.vinculoFuncionario(id)) {
-            throw new DadosBancariosVinculadosException();
-        } else if(contratoRepository.vinculoFuncionario(id)) {
-            throw new ContratoVinculadoException();
-        } else if(folhaDePagamentoRepository.vinculoFuncionario(id)) {
-            throw new FolhaDePagamentoVinculadaException();
-        } else {
-            funcionarioRepository.desativar(id);
+    public StatusVinculos desativar(Long id) {
+        if(dadosBancariosRepository.vinculoFuncionario(id) || contratoRepository.vinculoFuncionario(id) || folhaDePagamentoRepository.vinculoFuncionario(id)) {
+            return StatusVinculos.POSSUI_VINCULOS;
         }
+        funcionarioRepository.desativar(id);
+        return StatusVinculos.SUCESSO;
     }
 }

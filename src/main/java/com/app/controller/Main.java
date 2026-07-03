@@ -1,5 +1,6 @@
 package com.app.controller;
 
+import com.app.enums.StatusVinculos;
 import com.app.exception.*;
 import com.app.model.*;
 import com.app.repository.*;
@@ -30,44 +31,29 @@ public class Main {
                     System.out.println("ID do funcionário a ser desativado: ");
                     id = Integer.parseInt(scanner.nextLine());
 
-                    while(true) {
-                        try {
-                            funcionarioService.desativar(id);
-                            System.out.println("Funcionário desativado com sucesso!");
-                            break;
-                        } catch(DadosBancariosVinculadosException e) {
-                            System.out.println(e.getMessage() + "\nDeseja excluí-los? (S/N) ");
+                    StatusVinculos status = funcionarioService.desativar(id);
 
-                            if(scanner.nextLine().equalsIgnoreCase("s") || scanner.nextLine().equalsIgnoreCase("sim")) {
-                                dadosBancariosService.desativar(id);
-                            } else if(scanner.nextLine().equalsIgnoreCase("n") || scanner.nextLine().equalsIgnoreCase("nao")) {
-                                System.out.println("Para um funcionário ser desativado, seu grafo também precisa ser desativado!");
-                            } else {
-                                System.out.println("Comando inválido!");
-                            }
-                        } catch(ContratoVinculadoException e) {
-                            System.out.println(e.getMessage() + "\nDeseja excluí-lo? (S/N) ");
-
-                            if(scanner.nextLine().equalsIgnoreCase("s") || scanner.nextLine().equalsIgnoreCase("sim")) {
-                                contratoService.desativar(id);
-                            } else if(scanner.nextLine().equalsIgnoreCase("n") || scanner.nextLine().equalsIgnoreCase("nao")) {
-                                System.out.println("Para um funcionário ser desativado, seu grafo também precisa ser desativado!");
-                            } else {
-                                System.out.println("Comando inválido!");
-                            }
-                        } catch(FolhaDePagamentoVinculadaException e) {
-                            System.out.println(e.getMessage() + "\nDeseja excluí-la? (S/N) ");
-
-                            if(scanner.nextLine().equalsIgnoreCase("s") || scanner.nextLine().equalsIgnoreCase("sim")) {
-                                folhaDePagamentoService.desativar(id);
-                            } else if(scanner.nextLine().equalsIgnoreCase("n") || scanner.nextLine().equalsIgnoreCase("nao")) {
-                                System.out.println("Para um funcionário ser desativado, seu grafo também precisa ser desativado!");
-                            } else {
-                                System.out.println("Comando inválido!");
-                            }
-                        }
+                    if(status == StatusVinculos.SUCESSO) {
+                        System.out.println("Funcionário desativado com sucesso!");
+                        break;
                     }
 
+                    System.out.println("O funcionário informado possui vínculos, deseja desativá-los também? (S/N) ");
+                    String resposta = scanner.nextLine();
+
+                    if(resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
+                        dadosBancariosService.desativar(id);
+                        contratoService.desativar(id);
+                        folhaDePagamentoService.desativar(id);
+
+                        status = funcionarioService.desativar(id);
+                        if(status == StatusVinculos.POSSUI_VINCULOS) {
+                            System.out.println("A");
+                        }
+                        System.out.println("Funcionário desativado com sucesso!");
+                    } else {
+                        System.out.println("Desativação cancelada!");
+                    }
                     break;
 
                 default:

@@ -14,8 +14,12 @@ public class ContratoRepository {
             WHERE id_contrato = ?;
         """;
 
-        try {
-
+        try (
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, id);
+            p.executeUpdate();
         } catch(Exception e) {
             throw new RuntimeException("Erro ao desativar contrato!", e);
         }
