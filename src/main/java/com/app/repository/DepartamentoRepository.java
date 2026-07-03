@@ -9,7 +9,7 @@ public class DepartamentoRepository {
 
     public void salvar(Departamento departamento) throws RuntimeException {
         String sql = """
-            INSERT INTO departamentos (nome, gastos, retorno)
+            INSERT INTO departamentos (nome, gastos, retorno, ativo)
             VALUES (?, ?, ?);
         """;
 
@@ -20,6 +20,7 @@ public class DepartamentoRepository {
             p.setString(1, departamento.getNome());
             p.setDouble(2, departamento.getGastos());
             p.setDouble(3, departamento.getRetorno());
+            p.setBoolean(4, departamento.getAtivo());
 
             p.executeUpdate();
 
@@ -54,7 +55,8 @@ public class DepartamentoRepository {
                     rs.getLong("id_departamento"),
                     rs.getString("nome"),
                     rs.getDouble("gastos"),
-                    rs.getDouble("retorno")
+                    rs.getDouble("retorno"),
+                    rs.getBoolean("ativo")
                 );
 
                 return departamento;

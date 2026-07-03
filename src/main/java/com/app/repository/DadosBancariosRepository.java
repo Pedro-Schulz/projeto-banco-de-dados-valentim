@@ -14,7 +14,7 @@ public class DadosBancariosRepository {
 
     public void salvar(DadosBancarios dadosBancarios) throws RuntimeException {
         String sql = """
-            INSERT INTO dados_bancarios (numero_conta, agencia_bancaria, instituicao_bancaria, id_funcionario)
+            INSERT INTO dados_bancarios (numero_conta, agencia_bancaria, instituicao_bancaria, id_funcionario, ativo)
             VALUES (?, ?, ?, ?);
         """;
 
@@ -26,6 +26,7 @@ public class DadosBancariosRepository {
             p.setString(2, dadosBancarios.getAgenciaBancaria());
             p.setString(3, dadosBancarios.getInstituicaoBancaria());
             p.setLong(4, dadosBancarios.getFuncionario().getIdFuncionario());
+            p.setBoolean(5, dadosBancarios.getAtivo());
 
             p.executeUpdate();
 
@@ -67,7 +68,8 @@ public class DadosBancariosRepository {
                     rs.getInt("numero_conta"),
                     rs.getString("instituicao_bancaria"),
                     rs.getString("agencia_bancaria"),
-                    funcionario
+                    funcionario,
+                    rs.getBoolean("ativo")
                 );
 
                 return dadosBancarios;

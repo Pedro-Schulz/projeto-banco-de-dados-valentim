@@ -10,7 +10,7 @@ public class FuncionarioRepository {
 
     public void salvar(Funcionario funcionario) throws RuntimeException {
         String sql = """
-            INSERT INTO funcionarios (nome, data_nascimento, cpf, cep, email, telefone, estado_civil, genero, id_vaga)
+            INSERT INTO funcionarios (nome, data_nascimento, cpf, cep, email, telefone, estado_civil, genero, id_vaga, ativo)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
         """;
 
@@ -27,6 +27,7 @@ public class FuncionarioRepository {
             p.setString(7, funcionario.getEstadoCivil());
             p.setString(8, funcionario.getGenero());
             p.setObject(9, funcionario.getVaga().getIdVaga());
+            p.setBoolean(10, funcionario.getAtivo());
 
             p.executeUpdate();
 
@@ -74,7 +75,8 @@ public class FuncionarioRepository {
                     rs.getString("telefone"),
                     rs.getString("estado_civil"),
                     rs.getString("genero"),
-                    vaga
+                    vaga,
+                    rs.getBoolean("ativo")
                 );
 
                 return funcionario;

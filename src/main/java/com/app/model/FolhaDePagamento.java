@@ -80,6 +80,14 @@ public class FolhaDePagamento {
         this.funcionario = funcionario;
     }
 
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
     @Override
     public String toString() {
         return "\n> ID: " + this.idFolha +
