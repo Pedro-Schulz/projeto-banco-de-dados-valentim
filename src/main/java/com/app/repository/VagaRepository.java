@@ -17,10 +17,10 @@ public class VagaRepository {
             VALUES (?, ?, ?, ?);        
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
+        ) {
             p.setString(1, vaga.getTurno());
             p.setString(2, vaga.getCargo());
             p.setDouble(3, vaga.getSalarioHora());
@@ -46,10 +46,10 @@ public class VagaRepository {
             WHERE id_vaga = ?;
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             ResultSet rs = p.executeQuery();
@@ -83,10 +83,10 @@ public class VagaRepository {
             WHERE id_vaga = ?;
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             p.executeUpdate();

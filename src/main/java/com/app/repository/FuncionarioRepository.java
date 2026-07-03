@@ -14,10 +14,10 @@ public class FuncionarioRepository {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
+        ) {
             p.setString(1, funcionario.getNome());
             p.setObject(2, funcionario.getDataNascimento());
             p.setString(3, funcionario.getCpf());
@@ -49,10 +49,10 @@ public class FuncionarioRepository {
             WHERE id_funcionario = ?;
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             ResultSet rs = p.executeQuery();
@@ -92,10 +92,10 @@ public class FuncionarioRepository {
             WHERE id_funcionario = ?;
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             p.executeUpdate();

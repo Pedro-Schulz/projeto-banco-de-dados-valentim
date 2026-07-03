@@ -54,7 +54,7 @@ CREATE TABLE contratos(
     FOREIGN KEY(id_funcionario) REFERENCES funcionarios(id_funcionario)
 );
 
-CREATE TABLE folhas_de_pagamentos(
+CREATE TABLE folhas_de_pagamento(
 	id_folha INT AUTO_INCREMENT PRIMARY KEY,
     horas_trabalhadas INT NOT NULL,
     data_emissao DATE,

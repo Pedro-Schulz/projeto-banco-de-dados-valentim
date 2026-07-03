@@ -11,6 +11,7 @@ public class Main {
     public static void main(String[] args) {
         FuncionarioService funcionarioService = new FuncionarioService();
         DadosBancariosService dadosBancariosService = new DadosBancariosService();
+        FolhaDePagamentoService folhaDePagamentoService = new FolhaDePagamentoService();
         ContratoService contratoService = new ContratoService();
         Scanner scanner = new Scanner(System.in);
 
@@ -26,30 +27,43 @@ public class Main {
                     break;
 
                 case 2:
-                    System.out.println("ID do funcionários a ser desativado: ");
+                    System.out.println("ID do funcionário a ser desativado: ");
                     id = Integer.parseInt(scanner.nextLine());
 
-                    try {
-                        funcionarioService.desativar(id);
-                    } catch(DadosBancariosVinculadosException e) {
-                        System.out.println("Deseja excluí-los? (S/N) ");
+                    while(true) {
+                        try {
+                            funcionarioService.desativar(id);
+                            break;
+                        } catch(DadosBancariosVinculadosException e) {
+                            System.out.println(e.getMessage() + "\nDeseja excluí-los? (S/N) ");
 
-                        if(scanner.nextLine().equalsIgnoreCase("s") || scanner.nextLine().equalsIgnoreCase("sim")) {
-                            dadosBancariosService.desativar(id);
-                        } else if(scanner.nextLine().equalsIgnoreCase("n") || scanner.nextLine().equalsIgnoreCase("nao")) {
-                            System.out.println("Para um funcionário ser desativado, seu grafo também precisa ser desativado!");
-                        } else {
-                            System.out.println("Comando inválido!");
-                        }
-                    } catch(ContratoVinculadoException e) {
-                        System.out.println("Deseja excluí-lo? (S/N) ");
+                            if(scanner.nextLine().equalsIgnoreCase("s") || scanner.nextLine().equalsIgnoreCase("sim")) {
+                                dadosBancariosService.desativar(id);
+                            } else if(scanner.nextLine().equalsIgnoreCase("n") || scanner.nextLine().equalsIgnoreCase("nao")) {
+                                System.out.println("Para um funcionário ser desativado, seu grafo também precisa ser desativado!");
+                            } else {
+                                System.out.println("Comando inválido!");
+                            }
+                        } catch(ContratoVinculadoException e) {
+                            System.out.println(e.getMessage() + "\nDeseja excluí-lo? (S/N) ");
 
-                        if(scanner.nextLine().equalsIgnoreCase("s") || scanner.nextLine().equalsIgnoreCase("sim")) {
-                            contratoService.desativar(id);
-                        } else if(scanner.nextLine().equalsIgnoreCase("n") || scanner.nextLine().equalsIgnoreCase("nao")) {
-                            System.out.println("Para um funcionário ser desativado, seu grafo também precisa ser desativado!");
-                        } else {
-                            System.out.println("Comando inválido!");
+                            if(scanner.nextLine().equalsIgnoreCase("s") || scanner.nextLine().equalsIgnoreCase("sim")) {
+                                contratoService.desativar(id);
+                            } else if(scanner.nextLine().equalsIgnoreCase("n") || scanner.nextLine().equalsIgnoreCase("nao")) {
+                                System.out.println("Para um funcionário ser desativado, seu grafo também precisa ser desativado!");
+                            } else {
+                                System.out.println("Comando inválido!");
+                            }
+                        } catch(FolhaDePagamentoVinculadaException e) {
+                            System.out.println(e.getMessage() + "\nDeseja excluí-la? (S/N) ");
+
+                            if(scanner.nextLine().equalsIgnoreCase("s") || scanner.nextLine().equalsIgnoreCase("sim")) {
+                                folhaDePagamentoService.desativar(id);
+                            } else if(scanner.nextLine().equalsIgnoreCase("n") || scanner.nextLine().equalsIgnoreCase("nao")) {
+                                System.out.println("Para um funcionário ser desativado, seu grafo também precisa ser desativado!");
+                            } else {
+                                System.out.println("Comando inválido!");
+                            }
                         }
                     }
 

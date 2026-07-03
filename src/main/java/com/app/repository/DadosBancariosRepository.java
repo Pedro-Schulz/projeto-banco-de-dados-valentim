@@ -18,10 +18,10 @@ public class DadosBancariosRepository {
             VALUES (?, ?, ?, ?);
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
+        ) {
             p.setInt(1, dadosBancarios.getNumeroConta());
             p.setString(2, dadosBancarios.getAgenciaBancaria());
             p.setString(3, dadosBancarios.getInstituicaoBancaria());
@@ -48,10 +48,10 @@ public class DadosBancariosRepository {
             WHERE id_dados_bancarios = ?;        
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             ResultSet rs = p.executeQuery();
@@ -84,10 +84,10 @@ public class DadosBancariosRepository {
             WHERE id_dados_bancarios = ?;
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             p.executeUpdate();
@@ -105,10 +105,10 @@ public class DadosBancariosRepository {
             LIMIT 1;
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id_funcionario);
 
             ResultSet rs = p.executeQuery();

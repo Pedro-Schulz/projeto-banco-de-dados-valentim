@@ -13,10 +13,10 @@ public class DepartamentoRepository {
             VALUES (?, ?, ?);
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
+        ) {
             p.setString(1, departamento.getNome());
             p.setDouble(2, departamento.getGastos());
             p.setDouble(3, departamento.getRetorno());
@@ -41,10 +41,10 @@ public class DepartamentoRepository {
             WHERE id_departamento = ?;
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             ResultSet rs = p.executeQuery();
@@ -71,10 +71,10 @@ public class DepartamentoRepository {
             WHERE id_departamento = ?;
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             p.executeUpdate();
