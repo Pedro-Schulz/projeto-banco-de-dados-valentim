@@ -9,4 +9,8 @@ public class FolhaDePagamentoService {
     public void desativar(Long id) {
         folhaDePagamentoRepository.desativar(id);
     }
+
+    public void desativarPorFuncionario(Long idFuncionario) {
+        folhaDePagamentoRepository.desativar(idFuncionario);
+    }
 }

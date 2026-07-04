@@ -25,6 +25,24 @@ public class ContratoRepository {
         }
     }
 
+    public void desativarPorFuncionario(Long idFuncionario) throws RuntimeException {
+        String sql = """
+            UPDATE contratos
+            SET ativo = false
+            WHERE id_funcionario = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, idFuncionario);
+            p.executeUpdate();
+        } catch(Exception e) {
+            throw new RuntimeException("Erro ao desativar contrato!", e);
+        }
+    }
+
     public boolean vinculoFuncionario(Long id_funcionario) throws RuntimeException {
         String sql = """
             SELECT 1

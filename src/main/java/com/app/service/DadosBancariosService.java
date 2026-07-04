@@ -8,8 +8,10 @@ public class DadosBancariosService {
     private final DadosBancariosRepository dadosBancariosRepository = new DadosBancariosRepository();
 
     public void desativar(Long id) {
-        DadosBancarios dadosBancarios = dadosBancariosRepository.buscarPorId(id);
-
         dadosBancariosRepository.desativar(id);
+    }
+
+    public void desativarPorFuncionario(Long idFuncionario) {
+        dadosBancariosRepository.desativarPorFuncionario(idFuncionario);
     }
 }

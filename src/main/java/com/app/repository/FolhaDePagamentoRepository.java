@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class FolhaDePagamentoRepository {
-    public void desativar(Long id_funcionario) throws RuntimeException {
+    public void desativarPorFuncionario(Long idFuncionario) throws RuntimeException {
         String sql = """
             UPDATE folhas_de_pagamento
             SET ativo = false
@@ -18,7 +18,26 @@ public class FolhaDePagamentoRepository {
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, id_funcionario);
+            p.setLong(1, idFuncionario);
+            p.executeUpdate();
+
+        } catch(Exception e) {
+            throw new RuntimeException("Erro ao dessativar folha de pagamento!", e);
+        }
+    }
+
+    public void desativar(Long id) throws RuntimeException {
+        String sql = """
+            UPDATE folhas_de_pagamento
+            SET ativo = false
+            WHERE id_folha = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, id);
             p.executeUpdate();
 
         } catch(Exception e) {
@@ -30,7 +49,7 @@ public class FolhaDePagamentoRepository {
         String sql = """
             SELECT 1
             FROM folhas_de_pagamento
-            WHERE id_folha = ? AND ativo = 1
+            WHERE id_funcionario = ? AND ativo = 1
             LIMIT 1;
         """;
 

@@ -100,7 +100,27 @@ public class DadosBancariosRepository {
         }
     }
 
-    public boolean vinculoFuncionario(Long id_funcionario) throws RuntimeException {
+    public void desativarPorFuncionario(Long idFuncionario) throws RuntimeException {
+        String sql = """
+            UPDATE dados_bancarios
+            SET ativo = false
+            WHERE id_funcionario = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, idFuncionario);
+
+            p.executeUpdate();
+
+        } catch(Exception e) {
+            throw new RuntimeException("Erro ao deletar dados bancários!", e);
+        }
+    }
+
+    public boolean vinculoFuncionario(Long idFuncionario) throws RuntimeException {
         String sql = """
             SELECT 1
             FROM dados_bancarios
@@ -112,7 +132,7 @@ public class DadosBancariosRepository {
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, id_funcionario);
+            p.setLong(1, idFuncionario);
 
             ResultSet rs = p.executeQuery();
 

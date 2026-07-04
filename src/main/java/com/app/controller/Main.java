@@ -42,9 +42,9 @@ public class Main {
                     String resposta = scanner.nextLine();
 
                     if(resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
-                        dadosBancariosService.desativar(id);
-                        contratoService.desativar(id);
-                        folhaDePagamentoService.desativar(id);
+                        dadosBancariosService.desativarPorFuncionario(id);
+                        contratoService.desativarPorFuncionario(id);
+                        folhaDePagamentoService.desativarPorFuncionario(id);
 
                         status = funcionarioService.desativar(id);
                         if(status == StatusVinculos.POSSUI_VINCULOS) {

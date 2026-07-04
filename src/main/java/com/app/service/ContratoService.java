@@ -8,4 +8,8 @@ public class ContratoService {
     public void desativar(Long id) {
         contratoRepository.desativar(id);
     }
+
+    public void desativarPorFuncionario(Long idFuncionario) {
+        contratoRepository.desativarPorFuncionario(idFuncionario);
+    }
 }
