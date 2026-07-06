@@ -67,7 +67,7 @@ public class DepartamentoRepository {
         return null;
     }
 
-    public void deletar(Long id) throws RuntimeException {
+    public void desativar(Long id) throws RuntimeException {
         String sql = """
             SELECT departamentos
             SET ativo = false

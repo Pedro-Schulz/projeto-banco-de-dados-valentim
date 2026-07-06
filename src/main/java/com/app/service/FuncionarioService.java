@@ -1,9 +1,6 @@
 package com.app.service;
 
 import com.app.enums.StatusVinculos;
-import com.app.exception.ContratoVinculadoException;
-import com.app.exception.DadosBancariosVinculadosException;
-import com.app.exception.FolhaDePagamentoVinculadaException;
 import com.app.repository.ContratoRepository;
 import com.app.repository.DadosBancariosRepository;
 import com.app.repository.FolhaDePagamentoRepository;

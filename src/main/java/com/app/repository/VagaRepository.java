@@ -79,7 +79,7 @@ public class VagaRepository {
         return null;
     }
 
-    public void deletar(Long id) throws RuntimeException {
+    public void desativar(Long id) throws RuntimeException {
         String sql = """
             SELECT vagas
             SET ativo = false

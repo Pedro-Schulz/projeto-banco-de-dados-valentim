@@ -106,4 +106,26 @@ public class FuncionarioRepository {
             throw new RuntimeException("Erro ao desativar funcionário!", e);
         }
     }
+
+    public boolean vinculoVaga(Long id_vaga) throws RuntimeException {
+        String sql = """
+            SELECT 1
+            FROM funcionarios
+            WHERE id_vaga = ?
+            LIMIT 1;
+        """;
+
+        try (
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, id_vaga);
+
+            ResultSet rs = p.executeQuery();
+
+            return rs.next();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao verificar vínculo funcionário -> vaga", e);
+        }
+    }
 }

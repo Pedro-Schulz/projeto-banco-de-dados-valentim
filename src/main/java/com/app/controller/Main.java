@@ -20,7 +20,7 @@ public class Main {
         long id = 0;
 
         do {
-            System.out.println("=============== MENU ===============\n1 - Criar funcionário\n2 - Desativar funcionário\n>>>");
+            System.out.println("=============== MENU ===============\n1 - Criar funcionário\n2 - Desativar funcionário\n3 - Criar vaga\n>>>");
             opcao = Integer.parseInt(scanner.nextLine());
 
             switch (opcao) {
@@ -55,6 +55,7 @@ public class Main {
                         System.out.println("Desativação cancelada!");
                     }
                     break;
+
 
                 default:
                     break;
