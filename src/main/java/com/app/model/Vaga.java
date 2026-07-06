@@ -10,12 +10,12 @@ public class Vaga {
 
     public Vaga() {}
 
-    public Vaga(String turno, String cargo, Double salarioHora, Departamento departamento, Boolean ativo) {
+    public Vaga(String turno, String cargo, Double salarioHora, Departamento departamento) {
         this.turno = turno;
         this.cargo = cargo;
         this.salarioHora = salarioHora;
         this.departamento = departamento;
-        this.ativo = ativo;
+        this.ativo = true;
     }
 
     public Vaga(Long idVaga, String turno, String cargo, Double salarioHora, Departamento departamento, Boolean ativo) {
