@@ -3,10 +3,15 @@ package com.app.repository;
 import com.app.config.ConnectionFactory;
 import com.app.model.Funcionario;
 import com.app.model.Vaga;
+import com.app.service.FuncionarioService;
+
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class FuncionarioRepository {
+    private VagaRepository vr = new VagaRepository();
 
     public void salvar(Funcionario funcionario) throws RuntimeException {
         String sql = """
@@ -59,7 +64,6 @@ public class FuncionarioRepository {
             ResultSet rs = p.executeQuery();
 
             if(rs.next()) {
-                VagaRepository vr = new VagaRepository();
                 LocalDate dataNascimento = rs.getDate("data_nascimento").toLocalDate();
 
                 Long idVaga = rs.getLong("id_vaga");
@@ -85,6 +89,49 @@ public class FuncionarioRepository {
             throw new RuntimeException("Erro ao buscar funcionário!", e);
         }
         return null;
+    }
+
+    public ArrayList<Funcionario> listarTodos() {
+        ArrayList<Funcionario> funcionarios = new ArrayList<>();
+        String sql = """
+            SELECT f.*, v.id_vaga
+            FROM funcionarios AS f
+            JOIN vagas AS v ON v.id_vaga = f.id_vaga;
+        """;
+
+        try (
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            ResultSet rs = p.executeQuery();
+
+            while(rs.next()) {
+                LocalDate dataNascimento = rs.getDate("data_nascimento").toLocalDate();
+                Vaga vaga = new Vaga(
+                    rs.getLong("id_vaga")
+                );
+
+                Funcionario funcionario = new Funcionario(
+                    rs.getLong("id_funcionario"),
+                    rs.getString("nome"),
+                    dataNascimento,
+                    rs.getString("cpf"),
+                    rs.getString("cep"),
+                    rs.getString("email"),
+                    rs.getString("telefone"),
+                    rs.getString("estado_civil"),
+                    rs.getString("genero"),
+                    vaga,
+                    rs.getBoolean("ativo")
+                );
+
+                funcionarios.add(funcionario);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao listar funcionários!", e);
+        }
+
+        return funcionarios;
     }
 
     public void desativar(Long id) throws RuntimeException {

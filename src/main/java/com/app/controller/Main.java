@@ -5,6 +5,8 @@ import com.app.exception.*;
 import com.app.model.*;
 import com.app.repository.*;
 import com.app.service.*;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -56,6 +58,20 @@ public class Main {
                     }
                     break;
 
+                case 100:
+                    try {
+                        ArrayList<Funcionario> funcionarios = funcionarioService.listarTodos();
+                        for(Funcionario funcionario : funcionarios) {
+                            if(funcionario.getVaga() == null) {
+                                System.out.println("Funcionário ID:" + funcionario.getIdFuncionario() + ", não possui vaga vinculada!");
+                            } else {
+                                System.out.println(funcionario.toString());
+                            }
+                        }
+                        funcionarios.forEach(funcionario -> System.out.println(funcionario.toString()));
+                    } catch(Exception e) {}
+
+                    break;
 
                 default:
                     break;
