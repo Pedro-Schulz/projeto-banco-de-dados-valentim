@@ -16,6 +16,7 @@ public class Main {
         DadosBancariosService dadosBancariosService = new DadosBancariosService();
         FolhaDePagamentoService folhaDePagamentoService = new FolhaDePagamentoService();
         ContratoService contratoService = new ContratoService();
+        VagaService vagaService = new VagaService();
         Scanner scanner = new Scanner(System.in);
 
         int opcao = 0;
@@ -65,12 +66,26 @@ public class Main {
                             if(funcionario.getVaga() == null) {
                                 System.out.println("Funcionário ID:" + funcionario.getIdFuncionario() + ", não possui vaga vinculada!");
                             } else {
-                                System.out.println(funcionario.toString());
+                                System.out.println(funcionario);
                             }
                         }
                         funcionarios.forEach(funcionario -> System.out.println(funcionario.toString()));
-                    } catch(Exception e) {}
+                    } catch(Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
 
+                case 101:
+                    try {
+                        ArrayList<Vaga> vagas = vagaService.listarTodos();
+                        for(Vaga vaga : vagas) {
+                            System.out.println(vaga);
+                        }
+                    } catch(NullPointerException e) {
+                        System.out.println("Vaga com departamento null(inexistente)" + e);
+                    } catch(Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
 
                 default:

@@ -68,7 +68,7 @@ public class Vaga {
         return "\n> ID: " + idVaga +
                 "\n> TURNO: " + turno +
                 "\n> CARGO: " + cargo +
-                "\n> DEPARTAMENTO: " + departamento +
+                "\n> DEPARTAMENTO: " + departamento.getIdDepartamento() +
                 "\n> SALÁRIO P/ HORA: " + salarioHora;
     }
 }
