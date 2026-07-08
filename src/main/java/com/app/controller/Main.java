@@ -88,6 +88,23 @@ public class Main {
                     }
                     break;
 
+                case 102:
+                    try {
+                        ArrayList<FolhaDePagamento> folhasDePagamento = folhaDePagamentoService.listarTodos();
+                        for(FolhaDePagamento folhaDePagamento : folhasDePagamento) {
+                            if(folhaDePagamento.getFuncionario() == null) {
+                                System.out.println("Folha de pagamento ID:" + folhaDePagamento.getIdFolha() + ", não possui funcionário vinculado!");
+                            } else {
+                                System.out.println(folhaDePagamento);
+                            }
+                        }
+                    } catch(NullPointerException e) {
+                        System.out.println("Folha de pagamento com funcionário null(inexistente)" + e);
+                    } catch(Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
                 default:
                     break;
             }

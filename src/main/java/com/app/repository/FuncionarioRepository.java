@@ -106,22 +106,17 @@ public class FuncionarioRepository {
             ResultSet rs = p.executeQuery();
 
             while(rs.next()) {
-                LocalDate dataNascimento = rs.getDate("data_nascimento").toLocalDate();
-                Vaga vaga = new Vaga(
-                    rs.getLong("id_vaga")
-                );
-
                 Funcionario funcionario = new Funcionario(
                     rs.getLong("id_funcionario"),
                     rs.getString("nome"),
-                    dataNascimento,
+                    rs.getDate("data_nascimento").toLocalDate(),
                     rs.getString("cpf"),
                     rs.getString("cep"),
                     rs.getString("email"),
                     rs.getString("telefone"),
                     rs.getString("estado_civil"),
                     rs.getString("genero"),
-                    vaga,
+                    new Vaga(rs.getLong("id_vaga")),
                     rs.getBoolean("ativo")
                 );
 
