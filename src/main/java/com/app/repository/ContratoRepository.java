@@ -2,6 +2,8 @@ package com.app.repository;
 
 import com.app.config.ConnectionFactory;
 import com.app.model.Contrato;
+import com.app.model.DadosBancarios;
+import com.app.model.Funcionario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -35,6 +37,37 @@ public class ContratoRepository {
             }
         } catch (Exception e) {
             throw new RuntimeException("Erro ao salvar contrato!", e);
+import java.util.ArrayList;
+
+public class ContratoRepository {
+    public ArrayList<Contrato> listarTodos() {
+        ArrayList<Contrato> contratos = new ArrayList<>();
+        String sql = """
+            SELECT c.*, f.id_funcionario
+            FROM contratos AS c
+            JOIN funcionarios AS f ON f.id_funcionario = c.id_funcionario;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            ResultSet rs = p.executeQuery();
+
+            while(rs.next()) {
+                Contrato contrato = new Contrato(
+                        rs.getLong("id_contrato"),
+                        rs.getBoolean("status_contrato"),
+                        rs.getDate("data_emissao").toLocalDate(),
+                        rs.getInt("prazo"),
+                        new Funcionario(rs.getLong("id_funcionario")),
+                        rs.getBoolean("ativo")
+                );
+                contratos.add(contrato);
+            }
+            return contratos;
+        } catch(Exception e) {
+            throw new RuntimeException("Erro ao listar os contratos! \n", e);
         }
     }
 
@@ -51,6 +84,29 @@ public class ContratoRepository {
 
             p.setLong(1, id);
 
+        try (
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, id);
+            p.executeUpdate();
+        } catch(Exception e) {
+            throw new RuntimeException("Erro ao desativar contrato!", e);
+        }
+    }
+
+    public void desativarPorFuncionario(Long idFuncionario) throws RuntimeException {
+        String sql = """
+            UPDATE contratos
+            SET ativo = false
+            WHERE id_funcionario = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, idFuncionario);
             p.executeUpdate();
         } catch(Exception e) {
             throw new RuntimeException("Erro ao desativar contrato!", e);

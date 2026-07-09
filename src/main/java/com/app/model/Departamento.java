@@ -9,6 +9,10 @@ public class Departamento {
 
     public Departamento() {}
 
+    public Departamento(Long idDepartamento) {
+        this.idDepartamento = idDepartamento;
+    }
+
     public Departamento(String nome, Double gastos, Double retorno, Boolean ativo) {
         this.nome = nome;
         this.gastos = gastos;

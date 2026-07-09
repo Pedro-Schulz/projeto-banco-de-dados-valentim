@@ -19,7 +19,6 @@ CREATE TABLE vagas(
 );
 
 CREATE TABLE funcionarios(
-<<<<<<< HEAD
     id_funcionario INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     data_nascimento DATE NOT NULL,
@@ -29,7 +28,6 @@ CREATE TABLE funcionarios(
     telefone CHAR(11) NOT NULL,
     estadoCivil VARCHAR(20) NOT NULL,
     genero CHAR(1) NOT NULL,
-=======
 	id_funcionario INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
     data_nascimento DATE,
@@ -39,7 +37,6 @@ CREATE TABLE funcionarios(
     telefone CHAR(11),
     estado_civil VARCHAR(20),
     genero CHAR(1),
->>>>>>> d70aa49d890eb9dcaa05413537aba5eeb636ac5a
 
     id_vaga INT NOT NULL,
 
@@ -86,7 +83,6 @@ CREATE TABLE folhas_de_pagamentos(
 
 CREATE TABLE candidatos(
     id_candidato INT AUTO_INCREMENT PRIMARY KEY,
-<<<<<<< HEAD
     nome VARCHAR(100) NOT NULL,
     cpf CHAR(11) NOT NULL,
     cep CHAR(8) NOT NULL,
@@ -95,7 +91,6 @@ CREATE TABLE candidatos(
     genero CHAR(1) NOT NULL,
     estado_civil VARCHAR(20) NOT NULL,
     data_nascimento DATE NOT NULL
-=======
     nome VARCHAR(100),
     cpf CHAR(11),
     cep CHAR(8),
@@ -105,7 +100,6 @@ CREATE TABLE candidatos(
     estado_civil VARCHAR(20),
     data_nascimento DATE,
     ativo BOOLEAN NOT NULL DEFAULT TRUE
->>>>>>> d70aa49d890eb9dcaa05413537aba5eeb636ac5a
 );
 
 CREATE TABLE candidaturas(

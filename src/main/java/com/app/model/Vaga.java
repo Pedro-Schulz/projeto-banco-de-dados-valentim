@@ -9,13 +9,16 @@ public class Vaga {
     private Boolean ativo;
 
     public Vaga() {}
+    public Vaga(Long idVaga) {
+        this.idVaga = idVaga;
+    }
 
-    public Vaga(String turno, String cargo, Double salarioHora, Departamento departamento) {
+    public Vaga(String turno, String cargo, Double salarioHora, Departamento departamento, Boolean ativo) {
         this.turno = turno;
         this.cargo = cargo;
         this.salarioHora = salarioHora;
         this.departamento = departamento;
-        this.ativo = true;
+        this.ativo;
     }
 
     public Vaga(Long idVaga, String turno, String cargo, Double salarioHora, Departamento departamento, Boolean ativo) {
@@ -24,7 +27,7 @@ public class Vaga {
         this.cargo = cargo;
         this.salarioHora = salarioHora;
         this.departamento = departamento;
-        this.ativo = ativo;
+        this.ativo;
     }
 
     public Long getIdVaga() { return idVaga; }
@@ -64,7 +67,7 @@ public class Vaga {
         return "\n> ID: " + idVaga +
                 "\n> TURNO: " + turno +
                 "\n> CARGO: " + cargo +
-                "\n> DEPARTAMENTO: " + departamento +
+                "\n> DEPARTAMENTO: " + departamento.getIdDepartamento() +
                 "\n> SALÁRIO P/ HORA: " + salarioHora;
     }
 }

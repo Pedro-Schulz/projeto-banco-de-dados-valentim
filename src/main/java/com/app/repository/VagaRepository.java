@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class VagaRepository {
 
@@ -79,6 +80,40 @@ public class VagaRepository {
     }
 
     public void desativar(Long id) {
+    public ArrayList<Vaga> listarTodos() throws RuntimeException {
+        ArrayList<Vaga> vagas = new ArrayList<>();
+        String sql = """
+            SELECT v.*, d.id_departamento
+            FROM vagas AS v
+            JOIN departamentos AS d ON d.id_departamento = v.id_departamento;
+        """;
+
+        try(
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+        ){
+            ResultSet rs = p.executeQuery();
+
+            while(rs.next()) {
+                Vaga vaga = new Vaga(
+                    rs.getLong("id_vaga"),
+                    rs.getString("turno"),
+                    rs.getString("cargo"),
+                    rs.getDouble("salario_hora"),
+                    new Departamento(rs.getLong("id_departamento")),
+                    rs.getBoolean("ativo")
+                );
+
+                vagas.add(vaga);
+            }
+        } catch(Exception e) {
+            throw new RuntimeException("Erro ao listar as vagas!", e);
+        }
+
+        return vagas;
+    }
+
+    public void desativar(Long id) throws RuntimeException {
         String sql = """
             UPDATE vagas
             SET ativo = FALSE

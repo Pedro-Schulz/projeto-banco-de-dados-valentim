@@ -91,7 +91,7 @@ public class FolhaDePagamento {
     @Override
     public String toString() {
         return "\n> ID: " + this.idFolha +
-                "\n> FUNCIONÁRIO: " + this.funcionario +
+                "\n> FUNCIONÁRIO: " + this.funcionario.getIdFuncionario() +
                 "\n> HORAS TRABALHADAS: " + this.horasTrabalhadas +
                 "\n> DATA DE EMISSÃO: " + this.dataEmissao +
                 "\n> DESCONTOS R$ : " + this.descontos +

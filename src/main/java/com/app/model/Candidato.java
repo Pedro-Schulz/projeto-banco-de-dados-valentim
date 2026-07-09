@@ -9,14 +9,15 @@ public class Candidato {
     private String cep;
     private String email;
     private String telefone;
-    private Character genero;
+    private String genero;
     private String estadoCivil;
     private LocalDate dataNascimento;
     private Boolean ativo;
 
     public Candidato() {}
+    public Candidato(Long idCandidato) { this.idCandidato = idCandidato; }
 
-    public Candidato(String nome, String cpf, String cep, String email, String telefone, Character genero, String estadoCivil, LocalDate dataNascimento) {
+    public Candidato(String nome, String cpf, String cep, String email, String telefone, String genero, String estadoCivil, LocalDate dataNascimento, Boolean ativo) {
         this.nome = nome;
         this.cpf = cpf;
         this.cep = cep;
@@ -25,10 +26,10 @@ public class Candidato {
         this.genero = genero;
         this.estadoCivil = estadoCivil;
         this.dataNascimento = dataNascimento;
-        this.ativo = true;
+        this.ativo;
     }
 
-    public Candidato(Long idCandidato, String nome, String cpf, String cep, String email, String telefone, Character genero, String estadoCivil, LocalDate dataNascimento, Boolean ativo) {
+    public Candidato(Long idCandidato, String nome, String cpf, String cep, String email, String telefone, String genero, String estadoCivil, LocalDate dataNascimento, Boolean ativo) {
         this.idCandidato = idCandidato;
         this.nome = nome;
         this.cpf = cpf;
@@ -45,9 +46,9 @@ public class Candidato {
 
     public void setEstadoCivil(String estadoCivil) { this.estadoCivil = estadoCivil; }
 
-    public Character getGenero() { return genero; }
+    public String getGenero() { return genero; }
 
-    public void setGenero(Character genero) { this.genero = genero; }
+    public void setGenero(String genero) { this.genero = genero; }
 
     public String getTelefone() { return telefone; }
 
