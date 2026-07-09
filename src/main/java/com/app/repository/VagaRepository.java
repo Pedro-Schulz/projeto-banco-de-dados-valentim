@@ -12,20 +12,21 @@ import java.util.ArrayList;
 
 public class VagaRepository {
 
-    public void salvar(Vaga vaga) {
+    public void salvar(Vaga vaga) throws RuntimeException {
         String sql = """
-            INSERT INTO vagas (turno, cargo, salario_hora, id_departamento)
+            INSERT INTO vagas (turno, cargo, salario_hora, id_departamento, ativo)
             VALUES (?, ?, ?, ?);        
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
+        ) {
             p.setString(1, vaga.getTurno());
             p.setString(2, vaga.getCargo());
             p.setDouble(3, vaga.getSalarioHora());
             p.setLong(4, vaga.getDepartamento().getIdDepartamento());
+            p.setBoolean(5, vaga.getAtivo());
 
             p.executeUpdate();
 
@@ -40,17 +41,17 @@ public class VagaRepository {
         }
     }
 
-    public Vaga buscarPorId(Long id) {
+    public Vaga buscarPorId(Long id) throws RuntimeException {
         String sql = """
-        SELECT *
-        FROM vagas
-        WHERE id_vaga = ?;
-    """;
+            SELECT *
+            FROM vagas
+            WHERE id_vaga = ?;
+        """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             ResultSet rs = p.executeQuery();
@@ -58,16 +59,16 @@ public class VagaRepository {
             if(rs.next()) {
                 DepartamentoRepository dr = new DepartamentoRepository();
 
-                Long idDepartamento = rs.getLong("id_departamento");
-                Departamento departamento = dr.buscarPorId(idDepartamento);
+                Long idVaga = rs.getLong("id_vaga");
+                Departamento departamento = dr.buscarPorId(idVaga);
 
                 Vaga vaga = new Vaga(
-                        rs.getLong("id_vaga"),
-                        rs.getString("turno"),
-                        rs.getString("cargo"),
-                        rs.getDouble("salario_hora"),
-                        departamento,
-                        rs.getBoolean("ativo")
+                    rs.getLong("id_vaga"),
+                    rs.getString("turno"),
+                    rs.getString("cargo"),
+                    rs.getDouble("salario_hora"),
+                    departamento,
+                    rs.getBoolean("ativo")
                 );
 
                 return vaga;
@@ -79,7 +80,6 @@ public class VagaRepository {
         return null;
     }
 
-    public void desativar(Long id) {
     public ArrayList<Vaga> listarTodos() throws RuntimeException {
         ArrayList<Vaga> vagas = new ArrayList<>();
         String sql = """
@@ -115,21 +115,21 @@ public class VagaRepository {
 
     public void desativar(Long id) throws RuntimeException {
         String sql = """
-            UPDATE vagas
-            SET ativo = FALSE
+            SELECT vagas
+            SET ativo = false
             WHERE id_vaga = ?;
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             p.executeUpdate();
 
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao desativar vaga!", e);
+            throw new RuntimeException("Erro ao deletar vaga!", e);
         }
     }
 }

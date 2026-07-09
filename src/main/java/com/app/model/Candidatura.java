@@ -14,14 +14,14 @@ public class Candidatura {
 
     public Candidatura() {};
 
-    public Candidatura(Boolean statusCandidatura, LocalDate dataCandidatura, LocalDate prazo, String etapa, Vaga vaga, Candidato candidato) {
+    public Candidatura(Boolean statusCandidatura, LocalDate dataCandidatura, LocalDate prazo, String etapa, Vaga vaga, Candidato candidato, Boolean ativo) {
         this.statusCandidatura = statusCandidatura;
         this.dataCandidatura = dataCandidatura;
         this.prazo = prazo;
         this.etapa = etapa;
         this.vaga = vaga;
         this.candidato = candidato;
-        this.ativo = true;
+        this.ativo = ativo;
     }
 
     public Candidatura(Long idCandidatura, Boolean statusCandidatura, LocalDate dataCandidatura, LocalDate prazo, String etapa, Vaga vaga, Candidato candidato, Boolean ativo) {
