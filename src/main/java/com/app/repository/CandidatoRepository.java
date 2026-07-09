@@ -2,58 +2,6 @@ package com.app.repository;
 
 import com.app.config.ConnectionFactory;
 import com.app.model.Candidato;
-import java.sql.*;
-
-public class CandidatoRepository {
-
-    public void salvar(Candidato candidato) {
-        String sql = """
-            INSERT INTO candidatos (nome, cpf, cep, email, telefone, genero, estado_civil, data_nascimento)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-        """;
-
-        try {
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
-            p.setString(1, candidato.getNome());
-            p.setString(2, candidato.getCpf());
-            p.setString(3, candidato.getCep());
-            p.setString(4, candidato.getEmail());
-            p.setString(5, candidato.getTelefone());
-            p.setString(6, String.valueOf(candidato.getGenero()));
-            p.setString(7, candidato.getEstadoCivil());
-            p.setDate(8, Date.valueOf(candidato.getDataNascimento()));
-
-            p.executeUpdate();
-
-            ResultSet rs = p.getGeneratedKeys();
-
-            if(rs.next()) {
-                Long id = rs.getLong(1);
-                candidato.setIdCandidato(id);
-            }
-        } catch(Exception e) {
-            throw new RuntimeException("Erro ao salvar candidato!", e);
-        }
-    }
-
-    public Candidato buscarPorId(Long id) {
-        String sql = """
-            SELECT *
-            FROM candidatos
-            WHERE id_candidato = ?;
-        """;
-
-        try {
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
-
-            p.setLong(1, id);
-
-            ResultSet rs = p.executeQuery();
-
-            if(rs.next()) {
 import com.app.model.Funcionario;
 import com.app.model.Vaga;
 
@@ -83,40 +31,11 @@ public class CandidatoRepository {
                         rs.getString("cep"),
                         rs.getString("email"),
                         rs.getString("telefone"),
-                        rs.getString("genero").charAt(0),
                         rs.getString("genero"),
                         rs.getString("estado_civil"),
                         rs.getDate("data_nascimento").toLocalDate(),
                         rs.getBoolean("ativo")
                 );
-
-                return candidato;
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao buscar candidato!", e);
-        }
-        return null;
-    }
-
-    public void desativar(Long id) {
-        String sql = """
-            UPDATE candidatos
-            SET ativo = FALSE
-            WHERE id_candidato = ?;
-        """;
-
-        try {
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
-
-            p.setLong(1, id);
-
-            p.executeUpdate();
-        } catch(Exception e) {
-            throw new RuntimeException("Erro ao desativar candidato!", e);
-        }
-    }
-}
                 candidatos.add(candidato);
             }
         } catch (Exception e) {
