@@ -19,6 +19,7 @@ public class Main {
         VagaService vagaService = new VagaService();
         DepartamentoService departamentoService = new DepartamentoService();
         CandidatoService candidatoService = new CandidatoService();
+        CandidaturaService candidaturaService = new CandidaturaService();
         Scanner scanner = new Scanner(System.in);
 
         int opcao = 0;
@@ -148,6 +149,24 @@ public class Main {
                     try {
                         ArrayList<Candidato> candidatos = candidatoService.listarTodos();
                         candidatos.forEach(candidato -> System.out.println(candidato));
+                    } catch(Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
+                case 107:
+                    try {
+                        ArrayList<Candidatura> candidaturas = candidaturaService.listarTodos();
+                        for(Candidatura candidatura : candidaturas) {
+                            if(candidatura.getVaga() == null) {
+                                System.out.println("Candidatura ID:" + candidatura.getIdCandidatura() + ", não possui vaga vinculada!");
+                            } else if(candidatura.getCandidato() == null) {
+                                System.out.println("Candidatura ID:" + candidatura.getIdCandidatura() + ", não possui candidato vinculado!");
+                            } else {
+                                System.out.println(candidatura);
+                            }
+                        }
+                        candidaturas.forEach(candidatura -> System.out.println(candidatura));
                     } catch(Exception e) {
                         System.out.println(e.getMessage());
                     }

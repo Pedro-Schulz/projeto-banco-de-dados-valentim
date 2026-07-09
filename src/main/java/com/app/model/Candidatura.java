@@ -102,8 +102,8 @@ public class Candidatura {
     @Override
     public String toString() {
         return "\n> ID DA CANDIDATURA: " + this.idCandidatura +
-                "\n> VAGA: " + this.vaga +
-                "\n> CANDIDATO: " + this.candidato +
+                "\n> VAGA: " + this.vaga.getIdVaga() +
+                "\n> CANDIDATO: " + this.candidato.getIdCandidato() +
                 "\n> STATUS DA CANDIDATURA: " + this.statusCandidatura +
                 "\n> DATA DA CANDIDATURA: " + this.dataCandidatura +
                 "\n> PRAZO DA CANDIDATURA: " + this.prazo +

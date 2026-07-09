@@ -16,6 +16,8 @@ public class Candidato {
 
     public Candidato() {}
 
+    public Candidato(Long idCandidato) { this.idCandidato = idCandidato; }
+
     public Candidato(String nome, String cpf, String cep, String email, String telefone, String genero, String estadoCivil, LocalDate dataNascimento, Boolean ativo) {
         this.nome = nome;
         this.cpf = cpf;
