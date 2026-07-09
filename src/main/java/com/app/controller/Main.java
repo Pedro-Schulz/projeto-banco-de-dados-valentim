@@ -98,8 +98,6 @@ public class Main {
                                 System.out.println(folhaDePagamento);
                             }
                         }
-                    } catch(NullPointerException e) {
-                        System.out.println("Folha de pagamento com funcionário null(inexistente)" + e);
                     } catch(Exception e) {
                         System.out.println(e.getMessage());
                     }
