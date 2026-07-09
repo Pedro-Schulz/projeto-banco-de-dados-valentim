@@ -17,6 +17,7 @@ public class Main {
         FolhaDePagamentoService folhaDePagamentoService = new FolhaDePagamentoService();
         ContratoService contratoService = new ContratoService();
         VagaService vagaService = new VagaService();
+        DepartamentoService departamentoService = new DepartamentoService();
         Scanner scanner = new Scanner(System.in);
 
         int opcao = 0;
@@ -96,6 +97,45 @@ public class Main {
                                 System.out.println("Folha de pagamento ID:" + folhaDePagamento.getIdFolha() + ", não possui funcionário vinculado!");
                             } else {
                                 System.out.println(folhaDePagamento);
+                            }
+                        }
+                    } catch(Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
+                case 103:
+                    try {
+                        ArrayList<Departamento> departamentos = departamentoService.listarTodos();
+                        departamentos.forEach(departamento -> System.out.println(departamento));
+                    } catch(Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
+                case 104:
+                    try {
+                        ArrayList<DadosBancarios> dadosBancariosList = dadosBancariosService.listarTodos();
+                        for(DadosBancarios dadosBancarios : dadosBancariosList) {
+                            if(dadosBancarios.getFuncionario() == null) {
+                                System.out.println("Dados bancários ID:" + dadosBancarios.getIdDadosBancarios() + ", não possui funcionário vinculado!");
+                            } else {
+                                System.out.println(dadosBancarios);
+                            }
+                        }
+                    } catch(Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
+                case 105:
+                    try {
+                        ArrayList<Contrato> contratos = contratoService.listarTodos();
+                        for(Contrato contrato : contratos) {
+                            if(contrato.getFuncionario() == null) {
+                                System.out.println("Contrato ID:" + contrato.getIdContrato() + ", não possui funcionário vinculado!");
+                            } else {
+                                System.out.println(contrato);
                             }
                         }
                     } catch(Exception e) {
