@@ -5,20 +5,27 @@ public class Departamento {
     private String nome;
     private Double gastos;
     private Double retorno;
+    private Boolean ativo;
 
     public Departamento() {}
 
-    public Departamento(String nome, Double gastos, Double retorno) {
+    public Departamento(Long idDepartamento) {
+        this.idDepartamento = idDepartamento;
+    }
+
+    public Departamento(String nome, Double gastos, Double retorno, Boolean ativo) {
         this.nome = nome;
         this.gastos = gastos;
         this.retorno = retorno;
+        this.ativo = ativo;
     }
 
-    public Departamento(Long idDepartamento, String nome, Double gastos, Double retorno) {
+    public Departamento(Long idDepartamento, String nome, Double gastos, Double retorno, Boolean ativo) {
         this.idDepartamento = idDepartamento;
         this.nome = nome;
         this.gastos = gastos;
         this.retorno = retorno;
+        this.ativo = ativo;
     }
 
     public Long getIdDepartamento() { return idDepartamento; }
@@ -36,6 +43,14 @@ public class Departamento {
     public Double getRetorno() { return retorno; }
 
     public void setRetorno(Double retorno) { this.retorno = retorno; }
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
 
     @Override
     public String toString() {

@@ -10,19 +10,21 @@ public class Candidatura {
     private String etapa;
     private Vaga vaga;
     private Candidato candidato;
+    private Boolean ativo;
 
     public Candidatura() {};
 
-    public Candidatura(Boolean statusCandidatura, LocalDate dataCandidatura, LocalDate prazo, String etapa, Vaga vaga, Candidato candidato) {
+    public Candidatura(Boolean statusCandidatura, LocalDate dataCandidatura, LocalDate prazo, String etapa, Vaga vaga, Candidato candidato, Boolean ativo) {
         this.statusCandidatura = statusCandidatura;
         this.dataCandidatura = dataCandidatura;
         this.prazo = prazo;
         this.etapa = etapa;
         this.vaga = vaga;
         this.candidato = candidato;
+        this.ativo = ativo;
     }
 
-    public Candidatura(Long idCandidatura, Boolean statusCandidatura, LocalDate dataCandidatura, LocalDate prazo, String etapa, Vaga vaga, Candidato candidato) {
+    public Candidatura(Long idCandidatura, Boolean statusCandidatura, LocalDate dataCandidatura, LocalDate prazo, String etapa, Vaga vaga, Candidato candidato, Boolean ativo) {
         this.idCandidatura = idCandidatura;
         this.statusCandidatura = statusCandidatura;
         this.dataCandidatura = dataCandidatura;
@@ -30,6 +32,7 @@ public class Candidatura {
         this.etapa = etapa;
         this.vaga = vaga;
         this.candidato = candidato;
+        this.ativo = ativo;
     }
 
     public Long getIdCandidatura() {
@@ -88,11 +91,19 @@ public class Candidatura {
         this.candidato = candidato;
     }
 
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
     @Override
     public String toString() {
         return "\n> ID DA CANDIDATURA: " + this.idCandidatura +
-                "\n> VAGA: " + this.vaga +
-                "\n> CANDIDATO: " + this.candidato +
+                "\n> VAGA: " + this.vaga.getIdVaga() +
+                "\n> CANDIDATO: " + this.candidato.getIdCandidato() +
                 "\n> STATUS DA CANDIDATURA: " + this.statusCandidatura +
                 "\n> DATA DA CANDIDATURA: " + this.dataCandidatura +
                 "\n> PRAZO DA CANDIDATURA: " + this.prazo +

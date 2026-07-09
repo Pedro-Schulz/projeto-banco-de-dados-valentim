@@ -2,30 +2,33 @@ package com.app.repository;
 
 import com.app.config.ConnectionFactory;
 import com.app.model.DadosBancarios;
+import com.app.model.Departamento;
 import com.app.model.Funcionario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class DadosBancariosRepository {
 
-    public void salvar(DadosBancarios dadosBancarios) {
+    public void salvar(DadosBancarios dadosBancarios) throws RuntimeException {
         String sql = """
-            INSERT INTO dados_bancarios (numero_conta, agencia_bancaria, instituicao_bancaria, id_funcionario)
+            INSERT INTO dados_bancarios (numero_conta, agencia_bancaria, instituicao_bancaria, id_funcionario, ativo)
             VALUES (?, ?, ?, ?);
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
+        ) {
             p.setInt(1, dadosBancarios.getNumeroConta());
             p.setString(2, dadosBancarios.getAgenciaBancaria());
             p.setString(3, dadosBancarios.getInstituicaoBancaria());
             p.setLong(4, dadosBancarios.getFuncionario().getIdFuncionario());
+            p.setBoolean(5, dadosBancarios.getAtivo());
 
             p.executeUpdate();
 
@@ -41,17 +44,17 @@ public class DadosBancariosRepository {
         }
     }
 
-    public DadosBancarios buscarPorId(Long id) {
+    public DadosBancarios buscarPorId(Long id) throws RuntimeException {
         String sql = """
             SELECT *
             FROM dados_bancarios
             WHERE id_dados_bancarios = ?;        
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             ResultSet rs = p.executeQuery();
@@ -67,7 +70,8 @@ public class DadosBancariosRepository {
                     rs.getInt("numero_conta"),
                     rs.getString("instituicao_bancaria"),
                     rs.getString("agencia_bancaria"),
-                    funcionario
+                    funcionario,
+                    rs.getBoolean("ativo")
                 );
 
                 return dadosBancarios;
@@ -78,16 +82,48 @@ public class DadosBancariosRepository {
         return null;
     }
 
-    public void deletar(Long id) {
+    public ArrayList<DadosBancarios> listarTodos() {
+        ArrayList<DadosBancarios> dadosBancariosList = new ArrayList<>();
         String sql = """
-            DELETE FROM dados_bancarios
+            SELECT d.*, f.id_funcionario
+            FROM dados_bancarios AS d
+            JOIN funcionarios AS f ON f.id_funcionario = d.id_funcionario;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            ResultSet rs = p.executeQuery();
+
+            while(rs.next()) {
+                DadosBancarios dadosBancarios = new DadosBancarios(
+                    rs.getLong("id_dados_bancarios"),
+                    rs.getInt("numero_conta"),
+                    rs.getString("instituicao_bancaria"),
+                    rs.getString("agencia_bancaria"),
+                    new Funcionario(rs.getLong("id_funcionario")),
+                    rs.getBoolean("ativo")
+                );
+                dadosBancariosList.add(dadosBancarios);
+            }
+            return dadosBancariosList;
+        } catch(Exception e) {
+            throw new RuntimeException("Erro ao listar os dados bancários! \n", e);
+        }
+    }
+
+    public void desativar(Long id) throws RuntimeException {
+        String sql = """
+            UPDATE dados_bancarios
+            SET ativo = false
             WHERE id_dados_bancarios = ?;
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             p.executeUpdate();
@@ -97,19 +133,39 @@ public class DadosBancariosRepository {
         }
     }
 
-    public boolean vinculoFuncionario(Long id_funcionario) {
+    public void desativarPorFuncionario(Long idFuncionario) throws RuntimeException {
+        String sql = """
+            UPDATE dados_bancarios
+            SET ativo = false
+            WHERE id_funcionario = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, idFuncionario);
+
+            p.executeUpdate();
+
+        } catch(Exception e) {
+            throw new RuntimeException("Erro ao deletar dados bancários!", e);
+        }
+    }
+
+    public boolean vinculoFuncionario(Long idFuncionario) throws RuntimeException {
         String sql = """
             SELECT 1
             FROM dados_bancarios
-            WHERE id_funcionario = ?
+            WHERE id_funcionario = ? AND ativo = 1
             LIMIT 1;
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
-            p.setLong(1, id_funcionario);
+        ) {
+            p.setLong(1, idFuncionario);
 
             ResultSet rs = p.executeQuery();
 

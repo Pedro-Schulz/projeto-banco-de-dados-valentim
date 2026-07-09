@@ -8,22 +8,25 @@ public class DadosBancarios {
     private String instituicaoBancaria;
     private String agenciaBancaria;
     private Funcionario funcionario;
+    private Boolean ativo;
 
     public DadosBancarios() {}
 
-    public DadosBancarios(Integer numeroConta, String instituicaoBancaria, String agenciaBancaria, Funcionario funcionario) {
+    public DadosBancarios(Integer numeroConta, String instituicaoBancaria, String agenciaBancaria, Funcionario funcionario, Boolean ativo) {
         this.numeroConta = numeroConta;
         this.instituicaoBancaria = instituicaoBancaria;
         this.agenciaBancaria = agenciaBancaria;
         this.funcionario = funcionario;
+        this.ativo = ativo;
     }
 
-    public DadosBancarios(Long idDadosBancarios, Integer numeroConta, String instituicaoBancaria, String agenciaBancaria, Funcionario funcionario) {
+    public DadosBancarios(Long idDadosBancarios, Integer numeroConta, String instituicaoBancaria, String agenciaBancaria, Funcionario funcionario, Boolean ativo) {
         this.idDadosBancarios = idDadosBancarios;
         this.numeroConta = numeroConta;
         this.instituicaoBancaria = instituicaoBancaria;
         this.agenciaBancaria = agenciaBancaria;
         this.funcionario = funcionario;
+        this.ativo = ativo;
     }
 
     public Long getIdDadosBancarios() { return idDadosBancarios; }
@@ -48,6 +51,14 @@ public class DadosBancarios {
 
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
+    }
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
     }
 
     @Override

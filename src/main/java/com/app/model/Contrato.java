@@ -8,22 +8,25 @@ public class Contrato {
     private LocalDate dataEmissao;
     private Integer prazo;
     private Funcionario funcionario;
+    private Boolean ativo;
 
     public Contrato() {};
 
-    public Contrato(Boolean statusContrato, LocalDate dataEmissao, Integer prazo, Funcionario funcionario) {
+    public Contrato(Boolean statusContrato, LocalDate dataEmissao, Integer prazo, Funcionario funcionario, Boolean ativo) {
         this.statusContrato = statusContrato;
         this.dataEmissao = dataEmissao;
         this.prazo = prazo;
         this.funcionario = funcionario;
+        this.ativo = ativo;
     }
 
-    public Contrato(Long idContrato, Boolean statusContrato, LocalDate dataEmissao, Integer prazo, Funcionario funcionario) {
+    public Contrato(Long idContrato, Boolean statusContrato, LocalDate dataEmissao, Integer prazo, Funcionario funcionario, Boolean ativo) {
         this.idContrato = idContrato;
         this.statusContrato = statusContrato;
         this.dataEmissao = dataEmissao;
         this.prazo = prazo;
         this.funcionario = funcionario;
+        this.ativo = ativo;
     }
 
     public Long getIdContrato() {
@@ -66,10 +69,18 @@ public class Contrato {
         this.funcionario = funcionario;
     }
 
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
     @Override
     public String toString() {
         return "\n> ID: " + this.idContrato +
-                "\n> FUNCIONÁRIO: " + this.funcionario +
+                "\n> FUNCIONÁRIO: " + this.funcionario.getIdFuncionario() +
                 "\n> STATUS DO CONTRATO: " + this.statusContrato +
                 "\n> DATA DE EMISSÃO: " + this.dataEmissao +
                 "\n> PRAZO: " + this.prazo;

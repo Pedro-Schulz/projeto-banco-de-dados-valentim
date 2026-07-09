@@ -9,24 +9,27 @@ public class FolhaDePagamento {
     private Double descontos;
     private Integer horasExtras;
     private Funcionario funcionario;
+    private Boolean ativo;
 
     public FolhaDePagamento() {};
 
-    public FolhaDePagamento(Integer horasTrabalhadas, LocalDate dataEmissao, Double descontos, Integer horasExtras, Funcionario funcionario) {
+    public FolhaDePagamento(Integer horasTrabalhadas, LocalDate dataEmissao, Double descontos, Integer horasExtras, Funcionario funcionario, Boolean ativo) {
         this.horasTrabalhadas = horasTrabalhadas;
         this.dataEmissao = dataEmissao;
         this.descontos = descontos;
         this.horasExtras = horasExtras;
         this.funcionario = funcionario;
+        this.ativo = ativo;
     }
 
-    public FolhaDePagamento(Long idFolha, Integer horasTrabalhadas, LocalDate dataEmissao, Double descontos, Integer horasExtras, Funcionario funcionario) {
+    public FolhaDePagamento(Long idFolha, Integer horasTrabalhadas, LocalDate dataEmissao, Double descontos, Integer horasExtras, Funcionario funcionario, Boolean ativo) {
         this.idFolha = idFolha;
         this.horasTrabalhadas = horasTrabalhadas;
         this.dataEmissao = dataEmissao;
         this.descontos = descontos;
         this.horasExtras = horasExtras;
         this.funcionario = funcionario;
+        this.ativo = ativo;
     }
 
     public Integer getHorasExtras() {
@@ -77,10 +80,18 @@ public class FolhaDePagamento {
         this.funcionario = funcionario;
     }
 
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
     @Override
     public String toString() {
         return "\n> ID: " + this.idFolha +
-                "\n> FUNCIONÁRIO: " + this.funcionario +
+                "\n> FUNCIONÁRIO: " + this.funcionario.getIdFuncionario() +
                 "\n> HORAS TRABALHADAS: " + this.horasTrabalhadas +
                 "\n> DATA DE EMISSÃO: " + this.dataEmissao +
                 "\n> DESCONTOS R$ : " + this.descontos +

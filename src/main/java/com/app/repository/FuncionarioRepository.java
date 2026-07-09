@@ -3,21 +3,26 @@ package com.app.repository;
 import com.app.config.ConnectionFactory;
 import com.app.model.Funcionario;
 import com.app.model.Vaga;
+import com.app.service.FuncionarioService;
+
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class FuncionarioRepository {
+    private VagaRepository vr = new VagaRepository();
 
-    public void salvar(Funcionario funcionario) {
+    public void salvar(Funcionario funcionario) throws RuntimeException {
         String sql = """
-            INSERT INTO funcionarios (nome, data_nascimento, cpf, cep, email, telefone, estado_civil, genero, id_vaga)
+            INSERT INTO funcionarios (nome, data_nascimento, cpf, cep, email, telefone, estado_civil, genero, id_vaga, ativo)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
+        ) {
             p.setString(1, funcionario.getNome());
             p.setObject(2, funcionario.getDataNascimento());
             p.setString(3, funcionario.getCpf());
@@ -27,6 +32,7 @@ public class FuncionarioRepository {
             p.setString(7, funcionario.getEstadoCivil());
             p.setString(8, funcionario.getGenero());
             p.setObject(9, funcionario.getVaga().getIdVaga());
+            p.setBoolean(10, funcionario.getAtivo());
 
             p.executeUpdate();
 
@@ -42,23 +48,22 @@ public class FuncionarioRepository {
         }
     }
 
-    public Funcionario buscarPorId(Long id) {
+    public Funcionario buscarPorId(Long id) throws RuntimeException {
         String sql = """
             SELECT * 
             FROM funcionarios
             WHERE id_funcionario = ?;
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             ResultSet rs = p.executeQuery();
 
             if(rs.next()) {
-                VagaRepository vr = new VagaRepository();
                 LocalDate dataNascimento = rs.getDate("data_nascimento").toLocalDate();
 
                 Long idVaga = rs.getLong("id_vaga");
@@ -74,7 +79,8 @@ public class FuncionarioRepository {
                     rs.getString("telefone"),
                     rs.getString("estado_civil"),
                     rs.getString("genero"),
-                    vaga
+                    vaga,
+                    rs.getBoolean("ativo")
                 );
 
                 return funcionario;
@@ -85,23 +91,83 @@ public class FuncionarioRepository {
         return null;
     }
 
-    public void desativar(Long id) {
+    public ArrayList<Funcionario> listarTodos() {
+        ArrayList<Funcionario> funcionarios = new ArrayList<>();
+        String sql = """
+            SELECT f.*, v.id_vaga
+            FROM funcionarios AS f
+            JOIN vagas AS v ON v.id_vaga = f.id_vaga;
+        """;
+
+        try (
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            ResultSet rs = p.executeQuery();
+
+            while(rs.next()) {
+                Funcionario funcionario = new Funcionario(
+                    rs.getLong("id_funcionario"),
+                    rs.getString("nome"),
+                    rs.getDate("data_nascimento").toLocalDate(),
+                    rs.getString("cpf"),
+                    rs.getString("cep"),
+                    rs.getString("email"),
+                    rs.getString("telefone"),
+                    rs.getString("estado_civil"),
+                    rs.getString("genero"),
+                    new Vaga(rs.getLong("id_vaga")),
+                    rs.getBoolean("ativo")
+                );
+
+                funcionarios.add(funcionario);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao listar funcionários!", e);
+        }
+
+        return funcionarios;
+    }
+
+    public void desativar(Long id) throws RuntimeException {
         String sql = """
             UPDATE funcionarios
-            SET ativo = NOT ativo
+            SET ativo = false
             WHERE id_funcionario = ?;
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             p.executeUpdate();
 
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao dessativar funcionário!", e);
+            throw new RuntimeException("Erro ao desativar funcionário!", e);
+        }
+    }
+
+    public boolean vinculoVaga(Long id_vaga) throws RuntimeException {
+        String sql = """
+            SELECT 1
+            FROM funcionarios
+            WHERE id_vaga = ?
+            LIMIT 1;
+        """;
+
+        try (
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, id_vaga);
+
+            ResultSet rs = p.executeQuery();
+
+            return rs.next();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao verificar vínculo funcionário -> vaga", e);
         }
     }
 }

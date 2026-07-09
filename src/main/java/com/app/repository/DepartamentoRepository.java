@@ -4,22 +4,24 @@ import com.app.config.ConnectionFactory;
 import com.app.model.Departamento;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DepartamentoRepository {
 
-    public void salvar(Departamento departamento) {
+    public void salvar(Departamento departamento) throws RuntimeException {
         String sql = """
-            INSERT INTO departamentos (nome, gastos, retorno)
+            INSERT INTO departamentos (nome, gastos, retorno, ativo)
             VALUES (?, ?, ?);
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
+        ) {
             p.setString(1, departamento.getNome());
             p.setDouble(2, departamento.getGastos());
             p.setDouble(3, departamento.getRetorno());
+            p.setBoolean(4, departamento.getAtivo());
 
             p.executeUpdate();
 
@@ -34,17 +36,17 @@ public class DepartamentoRepository {
         }
     }
 
-    public Departamento buscarPorId(Long id) {
+    public Departamento buscarPorId(Long id) throws RuntimeException {
         String sql = """
             SELECT *
             FROM departamentos
             WHERE id_departamento = ?;
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             ResultSet rs = p.executeQuery();
@@ -54,7 +56,8 @@ public class DepartamentoRepository {
                     rs.getLong("id_departamento"),
                     rs.getString("nome"),
                     rs.getDouble("gastos"),
-                    rs.getDouble("retorno")
+                    rs.getDouble("retorno"),
+                    rs.getBoolean("ativo")
                 );
 
                 return departamento;
@@ -65,16 +68,46 @@ public class DepartamentoRepository {
         return null;
     }
 
-    public void deletar(Long id) {
+    public ArrayList<Departamento> listarTodos() {
+        ArrayList<Departamento> departamentos = new ArrayList<>();
         String sql = """
-            DELETE FROM departamentos
+            SELECT *
+            FROM departamentos;
+        """;
+
+        try (
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            ResultSet rs = p.executeQuery();
+
+            while(rs.next()) {
+                Departamento departamento = new Departamento(
+                    rs.getLong("id_departamento"),
+                    rs.getString("nome"),
+                    rs.getDouble("gastos"),
+                    rs.getDouble("retorno"),
+                    rs.getBoolean("ativo")
+                );
+                departamentos.add(departamento);
+            }
+            return departamentos;
+        } catch(Exception e) {
+            throw new RuntimeException("Erro ao listar os departamentos! \n", e);
+        }
+    }
+
+    public void desativar(Long id) throws RuntimeException {
+        String sql = """
+            SELECT departamentos
+            SET ativo = false
             WHERE id_departamento = ?;
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             p.executeUpdate();
