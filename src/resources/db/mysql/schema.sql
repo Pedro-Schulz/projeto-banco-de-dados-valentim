@@ -2,7 +2,8 @@ CREATE TABLE departamentos(
     id_departamento INT AUTO_INCREMENT PRIMARY KEY ,
     nome VARCHAR(100) NOT NULL,
     gastos DECIMAL(10, 2) NOT NULL,
-    retorno DECIMAL(10, 2) NOT NULL
+    retorno DECIMAL(10, 2) NOT NULL,
+    ativo BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE vagas(
@@ -13,7 +14,8 @@ CREATE TABLE vagas(
 
     id_departamento INT NOT NULL,
 
-    FOREIGN KEY(id_departamento) REFERENCES departamentos(id_departamento)
+    FOREIGN KEY(id_departamento) REFERENCES departamentos(id_departamento),
+    ativo BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE funcionarios(
@@ -29,7 +31,8 @@ CREATE TABLE funcionarios(
 
     id_vaga INT NOT NULL,
 
-    FOREIGN KEY(id_vaga) REFERENCES vagas(id_vaga)
+    FOREIGN KEY(id_vaga) REFERENCES vagas(id_vaga),
+    ativo BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE dados_bancarios(
@@ -40,7 +43,8 @@ CREATE TABLE dados_bancarios(
 
     id_funcionario INT NOT NULL,
 
-    FOREIGN KEY(id_funcionario) REFERENCES funcionarios(id_funcionario)
+    FOREIGN KEY(id_funcionario) REFERENCES funcionarios(id_funcionario),
+    ativo BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE contratos(
@@ -51,7 +55,8 @@ CREATE TABLE contratos(
 
     id_funcionario INT NOT NULL,
 
-    FOREIGN KEY(id_funcionario) REFERENCES funcionarios(id_funcionario)
+    FOREIGN KEY(id_funcionario) REFERENCES funcionarios(id_funcionario),
+    ativo BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE folhas_de_pagamentos(
@@ -63,19 +68,21 @@ CREATE TABLE folhas_de_pagamentos(
 
     id_funcionario INT NOT NULL,
 
-    FOREIGN KEY(id_funcionario) REFERENCES funcionarios(id_funcionario)
+    FOREIGN KEY(id_funcionario) REFERENCES funcionarios(id_funcionario),
+    ativo BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE candidatos(
     id_candidato INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    cpf CHAR(11) NOT NULL,
-    cep CHAR(8) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    telefone CHAR(11) NOT NULL,
-    genero CHAR(1) NOT NULL,
-    estado_civil VARCHAR(20) NOT NULL,
-    data_nascimento DATE NOT NULL
+    nome VARCHAR(100),
+    cpf CHAR(11),
+    cep CHAR(8),
+    email VARCHAR(100),
+    telefone CHAR(11),
+    genero CHAR(1),
+    estado_civil VARCHAR(20),
+    data_nascimento DATE,
+    ativo BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE candidaturas(
@@ -89,5 +96,6 @@ CREATE TABLE candidaturas(
     id_candidato INT NOT NULL,
 
     FOREIGN KEY(id_vaga) REFERENCES vagas(id_vaga),
-    FOREIGN KEY(id_candidato) REFERENCES candidatos(id_candidato)
+    FOREIGN KEY(id_candidato) REFERENCES candidatos(id_candidato),
+    ativo BOOLEAN NOT NULL DEFAULT TRUE
 );
