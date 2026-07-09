@@ -1,12 +1,47 @@
 package com.app.repository;
 
 import com.app.config.ConnectionFactory;
+import com.app.model.Contrato;
+import com.app.model.DadosBancarios;
+import com.app.model.Funcionario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class ContratoRepository {
+    public ArrayList<Contrato> listarTodos() {
+        ArrayList<Contrato> contratos = new ArrayList<>();
+        String sql = """
+            SELECT c.*, f.id_funcionario
+            FROM contratos AS c
+            JOIN funcionarios AS f ON f.id_funcionario = c.id_funcionario;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            ResultSet rs = p.executeQuery();
+
+            while(rs.next()) {
+                Contrato contrato = new Contrato(
+                        rs.getLong("id_contrato"),
+                        rs.getBoolean("status_contrato"),
+                        rs.getDate("data_emissao").toLocalDate(),
+                        rs.getInt("prazo"),
+                        new Funcionario(rs.getLong("id_funcionario")),
+                        rs.getBoolean("ativo")
+                );
+                contratos.add(contrato);
+            }
+            return contratos;
+        } catch(Exception e) {
+            throw new RuntimeException("Erro ao listar os contratos! \n", e);
+        }
+    }
+
     public void desativar(Long id) throws RuntimeException {
         String sql = """
             UPDATE contratos

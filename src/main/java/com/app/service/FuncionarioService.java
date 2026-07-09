@@ -1,13 +1,13 @@
 package com.app.service;
 
 import com.app.enums.StatusVinculos;
-import com.app.exception.ContratoVinculadoException;
-import com.app.exception.DadosBancariosVinculadosException;
-import com.app.exception.FolhaDePagamentoVinculadaException;
+import com.app.model.Funcionario;
 import com.app.repository.ContratoRepository;
 import com.app.repository.DadosBancariosRepository;
 import com.app.repository.FolhaDePagamentoRepository;
 import com.app.repository.FuncionarioRepository;
+
+import java.util.ArrayList;
 
 public class FuncionarioService {
     private final FuncionarioRepository funcionarioRepository = new FuncionarioRepository();
@@ -21,5 +21,9 @@ public class FuncionarioService {
         }
         funcionarioRepository.desativar(id);
         return StatusVinculos.SUCESSO;
+    }
+
+    public ArrayList<Funcionario> listarTodos() {
+        return funcionarioRepository.listarTodos();
     }
 }

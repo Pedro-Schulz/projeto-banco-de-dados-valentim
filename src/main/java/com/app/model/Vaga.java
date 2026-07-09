@@ -10,6 +10,10 @@ public class Vaga {
 
     public Vaga() {}
 
+    public Vaga(Long idVaga) {
+        this.idVaga = idVaga;
+    }
+
     public Vaga(String turno, String cargo, Double salarioHora, Departamento departamento, Boolean ativo) {
         this.turno = turno;
         this.cargo = cargo;
@@ -64,7 +68,7 @@ public class Vaga {
         return "\n> ID: " + idVaga +
                 "\n> TURNO: " + turno +
                 "\n> CARGO: " + cargo +
-                "\n> DEPARTAMENTO: " + departamento +
+                "\n> DEPARTAMENTO: " + departamento.getIdDepartamento() +
                 "\n> SALÁRIO P/ HORA: " + salarioHora;
     }
 }

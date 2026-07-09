@@ -6,6 +6,7 @@ import com.app.model.*;
 import com.app.repository.*;
 import com.app.service.*;
 
+import java.util.ArrayList;
 import java.awt.*;
 import java.util.Scanner;
 
@@ -16,6 +17,10 @@ public class Main {
         DadosBancariosService dadosBancariosService = new DadosBancariosService();
         FolhaDePagamentoService folhaDePagamentoService = new FolhaDePagamentoService();
         ContratoService contratoService = new ContratoService();
+        VagaService vagaService = new VagaService();
+        DepartamentoService departamentoService = new DepartamentoService();
+        CandidatoService candidatoService = new CandidatoService();
+        CandidaturaService candidaturaService = new CandidaturaService();
         Scanner scanner = new Scanner(System.in);
 
         int opcao = 0;
@@ -69,6 +74,116 @@ public class Main {
                     System.out.println("Essa vaga está ativa?");
                     boolean ativa = scanner.nextBoolean();
                     Vaga vaga = new Vaga(turno , cargo , salarioHora,  departamentos , ativa);
+
+                case 100:
+                    try {
+                        ArrayList<Funcionario> funcionarios = funcionarioService.listarTodos();
+                        for(Funcionario funcionario : funcionarios) {
+                            if(funcionario.getVaga() == null) {
+                                System.out.println("Funcionário ID:" + funcionario.getIdFuncionario() + ", não possui vaga vinculada!");
+                            } else {
+                                System.out.println(funcionario);
+                            }
+                        }
+                        funcionarios.forEach(funcionario -> System.out.println(funcionario));
+                    } catch(Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
+                case 101:
+                    try {
+                        ArrayList<Vaga> vagas = vagaService.listarTodos();
+                        for(Vaga vaga : vagas) {
+                            System.out.println(vaga);
+                        }
+                    } catch(NullPointerException e) {
+                        System.out.println("Vaga com departamento null(inexistente)" + e);
+                    } catch(Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
+                case 102:
+                    try {
+                        ArrayList<FolhaDePagamento> folhasDePagamento = folhaDePagamentoService.listarTodos();
+                        for(FolhaDePagamento folhaDePagamento : folhasDePagamento) {
+                            if(folhaDePagamento.getFuncionario() == null) {
+                                System.out.println("Folha de pagamento ID:" + folhaDePagamento.getIdFolha() + ", não possui funcionário vinculado!");
+                            } else {
+                                System.out.println(folhaDePagamento);
+                            }
+                        }
+                    } catch(Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
+                case 103:
+                    try {
+                        ArrayList<Departamento> departamentos = departamentoService.listarTodos();
+                        departamentos.forEach(departamento -> System.out.println(departamento));
+                    } catch(Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
+                case 104:
+                    try {
+                        ArrayList<DadosBancarios> dadosBancariosList = dadosBancariosService.listarTodos();
+                        for(DadosBancarios dadosBancarios : dadosBancariosList) {
+                            if(dadosBancarios.getFuncionario() == null) {
+                                System.out.println("Dados bancários ID:" + dadosBancarios.getIdDadosBancarios() + ", não possui funcionário vinculado!");
+                            } else {
+                                System.out.println(dadosBancarios);
+                            }
+                        }
+                    } catch(Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
+                case 105:
+                    try {
+                        ArrayList<Contrato> contratos = contratoService.listarTodos();
+                        for(Contrato contrato : contratos) {
+                            if(contrato.getFuncionario() == null) {
+                                System.out.println("Contrato ID:" + contrato.getIdContrato() + ", não possui funcionário vinculado!");
+                            } else {
+                                System.out.println(contrato);
+                            }
+                        }
+                    } catch(Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
+                case 106:
+                    try {
+                        ArrayList<Candidato> candidatos = candidatoService.listarTodos();
+                        candidatos.forEach(candidato -> System.out.println(candidato));
+                    } catch(Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
+                case 107:
+                    try {
+                        ArrayList<Candidatura> candidaturas = candidaturaService.listarTodos();
+                        for(Candidatura candidatura : candidaturas) {
+                            if(candidatura.getVaga() == null) {
+                                System.out.println("Candidatura ID:" + candidatura.getIdCandidatura() + ", não possui vaga vinculada!");
+                            } else if(candidatura.getCandidato() == null) {
+                                System.out.println("Candidatura ID:" + candidatura.getIdCandidatura() + ", não possui candidato vinculado!");
+                            } else {
+                                System.out.println(candidatura);
+                            }
+                        }
+                        candidaturas.forEach(candidatura -> System.out.println(candidatura));
+                    } catch(Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
 
                 default:
                     break;

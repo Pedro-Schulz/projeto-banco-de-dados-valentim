@@ -4,6 +4,7 @@ import com.app.config.ConnectionFactory;
 import com.app.model.Departamento;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DepartamentoRepository {
 
@@ -67,7 +68,36 @@ public class DepartamentoRepository {
         return null;
     }
 
-    public void deletar(Long id) throws RuntimeException {
+    public ArrayList<Departamento> listarTodos() {
+        ArrayList<Departamento> departamentos = new ArrayList<>();
+        String sql = """
+            SELECT *
+            FROM departamentos;
+        """;
+
+        try (
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            ResultSet rs = p.executeQuery();
+
+            while(rs.next()) {
+                Departamento departamento = new Departamento(
+                    rs.getLong("id_departamento"),
+                    rs.getString("nome"),
+                    rs.getDouble("gastos"),
+                    rs.getDouble("retorno"),
+                    rs.getBoolean("ativo")
+                );
+                departamentos.add(departamento);
+            }
+            return departamentos;
+        } catch(Exception e) {
+            throw new RuntimeException("Erro ao listar os departamentos! \n", e);
+        }
+    }
+
+    public void desativar(Long id) throws RuntimeException {
         String sql = """
             SELECT departamentos
             SET ativo = false
