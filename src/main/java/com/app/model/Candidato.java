@@ -15,7 +15,6 @@ public class Candidato {
     private Boolean ativo;
 
     public Candidato() {}
-
     public Candidato(Long idCandidato) { this.idCandidato = idCandidato; }
 
     public Candidato(String nome, String cpf, String cep, String email, String telefone, String genero, String estadoCivil, LocalDate dataNascimento, Boolean ativo) {
@@ -27,7 +26,7 @@ public class Candidato {
         this.genero = genero;
         this.estadoCivil = estadoCivil;
         this.dataNascimento = dataNascimento;
-        this.ativo = ativo;
+        this.ativo;
     }
 
     public Candidato(Long idCandidato, String nome, String cpf, String cep, String email, String telefone, String genero, String estadoCivil, LocalDate dataNascimento, Boolean ativo) {

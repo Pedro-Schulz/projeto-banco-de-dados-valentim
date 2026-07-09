@@ -28,6 +28,15 @@ CREATE TABLE funcionarios(
     telefone CHAR(11) NOT NULL,
     estadoCivil VARCHAR(20) NOT NULL,
     genero CHAR(1) NOT NULL,
+	id_funcionario INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100),
+    data_nascimento DATE,
+    cpf CHAR(11),
+    cep CHAR(8),
+    email VARCHAR(50),
+    telefone CHAR(11),
+    estado_civil VARCHAR(20),
+    genero CHAR(1),
 
     id_vaga INT NOT NULL,
 
@@ -74,6 +83,14 @@ CREATE TABLE folhas_de_pagamentos(
 
 CREATE TABLE candidatos(
     id_candidato INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cpf CHAR(11) NOT NULL,
+    cep CHAR(8) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    telefone CHAR(11) NOT NULL,
+    genero CHAR(1) NOT NULL,
+    estado_civil VARCHAR(20) NOT NULL,
+    data_nascimento DATE NOT NULL
     nome VARCHAR(100),
     cpf CHAR(11),
     cep CHAR(8),
