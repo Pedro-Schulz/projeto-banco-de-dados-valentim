@@ -18,6 +18,7 @@ public class Main {
         ContratoService contratoService = new ContratoService();
         VagaService vagaService = new VagaService();
         DepartamentoService departamentoService = new DepartamentoService();
+        CandidatoService candidatoService = new CandidatoService();
         Scanner scanner = new Scanner(System.in);
 
         int opcao = 0;
@@ -70,7 +71,7 @@ public class Main {
                                 System.out.println(funcionario);
                             }
                         }
-                        funcionarios.forEach(funcionario -> System.out.println(funcionario.toString()));
+                        funcionarios.forEach(funcionario -> System.out.println(funcionario));
                     } catch(Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -138,6 +139,15 @@ public class Main {
                                 System.out.println(contrato);
                             }
                         }
+                    } catch(Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
+                case 106:
+                    try {
+                        ArrayList<Candidato> candidatos = candidatoService.listarTodos();
+                        candidatos.forEach(candidato -> System.out.println(candidato));
                     } catch(Exception e) {
                         System.out.println(e.getMessage());
                     }
