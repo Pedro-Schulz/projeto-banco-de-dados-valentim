@@ -1,0 +1,122 @@
+CREATE ROLE estagiarios_rh;
+CREATE ROLE analistas_rh;
+CREATE ROLE assistentes_rh;
+CREATE ROLE gerentes_rh;
+CREATE ROLE diretores_rh;
+CREATE ROLE ceos_rh;
+
+-- ==========================================
+-- Permissões da ROLE estagiarios_rh
+-- ==========================================
+GRANT SELECT ON departamentos TO estagiarios_rh;
+GRANT SELECT ON vagas TO estagiarios_rh;
+GRANT SELECT ON funcionarios TO estagiarios_rh;
+GRANT SELECT ON candidatos TO estagiarios_rh;
+GRANT SELECT ON candidaturas TO estagiarios_rh;
+
+-- ==========================================
+-- Permissões da ROLE assistentes_rh
+-- ==========================================
+GRANT INSERT, SELECT ON departamentos TO assistentes_rh;
+GRANT INSERT, SELECT ON vagas TO assistentes_rh;
+GRANT INSERT, SELECT ON funcionarios TO assistentes_rh;
+GRANT INSERT, SELECT ON candidatos TO assistentes_rh;
+GRANT INSERT, SELECT ON candidaturas TO assistentes_rh;
+
+-- ==========================================
+-- Permissões da ROLE analistas_rh
+-- ==========================================
+GRANT SELECT, INSERT, UPDATE, DELETE ON departamentos TO analistas_rh;
+GRANT SELECT, INSERT, UPDATE, DELETE ON candidatos TO analistas_rh;
+GRANT SELECT, INSERT, UPDATE, DELETE ON candidaturas TO analistas_rh;
+GRANT SELECT, INSERT, UPDATE, DELETE ON funcionarios TO analistas_rh;
+GRANT SELECT, INSERT, UPDATE, DELETE ON vagas TO analistas_rh;
+
+-- ==========================================
+-- Permissões da ROLE gerentes_rh
+-- (O SELECT no Postgres cobre tabelas e VIEWS)
+-- ==========================================
+GRANT SELECT ON departamentos TO gerentes_rh;
+GRANT SELECT ON vagas TO gerentes_rh;
+GRANT SELECT ON funcionarios TO gerentes_rh;
+GRANT SELECT ON candidatos TO gerentes_rh;
+GRANT SELECT ON candidaturas TO gerentes_rh;
+GRANT SELECT ON dados_bancarios TO gerentes_rh;
+GRANT SELECT ON contratos TO gerentes_rh;
+GRANT SELECT ON folhas_de_pagamentos TO gerentes_rh;
+
+-- ==========================================
+-- Permissões da ROLE diretores_rh
+-- ==========================================
+GRANT SELECT ON departamentos TO diretores_rh;
+GRANT SELECT ON candidatos TO diretores_rh;
+GRANT SELECT ON candidaturas TO diretores_rh;
+GRANT SELECT ON contratos TO diretores_rh;
+GRANT SELECT ON dados_bancarios TO diretores_rh;
+GRANT SELECT ON folhas_de_pagamentos TO diretores_rh;
+GRANT SELECT ON funcionarios TO diretores_rh;
+GRANT SELECT ON vagas TO diretores_rh;
+
+-- ==========================================
+-- Permissões da ROLE CEOs_rh
+-- ==========================================
+GRANT SELECT ON departamentos TO ceos_rh;
+GRANT SELECT ON candidatos TO ceos_rh;
+GRANT SELECT ON candidaturas TO ceos_rh;
+GRANT SELECT ON contratos TO ceos_rh;
+GRANT SELECT ON dados_bancarios TO ceos_rh;
+GRANT SELECT ON folhas_de_pagamentos TO ceos_rh;
+GRANT SELECT ON funcionarios TO ceos_rh;
+GRANT SELECT ON vagas TO ceos_rh;
+
+
+-- ==========================================
+-- Criação dos usuários do grupo Estagiarios
+-- ==========================================
+CREATE USER "João" WITH PASSWORD 'estagiarios_senha';
+GRANT estagiarios_rh TO "João";
+
+CREATE USER "Matheus" WITH PASSWORD 'estagiarios_senha';
+GRANT estagiarios_rh TO "Matheus";
+
+-- ==========================================
+-- Criação dos usuários do grupo Assistentes
+-- ==========================================
+CREATE USER "Lucas" WITH PASSWORD 'assistentes_senha';
+GRANT assistentes_rh TO "Lucas";
+
+CREATE USER "Vinicius" WITH PASSWORD 'assistentes_senha';
+GRANT assistentes_rh TO "Vinicius";
+
+-- ==========================================
+-- Criação dos usuários do grupo Analistas
+-- ==========================================
+CREATE USER "Ana" WITH PASSWORD 'analistas_senha';
+GRANT analistas_rh TO "Ana";
+
+CREATE USER "Guilherme" WITH PASSWORD 'analistas_senha';
+GRANT analistas_rh TO "Guilherme";
+
+-- ==========================================
+-- Criação dos usuários do grupo Gerentes
+-- ==========================================
+CREATE USER "Cassiano" WITH PASSWORD 'gerentes_senha';
+GRANT gerentes_rh TO "Cassiano";
+
+CREATE USER "Daniela" WITH PASSWORD 'gerentes_senha';
+GRANT gerentes_rh TO "Daniela";
+
+-- ==========================================
+-- Criação dos usuários do grupo Diretores
+-- ==========================================
+CREATE USER "Alexandre" WITH PASSWORD 'diretores_senha';
+GRANT diretores_rh TO "Alexandre";
+
+CREATE USER "Betina" WITH PASSWORD 'diretores_senha';
+GRANT diretores_rh TO "Betina";
+
+-- ==========================================
+-- Criação dos usuários do grupo CEO
+-- ==========================================
+CREATE USER "Kuba" WITH PASSWORD 'ceo_senha';
+GRANT ceos_rh TO "Kuba";
