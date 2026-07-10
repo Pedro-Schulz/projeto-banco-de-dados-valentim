@@ -1,5 +1,6 @@
 package com.app.service;
 
+import com.app.model.Candidato;
 import com.app.model.FolhaDePagamento;
 import com.app.repository.FolhaDePagamentoRepository;
 
@@ -7,6 +8,14 @@ import java.util.ArrayList;
 
 public class FolhaDePagamentoService {
     private final FolhaDePagamentoRepository folhaDePagamentoRepository = new FolhaDePagamentoRepository();
+
+    public void salvar(FolhaDePagamento folhaDePagamento) {
+        folhaDePagamentoRepository.salvar(folhaDePagamento);
+    }
+
+    public FolhaDePagamento buscarPorId(Long id) {
+        return folhaDePagamentoRepository.buscarPorId(id);
+    }
 
     public ArrayList<FolhaDePagamento> listarTodos() {
         return folhaDePagamentoRepository.listarTodos();

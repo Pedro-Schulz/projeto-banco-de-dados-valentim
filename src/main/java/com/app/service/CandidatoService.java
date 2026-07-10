@@ -8,6 +8,14 @@ import java.util.ArrayList;
 public class CandidatoService {
     private static final CandidatoRepository candidatoRepository = new CandidatoRepository();
 
+    public void salvar(Candidato candidato) {
+        candidatoRepository.salvar(candidato);
+    }
+
+    public Candidato buscarPorId(Long id) {
+        return candidatoRepository.buscarPorId(id);
+    }
+
     public ArrayList<Candidato> listarTodos() {
         return candidatoRepository.listarTodos();
     }

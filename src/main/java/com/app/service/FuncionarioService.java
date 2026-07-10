@@ -14,6 +14,14 @@ public class FuncionarioService {
     private final DadosBancariosRepository dadosBancariosRepository = new DadosBancariosRepository();
     private final FolhaDePagamentoRepository folhaDePagamentoRepository = new FolhaDePagamentoRepository();
 
+    public void salvar(Funcionario funcionario) {
+        funcionarioRepository.salvar(funcionario);
+    }
+
+    public Funcionario buscarPorId(Long id) {
+        return funcionarioRepository.buscarPorId(id);
+    }
+
     public StatusVinculos desativar(Long id) {
         if(dadosBancariosRepository.vinculoFuncionario(id) || contratoRepository.vinculoFuncionario(id) || folhaDePagamentoRepository.vinculoFuncionario(id)) {
             return StatusVinculos.POSSUI_VINCULOS;
