@@ -69,7 +69,7 @@ public class Contrato {
         this.funcionario = funcionario;
     }
 
-    public Boolean getAtivo() {
+    public Boolean isAtivo() {
         return ativo;
     }
 
@@ -80,7 +80,7 @@ public class Contrato {
     @Override
     public String toString() {
         return "\n> ID: " + this.idContrato +
-                "\n> FUNCIONÁRIO: " + this.funcionario.getIdFuncionario() +
+                "\n> ID FUNCIONÁRIO: " + this.funcionario.getIdFuncionario() +
                 "\n> STATUS DO CONTRATO: " + this.statusContrato +
                 "\n> DATA DE EMISSÃO: " + this.dataEmissao +
                 "\n> PRAZO: " + this.prazo;

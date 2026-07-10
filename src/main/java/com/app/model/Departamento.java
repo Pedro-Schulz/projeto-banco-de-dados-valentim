@@ -44,7 +44,7 @@ public class Departamento {
 
     public void setRetorno(Double retorno) { this.retorno = retorno; }
 
-    public Boolean getAtivo() {
+    public Boolean isAtivo() {
         return ativo;
     }
 

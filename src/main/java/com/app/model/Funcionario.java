@@ -92,7 +92,7 @@ public class Funcionario {
         this.vaga = vaga;
     }
 
-    public Boolean getAtivo() {
+    public Boolean isAtivo() {
         return ativo;
     }
 
@@ -111,6 +111,6 @@ public class Funcionario {
                 "\n> TELEFONE: " + telefone +
                 "\n> ESTADO CIVIL: " + estadoCivil +
                 "\n> GÊNERO: " + genero +
-                "\n> VAGA: " + this.vaga.getIdVaga();
+                "\n> ID VAGA: " + this.vaga.getIdVaga();
     }
 }

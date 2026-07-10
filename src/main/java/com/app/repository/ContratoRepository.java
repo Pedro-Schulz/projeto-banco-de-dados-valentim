@@ -1,10 +1,9 @@
 package com.app.repository;
 
 import com.app.config.ConnectionFactory;
-import com.app.model.Contrato;
-import com.app.model.DadosBancarios;
-import com.app.model.Funcionario;
+import com.app.model.*;
 
+import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,10 +17,10 @@ public class ContratoRepository {
                     VALUES (?, ?, ?, ?);
                 """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
+        ) {
             p.setBoolean(1, contrato.getStatusContrato());
             p.setDate(2, java.sql.Date.valueOf(contrato.getDataEmissao()));
             p.setInt(3, contrato.getPrazo());
@@ -37,9 +36,42 @@ public class ContratoRepository {
             }
         } catch (Exception e) {
             throw new RuntimeException("Erro ao salvar contrato!", e);
-import java.util.ArrayList;
+        }
+    }
 
-public class ContratoRepository {
+    public Contrato buscarPorId(Long id) {
+        String sql = """
+            SELECT *
+            FROM contratos
+            WHERE id_contrato = ?;
+        """;
+
+        try (
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, id);
+
+            ResultSet rs = p.executeQuery();
+
+            if(rs.next()) {
+                Contrato contrato = new Contrato(
+                        rs.getLong("id_contrato"),
+                        rs.getBoolean("status_contrato"),
+                        rs.getDate("data_emissao").toLocalDate(),
+                        rs.getInt("prazo"),
+                        new Funcionario(rs.getLong("id_funcionario")),
+                        rs.getBoolean("ativo")
+                );
+
+                return contrato;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao buscar contrato!", e);
+        }
+        return null;
+    }
+
     public ArrayList<Contrato> listarTodos() {
         ArrayList<Contrato> contratos = new ArrayList<>();
         String sql = """
@@ -77,13 +109,6 @@ public class ContratoRepository {
             SET ativo = FALSE
             WHERE id_contrato = ?;
         """;
-
-        try {
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
-
-            p.setLong(1, id);
-
         try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
@@ -121,10 +146,10 @@ public class ContratoRepository {
                     LIMIT 1;        
                 """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id_funcionario);
 
             ResultSet rs = p.executeQuery();

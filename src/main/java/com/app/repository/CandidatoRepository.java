@@ -3,6 +3,10 @@ package com.app.repository;
 import com.app.config.ConnectionFactory;
 import com.app.model.Candidato;
 import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class CandidatoRepository {
 
@@ -12,16 +16,16 @@ public class CandidatoRepository {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?);
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
+        ) {
             p.setString(1, candidato.getNome());
             p.setString(2, candidato.getCpf());
             p.setString(3, candidato.getCep());
             p.setString(4, candidato.getEmail());
             p.setString(5, candidato.getTelefone());
-            p.setString(6, String.valueOf(candidato.getGenero()));
+            p.setString(6, candidato.getGenero());
             p.setString(7, candidato.getEstadoCivil());
             p.setDate(8, Date.valueOf(candidato.getDataNascimento()));
 
@@ -45,24 +49,34 @@ public class CandidatoRepository {
             WHERE id_candidato = ?;
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             ResultSet rs = p.executeQuery();
 
             if(rs.next()) {
-import com.app.model.Funcionario;
-import com.app.model.Vaga;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-
-public class CandidatoRepository {
+                Candidato candidato = new Candidato(
+                        rs.getLong("id_candidato"),
+                        rs.getString("nome"),
+                        rs.getString("cpf"),
+                        rs.getString("cep"),
+                        rs.getString("email"),
+                        rs.getString("telefone"),
+                        rs.getString("genero"),
+                        rs.getString("estado_civil"),
+                        rs.getDate("data_nascimento").toLocalDate(),
+                        rs.getBoolean("ativo")
+                );
+                return candidato;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao buscar candidato!", e);
+        }
+        return null;
+    }
 
     public ArrayList<Candidato> listarTodos() {
         ArrayList<Candidato> candidatos = new ArrayList<>();
@@ -83,19 +97,17 @@ public class CandidatoRepository {
                         rs.getString("cep"),
                         rs.getString("email"),
                         rs.getString("telefone"),
-                        rs.getString("genero").charAt(0),
                         rs.getString("genero"),
                         rs.getString("estado_civil"),
                         rs.getDate("data_nascimento").toLocalDate(),
                         rs.getBoolean("ativo")
                 );
-
-                return candidato;
+                candidatos.add(candidato);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao buscar candidato!", e);
+            throw new RuntimeException("Erro ao listar candidatos!", e);
         }
-        return null;
+        return candidatos;
     }
 
     public void desativar(Long id) {
@@ -105,23 +117,15 @@ public class CandidatoRepository {
             WHERE id_candidato = ?;
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             p.executeUpdate();
         } catch(Exception e) {
             throw new RuntimeException("Erro ao desativar candidato!", e);
         }
-    }
-}
-                candidatos.add(candidato);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao listar candidatos!", e);
-        }
-        return candidatos;
     }
 }

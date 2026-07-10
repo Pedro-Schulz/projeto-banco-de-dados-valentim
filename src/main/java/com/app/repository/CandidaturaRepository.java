@@ -5,6 +5,11 @@ import com.app.model.Candidato;
 import com.app.model.Candidatura;
 import com.app.model.Vaga;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
 import java.sql.*;
 
 public class CandidaturaRepository {
@@ -15,10 +20,10 @@ public class CandidaturaRepository {
             VALUES (?, ?, ?, ?, ?, ?);
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
+        ) {
             p.setBoolean(1, candidatura.getStatusCandidatura());
             p.setDate(2, Date.valueOf(candidatura.getDataCandidatura()));
             p.setDate(3, Date.valueOf(candidatura.getPrazo()));
@@ -46,30 +51,33 @@ public class CandidaturaRepository {
             WHERE id_candidatura = ?;
         """;
 
-        try {
+        try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
-
+        ) {
             p.setLong(1, id);
 
             ResultSet rs = p.executeQuery();
 
             if(rs.next()) {
-                VagaRepository vr = new VagaRepository();
-                CandidatoRepository cr = new CandidatoRepository();
+                Candidatura candidatura = new Candidatura(
+                        rs.getLong("id_candidatura"),
+                        rs.getBoolean("status_candidatura"),
+                        rs.getDate("data_candidatura").toLocalDate(),
+                        rs.getDate("prazo").toLocalDate(),
+                        rs.getString("etapa"),
+                        new Vaga(rs.getLong("id_vaga")),
+                        new Candidato(rs.getLong("id_candidato")),
+                        rs.getBoolean("ativo")
+                );
 
-                Vaga vaga = vr.buscarPorId(rs.getLong("id_vaga"));
-                Candidato candidato = cr.buscarPorId(rs.getLong("id_candidato"));
-
-import com.app.model.Funcionario;
-import com.app.model.Vaga;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-
-public class CandidaturaRepository {
+                return candidatura;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao buscar candidatura!", e);
+        }
+        return null;
+    }
 
     public ArrayList<Candidatura> listarTodos() {
         ArrayList<Candidatura> candidaturas = new ArrayList<>();
@@ -91,38 +99,6 @@ public class CandidaturaRepository {
                         rs.getDate("data_candidatura").toLocalDate(),
                         rs.getDate("prazo").toLocalDate(),
                         rs.getString("etapa"),
-                        vaga,
-                        candidato,
-                        rs.getBoolean("ativo")   // ← faltava essa linha
-                );
-
-                return candidatura;
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao buscar candidatura!", e);
-        }
-        return null;
-    }
-
-    public void desativar(Long id) {
-        String sql = """
-            UPDATE candidaturas
-            SET ativo = FALSE
-            WHERE id_candidatura = ?;
-        """;
-
-        try {
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
-
-            p.setLong(1, id);
-
-            p.executeUpdate();
-        } catch(Exception e) {
-            throw new RuntimeException("Erro ao desativar candidatura!", e);
-        }
-    }
-}
                         new Vaga(rs.getLong("id_vaga")),
                         new Candidato(rs.getLong("id_candidato")),
                         rs.getBoolean("ativo")
@@ -133,6 +109,25 @@ public class CandidaturaRepository {
             throw new RuntimeException("Erro ao listar candidaturas!", e);
         }
         return candidaturas;
+    }
+
+    public void desativar(Long id) {
+        String sql = """
+            UPDATE candidaturas
+            SET ativo = FALSE
+            WHERE id_candidatura = ?;
+        """;
+
+        try (
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, id);
+
+            p.executeUpdate();
+        } catch(Exception e) {
+            throw new RuntimeException("Erro ao desativar candidatura!", e);
+        }
     }
 
     public boolean vinculoVaga(Long id_vaga) throws RuntimeException {

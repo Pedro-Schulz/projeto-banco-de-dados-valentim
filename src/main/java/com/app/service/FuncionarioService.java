@@ -6,7 +6,6 @@ import com.app.repository.ContratoRepository;
 import com.app.repository.DadosBancariosRepository;
 import com.app.repository.FolhaDePagamentoRepository;
 import com.app.repository.FuncionarioRepository;
-
 import java.util.ArrayList;
 
 public class FuncionarioService {

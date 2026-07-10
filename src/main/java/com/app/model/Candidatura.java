@@ -21,7 +21,7 @@ public class Candidatura {
         this.etapa = etapa;
         this.vaga = vaga;
         this.candidato = candidato;
-        this.ativo = true;
+        this.ativo = ativo;
     }
 
     public Candidatura(Long idCandidatura, Boolean statusCandidatura, LocalDate dataCandidatura, LocalDate prazo, String etapa, Vaga vaga, Candidato candidato, Boolean ativo) {
@@ -91,7 +91,7 @@ public class Candidatura {
         this.candidato = candidato;
     }
 
-    public Boolean getAtivo() {
+    public Boolean isAtivo() {
         return ativo;
     }
 
@@ -102,8 +102,8 @@ public class Candidatura {
     @Override
     public String toString() {
         return "\n> ID DA CANDIDATURA: " + this.idCandidatura +
-                "\n> VAGA: " + this.vaga.getIdVaga() +
-                "\n> CANDIDATO: " + this.candidato.getIdCandidato() +
+                "\n> ID VAGA: " + this.vaga.getIdVaga() +
+                "\n> ID CANDIDATO: " + this.candidato.getIdCandidato() +
                 "\n> STATUS DA CANDIDATURA: " + this.statusCandidatura +
                 "\n> DATA DA CANDIDATURA: " + this.dataCandidatura +
                 "\n> PRAZO DA CANDIDATURA: " + this.prazo +

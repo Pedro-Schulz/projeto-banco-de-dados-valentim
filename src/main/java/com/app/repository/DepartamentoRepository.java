@@ -21,7 +21,7 @@ public class DepartamentoRepository {
             p.setString(1, departamento.getNome());
             p.setDouble(2, departamento.getGastos());
             p.setDouble(3, departamento.getRetorno());
-            p.setBoolean(4, departamento.getAtivo());
+            p.setBoolean(4, departamento.isAtivo());
 
             p.executeUpdate();
 

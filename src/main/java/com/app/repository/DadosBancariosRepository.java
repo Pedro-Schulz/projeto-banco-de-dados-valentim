@@ -28,7 +28,7 @@ public class DadosBancariosRepository {
             p.setString(2, dadosBancarios.getAgenciaBancaria());
             p.setString(3, dadosBancarios.getInstituicaoBancaria());
             p.setLong(4, dadosBancarios.getFuncionario().getIdFuncionario());
-            p.setBoolean(5, dadosBancarios.getAtivo());
+            p.setBoolean(5, dadosBancarios.isAtivo());
 
             p.executeUpdate();
 

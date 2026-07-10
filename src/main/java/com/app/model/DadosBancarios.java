@@ -53,7 +53,7 @@ public class DadosBancarios {
         this.funcionario = funcionario;
     }
 
-    public Boolean getAtivo() {
+    public Boolean isAtivo() {
         return ativo;
     }
 

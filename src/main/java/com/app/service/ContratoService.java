@@ -1,19 +1,12 @@
 package com.app.service;
 
 import com.app.model.Contrato;
-import com.app.model.DadosBancarios;
 import com.app.repository.ContratoRepository;
-
 import java.util.ArrayList;
 
 public class ContratoService {
     private final ContratoRepository contratoRepository = new ContratoRepository();
 
-    public String desativar(Long id_contrato) {
-        contratoRepository.desativar(id_contrato);
-        return "Contrato desativado com sucesso!";
-    }
-}
     public ArrayList<Contrato> listarTodos() {
         return contratoRepository.listarTodos();
     }
