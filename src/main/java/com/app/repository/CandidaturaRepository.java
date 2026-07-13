@@ -40,7 +40,8 @@ public class CandidaturaRepository {
                 candidatura.setIdCandidatura(id);
             }
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao salvar candidatura!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao salvar candidatura!");
         }
     }
 
@@ -74,7 +75,8 @@ public class CandidaturaRepository {
                 return candidatura;
             }
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao buscar candidatura!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao buscar candidatura!");
         }
         return null;
     }
@@ -106,7 +108,8 @@ public class CandidaturaRepository {
                 candidaturas.add(candidatura);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao listar candidaturas!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao listar candidaturas!");
         }
         return candidaturas;
     }
@@ -126,15 +129,56 @@ public class CandidaturaRepository {
 
             p.executeUpdate();
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao desativar candidatura!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao desativar candidatura!");
         }
     }
 
-    public boolean vinculoVaga(Long id_vaga) throws RuntimeException {
+    public void desativarPorVaga(Long idVaga) {
+        String sql = """
+            UPDATE candidaturas
+            SET ativo = FALSE
+            WHERE id_vaga = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, idVaga);
+
+            p.executeUpdate();
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao desativar candidatura!");
+        }
+    }
+
+    public void desativarPorCandidato(Long idCandidato) {
+        String sql = """
+            UPDATE candidaturas
+            SET ativo = FALSE
+            WHERE id_candidato = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, idCandidato);
+
+            p.executeUpdate();
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao desativar candidatura!");
+        }
+    }
+
+    public boolean vinculoVaga(Long id) throws RuntimeException {
         String sql = """
             SELECT 1
             FROM candidaturas
-            WHERE id_vaga = ?
+            WHERE id_vaga = ? AND ativo = 1
             LIMIT 1;
         """;
 
@@ -142,13 +186,39 @@ public class CandidaturaRepository {
                 Connection c = ConnectionFactory.getConnection();
                 PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, id_vaga);
+            p.setLong(1, id);
 
             ResultSet rs = p.executeQuery();
 
             return rs.next();
+
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao verificar vínculo candidatura -> vaga", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao verificar vínculo candidatura -> vaga");
+        }
+    }
+
+    public boolean vinculoCandidato(Long idCandidato) throws RuntimeException {
+        String sql = """
+            SELECT 1
+            FROM candidaturas
+            WHERE id_candidato = ? AND ativo = 1
+            LIMIT 1;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, idCandidato);
+
+            ResultSet rs = p.executeQuery();
+
+            return rs.next();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao verificar vínculo candidatura -> candidato");
         }
     }
 }

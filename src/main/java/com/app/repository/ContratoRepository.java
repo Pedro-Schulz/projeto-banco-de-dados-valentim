@@ -35,7 +35,8 @@ public class ContratoRepository {
                 contrato.setIdContrato(id);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao salvar contrato!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao salvar contrato!");
         }
     }
 
@@ -67,7 +68,8 @@ public class ContratoRepository {
                 return contrato;
             }
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao buscar contrato!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao buscar contrato!");
         }
         return null;
     }
@@ -99,7 +101,8 @@ public class ContratoRepository {
             }
             return contratos;
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao listar os contratos! \n", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao listar os contratos! \n");
         }
     }
 
@@ -116,7 +119,8 @@ public class ContratoRepository {
             p.setLong(1, id);
             p.executeUpdate();
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao desativar contrato!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao desativar contrato!");
         }
     }
 
@@ -134,7 +138,8 @@ public class ContratoRepository {
             p.setLong(1, idFuncionario);
             p.executeUpdate();
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao desativar contrato!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao desativar contrato!");
         }
     }
 
@@ -156,7 +161,8 @@ public class ContratoRepository {
 
             return rs.next();
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao verificar vinculo contrato -> funcionário", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao verificar vinculo contrato -> funcionário");
         }
     }
 }

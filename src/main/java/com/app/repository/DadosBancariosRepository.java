@@ -40,7 +40,8 @@ public class DadosBancariosRepository {
             }
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao criar um conjunto de dados bancários!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao criar um conjunto de dados bancários!");
         }
     }
 
@@ -109,7 +110,8 @@ public class DadosBancariosRepository {
             }
             return dadosBancariosList;
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao listar os dados bancários! \n", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao listar os dados bancários! \n");
         }
     }
 
@@ -129,7 +131,8 @@ public class DadosBancariosRepository {
             p.executeUpdate();
 
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao deletar dados bancários!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao deletar dados bancários!");
         }
     }
 
@@ -149,7 +152,8 @@ public class DadosBancariosRepository {
             p.executeUpdate();
 
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao deletar dados bancários!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao deletar dados bancários!");
         }
     }
 
@@ -171,7 +175,8 @@ public class DadosBancariosRepository {
 
             return rs.next();
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao verificar vinculo dados bancários / funcionário");
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao verificar vinculo dados bancários -> funcionário");
         }
     }
 }

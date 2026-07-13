@@ -7,7 +7,11 @@ import com.app.repository.DadosBancariosRepository;
 import java.util.ArrayList;
 
 public class DadosBancariosService {
-    private final DadosBancariosRepository dadosBancariosRepository = new DadosBancariosRepository();
+    private final DadosBancariosRepository dadosBancariosRepository;
+
+    public DadosBancariosService(DadosBancariosRepository dadosBancariosRepository) {
+        this.dadosBancariosRepository = dadosBancariosRepository;
+    }
 
     public void salvar(DadosBancarios dadosBancarios) {
         dadosBancariosRepository.salvar(dadosBancarios);

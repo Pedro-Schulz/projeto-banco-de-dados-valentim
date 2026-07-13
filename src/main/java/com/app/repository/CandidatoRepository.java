@@ -38,7 +38,8 @@ public class CandidatoRepository {
                 candidato.setIdCandidato(id);
             }
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao salvar candidato!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao salvar candidato!");
         }
     }
 
@@ -73,7 +74,8 @@ public class CandidatoRepository {
                 return candidato;
             }
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao buscar candidato!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao buscar candidato!");
         }
         return null;
     }
@@ -105,7 +107,8 @@ public class CandidatoRepository {
                 candidatos.add(candidato);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao listar candidatos!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao listar candidatos!");
         }
         return candidatos;
     }
@@ -125,7 +128,8 @@ public class CandidatoRepository {
 
             p.executeUpdate();
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao desativar candidato!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao desativar candidato!");
         }
     }
 }

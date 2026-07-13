@@ -7,7 +7,11 @@ import com.app.repository.FolhaDePagamentoRepository;
 import java.util.ArrayList;
 
 public class FolhaDePagamentoService {
-    private final FolhaDePagamentoRepository folhaDePagamentoRepository = new FolhaDePagamentoRepository();
+    private final FolhaDePagamentoRepository folhaDePagamentoRepository;
+
+    public FolhaDePagamentoService(FolhaDePagamentoRepository folhaDePagamentoRepository) {
+        this.folhaDePagamentoRepository = folhaDePagamentoRepository;
+    }
 
     public void salvar(FolhaDePagamento folhaDePagamento) {
         folhaDePagamentoRepository.salvar(folhaDePagamento);

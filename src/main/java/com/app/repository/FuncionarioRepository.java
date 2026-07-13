@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class FuncionarioRepository {
-    private VagaRepository vr = new VagaRepository();
+    private VagaRepository vagaRepository = new VagaRepository();
 
     public void salvar(Funcionario funcionario) throws RuntimeException {
         String sql = """
@@ -44,7 +44,8 @@ public class FuncionarioRepository {
             }
 
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao salvar funcionário!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao salvar funcionário!");
         }
     }
 
@@ -67,7 +68,7 @@ public class FuncionarioRepository {
                 LocalDate dataNascimento = rs.getDate("data_nascimento").toLocalDate();
 
                 Long idVaga = rs.getLong("id_vaga");
-                Vaga vaga = vr.buscarPorId(idVaga);
+                Vaga vaga = vagaRepository.buscarPorId(idVaga);
 
                 Funcionario funcionario = new Funcionario(
                     rs.getLong("id_funcionario"),
@@ -123,7 +124,8 @@ public class FuncionarioRepository {
                 funcionarios.add(funcionario);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao listar funcionários!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao listar funcionários!");
         }
 
         return funcionarios;
@@ -145,11 +147,33 @@ public class FuncionarioRepository {
             p.executeUpdate();
 
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao desativar funcionário!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao desativar funcionário!");
         }
     }
 
-    public boolean vinculoVaga(Long id_vaga) throws RuntimeException {
+    public void desativarPorVaga(Long idVaga) throws RuntimeException {
+        String sql = """
+            UPDATE funcionarios
+            SET ativo = false
+            WHERE id_vaga = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, idVaga);
+
+            p.executeUpdate();
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao desativar funcionário!");
+        }
+    }
+
+    public boolean vinculoVaga(Long idVaga) throws RuntimeException {
         String sql = """
             SELECT 1
             FROM funcionarios
@@ -161,13 +185,14 @@ public class FuncionarioRepository {
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, id_vaga);
+            p.setLong(1, idVaga);
 
             ResultSet rs = p.executeQuery();
 
             return rs.next();
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao verificar vínculo funcionário -> vaga", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao verificar vínculo funcionário -> vaga");
         }
     }
 }

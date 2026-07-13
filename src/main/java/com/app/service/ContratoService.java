@@ -6,7 +6,11 @@ import com.app.repository.ContratoRepository;
 import java.util.ArrayList;
 
 public class ContratoService {
-    private final ContratoRepository contratoRepository = new ContratoRepository();
+    private final ContratoRepository contratoRepository;
+
+    public ContratoService(ContratoRepository contratoRepository) {
+        this.contratoRepository = contratoRepository;
+    }
 
     public void salvar(Contrato contrato) {
         contratoRepository.salvar(contrato);

@@ -36,7 +36,8 @@ public class VagaRepository {
                 vaga.setIdVaga(id);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao criar uma vaga!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao criar uma vaga!");
         }
     }
 
@@ -74,29 +75,10 @@ public class VagaRepository {
             }
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao achar vaga pelo ID!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao achar vaga pelo ID!");
         }
         return null;
-    }
-
-    public void desativar(Long id) throws RuntimeException {
-        String sql = """
-                    UPDATE vagas
-                    SET ativo = FALSE
-                    WHERE id_vaga = ?;
-                """;
-
-        try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
-        ) {
-            p.setLong(1, id);
-
-            p.executeUpdate();
-
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao desativar vaga!", e);
-        }
     }
 
     public ArrayList<Vaga> listarTodos() throws RuntimeException {
@@ -126,8 +108,74 @@ public class VagaRepository {
                 vagas.add(vaga);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao listar as vagas!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao listar as vagas!");
         }
         return vagas;
+    }
+
+    public void desativar(Long id) throws RuntimeException {
+        String sql = """
+                    UPDATE vagas
+                    SET ativo = FALSE
+                    WHERE id_vaga = ?;
+                """;
+
+        try (
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, id);
+
+            p.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao desativar vaga!");
+        }
+    }
+
+    public void desativarPorDepartamento(Long idDepartamento) throws RuntimeException {
+        String sql = """
+                    UPDATE vagas
+                    SET ativo = FALSE
+                    WHERE id_departamento = ?;
+                """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, idDepartamento);
+
+            p.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao desativar vaga!");
+        }
+    }
+
+    public boolean vinculoDepartamento(Long idDepartamento) throws RuntimeException {
+        String sql = """
+            SELECT 1
+            FROM vagas
+            WHERE id_departamento = ?
+            LIMIT 1;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, idDepartamento);
+
+            ResultSet rs = p.executeQuery();
+
+            return rs.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao verificar vínculo vaga -> departamento");
+        }
     }
 }

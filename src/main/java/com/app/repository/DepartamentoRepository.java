@@ -32,7 +32,8 @@ public class DepartamentoRepository {
                 departamento.setIdDepartamento(id);
             }
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao salvar departamento!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao salvar departamento!");
         }
     }
 
@@ -93,7 +94,8 @@ public class DepartamentoRepository {
             }
             return departamentos;
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao listar os departamentos! \n", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao listar os departamentos! \n");
         }
     }
 
@@ -113,7 +115,8 @@ public class DepartamentoRepository {
             p.executeUpdate();
 
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao deletar departamento!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao deletar departamento!");
         }
     }
 }

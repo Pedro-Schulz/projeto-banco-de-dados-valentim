@@ -68,6 +68,7 @@ public class FolhaDePagamentoRepository {
             throw new RuntimeException("Erro ao buscar folha de pagamento!", e);
         }
     }
+
     public ArrayList<FolhaDePagamento> listarTodos() {
         ArrayList<FolhaDePagamento> folhasDePagamento = new ArrayList<>();
         String sql = """
@@ -100,31 +101,6 @@ public class FolhaDePagamentoRepository {
         }
 
         return folhasDePagamento;
-    }
-    public List<FolhaDePagamento> listar() throws RuntimeException {
-        String sql = """
-            SELECT id_folha, horas_trabalhadas, data_emissao, descontos, horas_extras, id_funcionario, ativo
-            FROM folhas_de_pagamento
-            WHERE ativo = true;
-        """;
-
-        try (
-                Connection c = ConnectionFactory.getConnection();
-                PreparedStatement p = c.prepareStatement(sql);
-        ) {
-            ResultSet rs = p.executeQuery();
-
-            List<FolhaDePagamento> folhas = new ArrayList<>();
-
-            while (rs.next()) {
-                folhas.add(mapear(rs));
-            }
-
-            return folhas;
-
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao listar folhas de pagamento!", e);
-        }
     }
 
     public void desativarPorFuncionario(Long idFuncionario) throws RuntimeException {

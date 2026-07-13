@@ -9,10 +9,17 @@ import com.app.repository.FuncionarioRepository;
 import java.util.ArrayList;
 
 public class FuncionarioService {
-    private final FuncionarioRepository funcionarioRepository = new FuncionarioRepository();
-    private final ContratoRepository contratoRepository = new ContratoRepository();
-    private final DadosBancariosRepository dadosBancariosRepository = new DadosBancariosRepository();
-    private final FolhaDePagamentoRepository folhaDePagamentoRepository = new FolhaDePagamentoRepository();
+    private final FuncionarioRepository funcionarioRepository;
+    private final ContratoRepository contratoRepository;
+    private final DadosBancariosRepository dadosBancariosRepository;
+    private final FolhaDePagamentoRepository folhaDePagamentoRepository;
+
+    public FuncionarioService(FuncionarioRepository funcionarioRepository, ContratoRepository contratoRepository, DadosBancariosRepository dadosBancariosRepository, FolhaDePagamentoRepository folhaDePagamentoRepository) {
+        this.funcionarioRepository = funcionarioRepository;
+        this.contratoRepository = contratoRepository;
+        this.dadosBancariosRepository = dadosBancariosRepository;
+        this.folhaDePagamentoRepository = folhaDePagamentoRepository;
+    }
 
     public void salvar(Funcionario funcionario) {
         funcionarioRepository.salvar(funcionario);
@@ -20,6 +27,10 @@ public class FuncionarioService {
 
     public Funcionario buscarPorId(Long id) {
         return funcionarioRepository.buscarPorId(id);
+    }
+
+    public ArrayList<Funcionario> listarTodos() {
+        return funcionarioRepository.listarTodos();
     }
 
     public StatusVinculos desativar(Long id) {
@@ -30,7 +41,7 @@ public class FuncionarioService {
         return StatusVinculos.SUCESSO;
     }
 
-    public ArrayList<Funcionario> listarTodos() {
-        return funcionarioRepository.listarTodos();
+    public void desativarPorVaga(Long idVaga) {
+        funcionarioRepository.desativarPorVaga(idVaga);
     }
 }
