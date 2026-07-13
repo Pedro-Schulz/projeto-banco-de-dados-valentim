@@ -1,7 +1,15 @@
 package com.app.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Funcionario {
     private Long idFuncionario;
     private String nome;
@@ -14,8 +22,6 @@ public class Funcionario {
     private String genero;
     private Vaga vaga;
     private Boolean ativo;
-
-    public Funcionario() {};
 
     public Funcionario(Long idFuncionario) {
         this.idFuncionario = idFuncionario;
@@ -31,72 +37,6 @@ public class Funcionario {
         this.estadoCivil = estadoCivil;
         this.genero = genero;
         this.vaga = vaga;
-        this.ativo = ativo;
-    }
-
-    public Funcionario(Long idFuncionario, String nome, LocalDate dataNascimento, String cpf, String cep, String email, String telefone, String estadoCivil, String genero, Vaga vaga, Boolean ativo) {
-        this.idFuncionario = idFuncionario;
-        this.nome = nome;
-        this.dataNascimento = dataNascimento;
-        this.cpf = cpf;
-        this.cep = cep;
-        this.email = email;
-        this.telefone = telefone;
-        this.estadoCivil = estadoCivil;
-        this.genero = genero;
-        this.vaga = vaga;
-        this.ativo = ativo;
-    }
-
-    public Long getIdFuncionario() { return idFuncionario; }
-
-    public void setIdFuncionario(Long idFuncionario) { this.idFuncionario = idFuncionario; }
-
-    public String getNome() { return nome; }
-
-    public void setNome(String nome) { this.nome = nome; }
-
-    public LocalDate getDataNascimento() { return dataNascimento; }
-
-    public void setDataNascimento(LocalDate dataNascimento) { this.dataNascimento = dataNascimento; }
-
-    public String getCpf() { return cpf; }
-
-    public void setCpf(String cpf) { this.cpf = cpf; }
-
-    public String getCep() { return cep; }
-
-    public void setCep(String cep) { this.cep = cep; }
-
-    public String getEmail() { return email; }
-
-    public void setEmail(String email) { this.email = email; }
-
-    public String getTelefone() { return telefone; }
-
-    public void setTelefone(String telefone) { this.telefone = telefone; }
-
-    public String getEstadoCivil() { return estadoCivil; }
-
-    public void setEstadoCivil(String estadoCivil) { this.estadoCivil = estadoCivil; }
-
-    public String getGenero() { return genero; }
-
-    public void setGenero(String genero) { this.genero = genero; }
-
-    public Vaga getVaga() {
-        return vaga;
-    }
-
-    public void setVaga(Vaga vaga) {
-        this.vaga = vaga;
-    }
-
-    public Boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
 

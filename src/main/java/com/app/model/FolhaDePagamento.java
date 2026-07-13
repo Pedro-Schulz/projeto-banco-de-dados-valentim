@@ -1,7 +1,15 @@
 package com.app.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class FolhaDePagamento {
     private Long idFolha;
     private Integer horasTrabalhadas;
@@ -11,80 +19,12 @@ public class FolhaDePagamento {
     private Funcionario funcionario;
     private Boolean ativo;
 
-    public FolhaDePagamento() {};
-
     public FolhaDePagamento(Integer horasTrabalhadas, LocalDate dataEmissao, Double descontos, Integer horasExtras, Funcionario funcionario, Boolean ativo) {
         this.horasTrabalhadas = horasTrabalhadas;
         this.dataEmissao = dataEmissao;
         this.descontos = descontos;
         this.horasExtras = horasExtras;
         this.funcionario = funcionario;
-        this.ativo = ativo;
-    }
-
-    public FolhaDePagamento(Long idFolha, Integer horasTrabalhadas, LocalDate dataEmissao, Double descontos, Integer horasExtras, Funcionario funcionario, Boolean ativo) {
-        this.idFolha = idFolha;
-        this.horasTrabalhadas = horasTrabalhadas;
-        this.dataEmissao = dataEmissao;
-        this.descontos = descontos;
-        this.horasExtras = horasExtras;
-        this.funcionario = funcionario;
-        this.ativo = ativo;
-    }
-
-    public Integer getHorasExtras() {
-        return horasExtras;
-    }
-
-    public void setHorasExtras(Integer horasExtras) {
-        this.horasExtras = horasExtras;
-    }
-
-    public Double getDescontos() {
-        return descontos;
-    }
-
-    public void setDescontos(Double descontos) {
-        this.descontos = descontos;
-    }
-
-    public LocalDate getDataEmissao() {
-        return dataEmissao;
-    }
-
-    public void setDataEmissao(LocalDate dataEmissao) {
-        this.dataEmissao = dataEmissao;
-    }
-
-    public Integer getHorasTrabalhadas() {
-        return horasTrabalhadas;
-    }
-
-    public void setHorasTrabalhadas(Integer horasTrabalhadas) {
-        this.horasTrabalhadas = horasTrabalhadas;
-    }
-
-    public Long getIdFolha() {
-        return idFolha;
-    }
-
-    public void setIdFolha(Long idFolha) {
-        this.idFolha = idFolha;
-    }
-
-    public Funcionario getFuncionario() {
-        return funcionario;
-    }
-
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
-    }
-
-    public Boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
 

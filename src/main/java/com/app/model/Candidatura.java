@@ -1,7 +1,15 @@
 package com.app.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Candidatura {
     private Long idCandidatura;
     private Boolean statusCandidatura;
@@ -12,8 +20,6 @@ public class Candidatura {
     private Candidato candidato;
     private Boolean ativo;
 
-    public Candidatura() {};
-
     public Candidatura(Boolean statusCandidatura, LocalDate dataCandidatura, LocalDate prazo, String etapa, Vaga vaga, Candidato candidato) {
         this.statusCandidatura = statusCandidatura;
         this.dataCandidatura = dataCandidatura;
@@ -21,81 +27,6 @@ public class Candidatura {
         this.etapa = etapa;
         this.vaga = vaga;
         this.candidato = candidato;
-        this.ativo = ativo;
-    }
-
-    public Candidatura(Long idCandidatura, Boolean statusCandidatura, LocalDate dataCandidatura, LocalDate prazo, String etapa, Vaga vaga, Candidato candidato, Boolean ativo) {
-        this.idCandidatura = idCandidatura;
-        this.statusCandidatura = statusCandidatura;
-        this.dataCandidatura = dataCandidatura;
-        this.prazo = prazo;
-        this.etapa = etapa;
-        this.vaga = vaga;
-        this.candidato = candidato;
-        this.ativo = ativo;
-    }
-
-    public Long getIdCandidatura() {
-        return idCandidatura;
-    }
-
-    public void setIdCandidatura(Long idCandidatura) {
-        this.idCandidatura = idCandidatura;
-    }
-
-    public Boolean getStatusCandidatura() {
-        return statusCandidatura;
-    }
-
-    public void setStatusCandidatura(Boolean statusCandidatura) {
-        this.statusCandidatura = statusCandidatura;
-    }
-
-    public LocalDate getDataCandidatura() {
-        return dataCandidatura;
-    }
-
-    public void setDataCandidatura(LocalDate dataCandidatura) {
-        this.dataCandidatura = dataCandidatura;
-    }
-
-    public LocalDate getPrazo() {
-        return prazo;
-    }
-
-    public void setPrazo(LocalDate prazo) {
-        this.prazo = prazo;
-    }
-
-    public String getEtapa() {
-        return etapa;
-    }
-
-    public void setEtapa(String etapa) {
-        this.etapa = etapa;
-    }
-
-    public Vaga getVaga() {
-        return vaga;
-    }
-
-    public void setVaga(Vaga vaga) {
-        this.vaga = vaga;
-    }
-
-    public Candidato getCandidato() {
-        return candidato;
-    }
-
-    public void setCandidato(Candidato candidato) {
-        this.candidato = candidato;
-    }
-
-    public Boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
 

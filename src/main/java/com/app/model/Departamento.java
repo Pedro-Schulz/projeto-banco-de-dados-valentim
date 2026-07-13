@@ -1,13 +1,20 @@
 package com.app.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Departamento {
     private Long idDepartamento;
     private String nome;
     private Double gastos;
     private Double retorno;
     private Boolean ativo;
-
-    public Departamento() {}
 
     public Departamento(Long idDepartamento) {
         this.idDepartamento = idDepartamento;
@@ -17,38 +24,6 @@ public class Departamento {
         this.nome = nome;
         this.gastos = gastos;
         this.retorno = retorno;
-        this.ativo = ativo;
-    }
-
-    public Departamento(Long idDepartamento, String nome, Double gastos, Double retorno, Boolean ativo) {
-        this.idDepartamento = idDepartamento;
-        this.nome = nome;
-        this.gastos = gastos;
-        this.retorno = retorno;
-        this.ativo = ativo;
-    }
-
-    public Long getIdDepartamento() { return idDepartamento; }
-
-    public void setIdDepartamento(Long idDepartamento) { this.idDepartamento = idDepartamento; }
-
-    public String getNome() { return nome; }
-
-    public void setNome(String nome) { this.nome = nome; }
-
-    public Double getGastos() { return gastos; }
-
-    public void setGastos(Double gastos) { this.gastos = gastos; }
-
-    public Double getRetorno() { return retorno; }
-
-    public void setRetorno(Double retorno) { this.retorno = retorno; }
-
-    public Boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
 

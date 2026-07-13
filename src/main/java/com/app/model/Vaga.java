@@ -1,5 +1,14 @@
 package com.app.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Vaga {
     private Long idVaga;
     private String turno;
@@ -8,7 +17,6 @@ public class Vaga {
     private Departamento departamento;
     private Boolean ativo;
 
-    public Vaga() {}
     public Vaga(Long idVaga) {
         this.idVaga = idVaga;
     }
@@ -18,47 +26,6 @@ public class Vaga {
         this.cargo = cargo;
         this.salarioHora = salarioHora;
         this.departamento = departamento;
-        this.ativo = ativo;
-    }
-
-    public Vaga(Long idVaga, String turno, String cargo, Double salarioHora, Departamento departamento, Boolean ativo) {
-        this.idVaga = idVaga;
-        this.turno = turno;
-        this.cargo = cargo;
-        this.salarioHora = salarioHora;
-        this.departamento = departamento;
-        this.ativo = ativo;
-    }
-
-    public Long getIdVaga() { return idVaga; }
-
-    public void setIdVaga(Long idVaga) { this.idVaga = idVaga; }
-
-    public String getTurno() { return turno; }
-
-    public void setTurno(String turno) { this.turno = turno; }
-
-    public String getCargo() { return cargo; }
-
-    public void setCargo(String cargo) { this.cargo = cargo; }
-
-    public Double getSalarioHora() { return salarioHora; }
-
-    public void setSalarioHora(Double salarioHora) { this.salarioHora = salarioHora; }
-
-    public Departamento getDepartamento() {
-        return departamento;
-    }
-
-    public void setDepartamento(Departamento departamento) {
-        this.departamento = departamento;
-    }
-
-    public Boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
 
