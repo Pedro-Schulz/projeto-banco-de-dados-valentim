@@ -32,7 +32,7 @@ public class FuncionarioRepository {
             p.setString(7, funcionario.getEstadoCivil());
             p.setString(8, funcionario.getGenero());
             p.setObject(9, funcionario.getVaga().getIdVaga());
-            p.setBoolean(10, funcionario.isAtivo());
+            p.setBoolean(10, funcionario.getAtivo());
 
             p.executeUpdate();
 

@@ -27,7 +27,7 @@ public class FolhaDePagamentoRepository {
             p.setDouble(3, folha.getDescontos());
             p.setInt(4, folha.getHorasExtras());
             p.setLong(5, folha.getFuncionario().getIdFuncionario());
-            p.setBoolean(6, folha.isAtivo());
+            p.setBoolean(6, folha.getAtivo());
 
             p.executeUpdate();
 
