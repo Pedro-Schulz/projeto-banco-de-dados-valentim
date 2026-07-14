@@ -116,3 +116,13 @@ CREATE TABLE candidaturas(
     FOREIGN KEY(id_candidato) REFERENCES candidatos(id_candidato),
     ativo BOOLEAN NOT NULL DEFAULT TRUE
 );
+
+CREATE TABLE usuarios (
+	id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+    senha VARCHAR(60) NOT NULL,
+    perfil VARCHAR(20) NOT NULL,
+    ativo BOOLEAN NOT NULL,
+    id_funcionario INT NOT NULL,
+
+    FOREIGN KEY(id_funcionario) REFERENCES funcionarios(id_funcionario)
+);
