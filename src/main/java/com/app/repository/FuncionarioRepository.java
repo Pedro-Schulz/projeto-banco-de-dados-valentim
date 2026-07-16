@@ -49,6 +49,39 @@ public class FuncionarioRepository {
         }
     }
 
+    public Funcionario buscarPorCpf(String cpf) throws RuntimeException {
+        String sql = """
+            SELECT f.id_funcionario, f.ativo, v.cargo
+            FROM funcionarios AS f
+            JOIN vagas AS v ON v.id_vaga = f.id_vaga
+            WHERE cpf = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setString(1, cpf);
+            ResultSet rs = p.executeQuery();
+
+            if(rs.next()) {
+                String cargo = rs.getString("cargo");
+                Vaga vaga = new Vaga(cargo);
+
+                Funcionario funcionario = new Funcionario(
+                        rs.getLong("id_funcionario"),
+                        rs.getBoolean("ativo"),
+                        vaga
+                );
+                return funcionario;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao buscar funcionário!");
+        }
+        return null;
+    }
+
     public Funcionario buscarPorId(Long id) throws RuntimeException {
         String sql = """
             SELECT * 
@@ -87,7 +120,8 @@ public class FuncionarioRepository {
                 return funcionario;
             }
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao buscar funcionário!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao buscar funcionário!");
         }
         return null;
     }

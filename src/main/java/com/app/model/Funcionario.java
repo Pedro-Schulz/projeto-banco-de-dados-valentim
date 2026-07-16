@@ -27,6 +27,12 @@ public class Funcionario {
         this.idFuncionario = idFuncionario;
     };
 
+    public Funcionario(Long idFuncionario, Boolean ativo, Vaga vaga) {
+        this.idFuncionario = idFuncionario;
+        this.ativo = ativo;
+        this.vaga = vaga;
+    }
+
     public Funcionario(String nome, LocalDate dataNascimento, String cpf, String cep, String email, String telefone, String estadoCivil, String genero, Vaga vaga, Boolean ativo) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;

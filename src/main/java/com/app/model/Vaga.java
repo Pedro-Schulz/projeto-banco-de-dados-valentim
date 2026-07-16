@@ -21,6 +21,10 @@ public class Vaga {
         this.idVaga = idVaga;
     }
 
+    public Vaga(String cargo) {
+        this.cargo = cargo;
+    }
+
     public Vaga(String turno, String cargo, Double salarioHora, Departamento departamento, Boolean ativo) {
         this.turno = turno;
         this.cargo = cargo;
