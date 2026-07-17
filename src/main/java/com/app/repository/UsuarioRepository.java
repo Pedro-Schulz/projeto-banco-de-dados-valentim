@@ -3,6 +3,7 @@ package com.app.repository;
 import com.app.config.ConnectionFactory;
 import com.app.model.Funcionario;
 import com.app.model.Usuario;
+import com.app.model.Vaga;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,8 +24,8 @@ public class UsuarioRepository {
             p.setString(1, usuario.getCpf());
             p.setBoolean(2, usuario.getAtivo());
             p.setLong(3, usuario.getIdFuncionario());
-            p.setString(4, usuario.getPerfil());
-            p.setString(5, usuario.getSenha());
+            p.setString(4, "ADMIN");
+            p.setString(5, usuario.getSenhaHash());
 
             p.executeUpdate();
 
@@ -34,5 +35,36 @@ public class UsuarioRepository {
             e.printStackTrace();
             throw new RuntimeException("Erro ao criar usuário!");
         }
+    }
+
+    public Usuario buscarPorCpf(String cpf) throws RuntimeException {
+        String sql = """
+            SELECT *
+            FROM usuarios
+            WHERE cpf = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setString(1, cpf);
+            ResultSet rs = p.executeQuery();
+
+            if(rs.next()) {
+                Usuario usuario = new Usuario(
+                        rs.getString("cpf"),
+                        rs.getString("senha"),
+                        rs.getString("perfil"),
+                        rs.getBoolean("ativo"),
+                        rs.getLong("id_funcionario")
+                );
+                return usuario;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao buscar funcionário!");
+        }
+        return null;
     }
 }

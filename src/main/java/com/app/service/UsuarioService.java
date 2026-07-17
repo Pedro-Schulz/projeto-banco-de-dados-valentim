@@ -25,4 +25,9 @@ public class UsuarioService {
     public boolean validarSenha(String senha) {
         return true;
     }
+
+    public boolean verificarSenha(String senha, String cpf) {
+        Usuario usuario = usuarioRepository.buscarPorCpf(cpf);
+        return BCrypt.checkpw(senha, usuario.getSenhaHash());
+    }
 }
