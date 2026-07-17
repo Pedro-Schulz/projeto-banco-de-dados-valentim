@@ -15,6 +15,8 @@ public class UsuarioService {
         usuarioRepository.salvar(usuario);
     }
 
+    public void encriptar() {};
+
     public boolean validarSenha(String senha) {
         return true;
     }
