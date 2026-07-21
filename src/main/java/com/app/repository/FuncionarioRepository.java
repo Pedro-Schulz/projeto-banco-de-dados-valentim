@@ -114,7 +114,8 @@ public class FuncionarioRepository {
                     rs.getString("estado_civil"),
                     rs.getString("genero"),
                     vaga,
-                    rs.getBoolean("ativo")
+                    rs.getBoolean("ativo"),
+                    rs.getInt("version")
                 );
 
                 return funcionario;
@@ -152,7 +153,8 @@ public class FuncionarioRepository {
                     rs.getString("estado_civil"),
                     rs.getString("genero"),
                     new Vaga(rs.getLong("id_vaga")),
-                    rs.getBoolean("ativo")
+                    rs.getBoolean("ativo"),
+                    rs.getInt("version")
                 );
 
                 funcionarios.add(funcionario);

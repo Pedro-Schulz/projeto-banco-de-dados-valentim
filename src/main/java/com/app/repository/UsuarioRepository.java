@@ -57,7 +57,8 @@ public class UsuarioRepository {
                         rs.getString("senha"),
                         rs.getString("perfil"),
                         rs.getBoolean("ativo"),
-                        rs.getLong("id_funcionario")
+                        rs.getLong("id_funcionario"),
+                        rs.getInt("version")
                 );
                 return usuario;
             }

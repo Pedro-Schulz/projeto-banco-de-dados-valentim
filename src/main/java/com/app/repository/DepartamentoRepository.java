@@ -58,7 +58,8 @@ public class DepartamentoRepository {
                     rs.getString("nome"),
                     rs.getDouble("gastos"),
                     rs.getDouble("retorno"),
-                    rs.getBoolean("ativo")
+                    rs.getBoolean("ativo"),
+                    rs.getInt("version")
                 );
 
                 return departamento;
@@ -88,7 +89,8 @@ public class DepartamentoRepository {
                     rs.getString("nome"),
                     rs.getDouble("gastos"),
                     rs.getDouble("retorno"),
-                    rs.getBoolean("ativo")
+                    rs.getBoolean("ativo"),
+                    rs.getInt("version")
                 );
                 departamentos.add(departamento);
             }

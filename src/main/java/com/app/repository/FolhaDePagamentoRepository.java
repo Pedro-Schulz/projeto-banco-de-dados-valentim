@@ -91,7 +91,8 @@ public class FolhaDePagamentoRepository {
                         rs.getDouble("descontos"),
                         rs.getInt("horas_extras"),
                         new Funcionario(rs.getLong("id_funcionario")),
-                        rs.getBoolean("ativo")
+                        rs.getBoolean("ativo"),
+                        rs.getInt("version")
                 );
 
                 folhasDePagamento.add(folhaDePagamento);
@@ -197,7 +198,8 @@ public class FolhaDePagamentoRepository {
                 rs.getDouble("descontos"),
                 rs.getInt("horas_extras"),
                 new Funcionario(rs.getLong("id_funcionario")),
-                rs.getBoolean("ativo")
+                rs.getBoolean("ativo"),
+                rs.getInt("version")
         );
     }
 }

@@ -68,7 +68,8 @@ public class VagaRepository {
                         rs.getString("cargo"),
                         rs.getDouble("salario_hora"),
                         departamento,
-                        rs.getBoolean("ativo")
+                        rs.getBoolean("ativo"),
+                        rs.getInt("version")
                 );
 
                 return vaga;
@@ -102,7 +103,8 @@ public class VagaRepository {
                         rs.getString("cargo"),
                         rs.getDouble("salario_hora"),
                         new Departamento(rs.getLong("id_departamento")),
-                        rs.getBoolean("ativo")
+                        rs.getBoolean("ativo"),
+                        rs.getInt("version")
                 );
 
                 vagas.add(vaga);

@@ -69,7 +69,8 @@ public class CandidaturaRepository {
                         rs.getString("etapa"),
                         new Vaga(rs.getLong("id_vaga")),
                         new Candidato(rs.getLong("id_candidato")),
-                        rs.getBoolean("ativo")
+                        rs.getBoolean("ativo"),
+                        rs.getInt("version")
                 );
 
                 return candidatura;
@@ -103,7 +104,8 @@ public class CandidaturaRepository {
                         rs.getString("etapa"),
                         new Vaga(rs.getLong("id_vaga")),
                         new Candidato(rs.getLong("id_candidato")),
-                        rs.getBoolean("ativo")
+                        rs.getBoolean("ativo"),
+                        rs.getInt("version")
                 );
                 candidaturas.add(candidatura);
             }

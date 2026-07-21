@@ -69,7 +69,8 @@ public class CandidatoRepository {
                         rs.getString("genero"),
                         rs.getString("estado_civil"),
                         rs.getDate("data_nascimento").toLocalDate(),
-                        rs.getBoolean("ativo")
+                        rs.getBoolean("ativo"),
+                        rs.getInt("version")
                 );
                 return candidato;
             }
@@ -102,7 +103,8 @@ public class CandidatoRepository {
                         rs.getString("genero"),
                         rs.getString("estado_civil"),
                         rs.getDate("data_nascimento").toLocalDate(),
-                        rs.getBoolean("ativo")
+                        rs.getBoolean("ativo"),
+                        rs.getInt("version")
                 );
                 candidatos.add(candidato);
             }

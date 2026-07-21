@@ -62,7 +62,8 @@ public class ContratoRepository {
                         rs.getDate("data_emissao").toLocalDate(),
                         rs.getInt("prazo"),
                         new Funcionario(rs.getLong("id_funcionario")),
-                        rs.getBoolean("ativo")
+                        rs.getBoolean("ativo"),
+                        rs.getInt("version")
                 );
 
                 return contrato;
@@ -95,7 +96,8 @@ public class ContratoRepository {
                         rs.getDate("data_emissao").toLocalDate(),
                         rs.getInt("prazo"),
                         new Funcionario(rs.getLong("id_funcionario")),
-                        rs.getBoolean("ativo")
+                        rs.getBoolean("ativo"),
+                        rs.getInt("version")
                 );
                 contratos.add(contrato);
             }
