@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.sql.*;
-import java.util.List;
 
 public class FolhaDePagamentoRepository {
 
@@ -126,8 +125,8 @@ public class FolhaDePagamentoRepository {
     public void atualizar(FolhaDePagamento folha) throws RuntimeException {
         String sql = """
             UPDATE folhas_de_pagamento
-            SET horas_trabalhadas = ?, data_emissao = ?, descontos = ?, horas_extras = ?, id_funcionario = ?
-            WHERE id_folha = ?;
+            SET horas_trabalhadas = ?, data_emissao = ?, descontos = ?, horas_extras = ?, id_funcionario = ?, version = version + 1
+            WHERE id_folha = ? AND version = ?;
         """;
 
         try (
@@ -140,8 +139,13 @@ public class FolhaDePagamentoRepository {
             p.setInt(4, folha.getHorasExtras());
             p.setLong(5, folha.getFuncionario().getIdFuncionario());
             p.setLong(6, folha.getIdFolha());
+            p.setInt(7, folha.getVersion());
 
-            p.executeUpdate();
+            if(p.executeUpdate() == 0) {
+                throw new RuntimeException("Este dados foi alterado por outra pessoa. Atualize a página!");
+            }
+
+            folha.setVersion(folha.getVersion() + 1);
 
         } catch (Exception e) {
             throw new RuntimeException("Erro ao atualizar folha de pagamento!", e);
