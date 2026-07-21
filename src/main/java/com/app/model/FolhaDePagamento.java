@@ -18,6 +18,7 @@ public class FolhaDePagamento {
     private Integer horasExtras;
     private Funcionario funcionario;
     private Boolean ativo;
+    private Integer version = 1;
 
     public FolhaDePagamento(Integer horasTrabalhadas, LocalDate dataEmissao, Double descontos, Integer horasExtras, Funcionario funcionario, Boolean ativo) {
         this.horasTrabalhadas = horasTrabalhadas;

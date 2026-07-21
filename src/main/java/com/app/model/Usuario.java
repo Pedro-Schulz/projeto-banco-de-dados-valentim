@@ -17,6 +17,7 @@ public class Usuario {
     private String perfil;
     private Boolean ativo;
     private Long idFuncionario;
+    private Integer version = 1;
 
     public Usuario(String cpf, String senhaHash) {
         FuncionarioRepository funcionarioRepository = new FuncionarioRepository();

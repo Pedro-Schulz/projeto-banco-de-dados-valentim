@@ -15,6 +15,7 @@ public class Departamento {
     private Double gastos;
     private Double retorno;
     private Boolean ativo;
+    private Integer version = 1;
 
     public Departamento(Long idDepartamento) {
         this.idDepartamento = idDepartamento;

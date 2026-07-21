@@ -16,6 +16,7 @@ public class DadosBancarios {
     private String agenciaBancaria;
     private Funcionario funcionario;
     private Boolean ativo;
+    private Integer version = 1;
 
     public DadosBancarios(Integer numeroConta, String instituicaoBancaria, String agenciaBancaria, Funcionario funcionario, Boolean ativo) {
         this.numeroConta = numeroConta;

@@ -22,6 +22,7 @@ public class Funcionario {
     private String genero;
     private Vaga vaga;
     private Boolean ativo;
+    private Integer version = 1;
 
     public Funcionario(Long idFuncionario) {
         this.idFuncionario = idFuncionario;

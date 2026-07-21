@@ -19,6 +19,7 @@ public class Candidatura {
     private Vaga vaga;
     private Candidato candidato;
     private Boolean ativo;
+    private Integer version = 1;
 
     public Candidatura(Boolean statusCandidatura, LocalDate dataCandidatura, LocalDate prazo, String etapa, Vaga vaga, Candidato candidato) {
         this.statusCandidatura = statusCandidatura;

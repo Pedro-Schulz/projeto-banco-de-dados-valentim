@@ -21,6 +21,7 @@ public class Candidato {
     private String estadoCivil;
     private LocalDate dataNascimento;
     private Boolean ativo;
+    private Integer version = 1;
 
     public Candidato(Long idCandidato) { this.idCandidato = idCandidato; }
 

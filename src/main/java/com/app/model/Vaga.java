@@ -16,6 +16,7 @@ public class Vaga {
     private Double salarioHora;
     private Departamento departamento;
     private Boolean ativo;
+    private Integer version = 1;
 
     public Vaga(Long idVaga) {
         this.idVaga = idVaga;

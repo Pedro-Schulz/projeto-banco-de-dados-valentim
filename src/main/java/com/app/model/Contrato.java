@@ -17,6 +17,7 @@ public class Contrato {
     private Integer prazo;
     private Funcionario funcionario;
     private Boolean ativo;
+    private Integer version = 1;
 
     public Contrato(Boolean statusContrato, LocalDate dataEmissao, Integer prazo, Funcionario funcionario, Boolean ativo) {
         this.statusContrato = statusContrato;
