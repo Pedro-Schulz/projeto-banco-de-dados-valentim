@@ -2,7 +2,6 @@ package com.app.repository;
 
 import com.app.config.ConnectionFactory;
 import com.app.model.Departamento;
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -101,20 +100,25 @@ public class DepartamentoRepository {
         }
     }
 
-    public void desativar(Long id) throws RuntimeException {
+    public void desativar(Departamento departamento) throws RuntimeException {
         String sql = """
             SELECT departamentos
             SET ativo = false
-            WHERE id_departamento = ?;
+            WHERE id_departamento = ? AND version = ?;
         """;
 
         try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, id);
+            p.setLong(1, departamento.getIdDepartamento());
+            p.setInt(2, departamento.getVersion());
 
-            p.executeUpdate();
+            if(p.executeUpdate() == 0) {
+                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+            }
+
+            departamento.setVersion(departamento.getVersion() + 1);
 
         } catch(Exception e) {
             e.printStackTrace();

@@ -2,7 +2,6 @@ package com.app.repository;
 
 import com.app.config.ConnectionFactory;
 import com.app.model.*;
-
 import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -108,18 +107,25 @@ public class ContratoRepository {
         }
     }
 
-    public void desativar(Long id) throws RuntimeException {
+    public void desativar(Contrato contrato) throws RuntimeException {
         String sql = """
             UPDATE contratos
             SET ativo = FALSE
-            WHERE id_contrato = ?;
+            WHERE id_contrato = ? AND version ?;
         """;
         try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, id);
-            p.executeUpdate();
+            p.setLong(1, contrato.getIdContrato());
+            p.setInt(2, contrato.getVersion());
+
+            if(p.executeUpdate() == 0) {
+                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+            }
+
+            contrato.setVersion(contrato.getVersion() + 1);
+
         } catch(Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao desativar contrato!");

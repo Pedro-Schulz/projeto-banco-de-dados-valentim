@@ -1,10 +1,7 @@
 package com.app.repository;
 
 import com.app.config.ConnectionFactory;
-import com.app.model.Funcionario;
 import com.app.model.Usuario;
-import com.app.model.Vaga;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

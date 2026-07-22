@@ -2,15 +2,12 @@ package com.app.repository;
 
 import com.app.config.ConnectionFactory;
 import com.app.model.DadosBancarios;
-import com.app.model.Departamento;
 import com.app.model.Funcionario;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 public class DadosBancariosRepository {
 
@@ -117,20 +114,25 @@ public class DadosBancariosRepository {
         }
     }
 
-    public void desativar(Long id) throws RuntimeException {
+    public void desativar(DadosBancarios dadosBancarios) throws RuntimeException {
         String sql = """
             UPDATE dados_bancarios
             SET ativo = false
-            WHERE id_dados_bancarios = ?;
+            WHERE id_dados_bancarios = ? AND version = ?;
         """;
 
         try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, id);
+            p.setLong(1, dadosBancarios.getIdDadosBancarios());
+            p.setInt(2, dadosBancarios.getVersion());
 
-            p.executeUpdate();
+            if(p.executeUpdate() == 0) {
+                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+            }
+
+            dadosBancarios.setVersion(dadosBancarios.getVersion() + 1);
 
         } catch(Exception e) {
             e.printStackTrace();

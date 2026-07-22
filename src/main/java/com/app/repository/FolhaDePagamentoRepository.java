@@ -142,7 +142,7 @@ public class FolhaDePagamentoRepository {
             p.setInt(7, folha.getVersion());
 
             if(p.executeUpdate() == 0) {
-                throw new RuntimeException("Este dados foi alterado por outra pessoa. Atualize a página!");
+                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
             }
 
             folha.setVersion(folha.getVersion() + 1);
@@ -152,19 +152,25 @@ public class FolhaDePagamentoRepository {
         }
     }
 
-    public void desativar(Long id) throws RuntimeException {
+    public void desativar(FolhaDePagamento folhaDePagamento) throws RuntimeException {
         String sql = """
             UPDATE folhas_de_pagamento
             SET ativo = false
-            WHERE id_folha = ?;
+            WHERE id_folha = ? AND version = ?;
         """;
 
         try (
                 Connection c = ConnectionFactory.getConnection();
                 PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, id);
-            p.executeUpdate();
+            p.setLong(1, folhaDePagamento.getIdFolha());
+            p.setInt(2, folhaDePagamento.getVersion());
+
+            if(p.executeUpdate() == 0) {
+                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+            }
+
+            folhaDePagamento.setVersion(folhaDePagamento.getVersion() + 1);
 
         } catch (Exception e) {
             throw new RuntimeException("Erro ao desativar folha de pagamento!", e);

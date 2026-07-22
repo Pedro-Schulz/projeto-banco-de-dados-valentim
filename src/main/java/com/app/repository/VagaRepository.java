@@ -3,7 +3,6 @@ package com.app.repository;
 import com.app.config.ConnectionFactory;
 import com.app.model.Departamento;
 import com.app.model.Vaga;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -116,20 +115,25 @@ public class VagaRepository {
         return vagas;
     }
 
-    public void desativar(Long id) throws RuntimeException {
+    public void desativar(Vaga vaga) throws RuntimeException {
         String sql = """
                     UPDATE vagas
                     SET ativo = FALSE
-                    WHERE id_vaga = ?;
+                    WHERE id_vaga = ? AND version = ?;
                 """;
 
         try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, id);
+            p.setLong(1, vaga.getIdVaga());
+            p.setInt(2, vaga.getVersion());
 
-            p.executeUpdate();
+            if(p.executeUpdate() == 0) {
+                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+            }
+
+            vaga.setVersion(vaga.getVersion() + 1);
 
         } catch (Exception e) {
             e.printStackTrace();

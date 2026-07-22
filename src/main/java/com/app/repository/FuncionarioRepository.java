@@ -3,9 +3,6 @@ package com.app.repository;
 import com.app.config.ConnectionFactory;
 import com.app.model.Funcionario;
 import com.app.model.Vaga;
-import com.app.service.FuncionarioService;
-
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -167,20 +164,25 @@ public class FuncionarioRepository {
         return funcionarios;
     }
 
-    public void desativar(Long id) throws RuntimeException {
+    public void desativar(Funcionario funcionario) throws RuntimeException {
         String sql = """
             UPDATE funcionarios
             SET ativo = false
-            WHERE id_funcionario = ?;
+            WHERE id_funcionario = ? AND version = ?;
         """;
 
         try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, id);
+            p.setLong(1, funcionario.getIdFuncionario());
+            p.setInt(2, funcionario.getVersion());
 
-            p.executeUpdate();
+            if(p.executeUpdate() == 0) {
+                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+            }
+
+            funcionario.setVersion(funcionario.getVersion() + 1);
 
         } catch(Exception e) {
             e.printStackTrace();

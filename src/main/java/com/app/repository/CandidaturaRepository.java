@@ -4,7 +4,6 @@ import com.app.config.ConnectionFactory;
 import com.app.model.Candidato;
 import com.app.model.Candidatura;
 import com.app.model.Vaga;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -116,20 +115,26 @@ public class CandidaturaRepository {
         return candidaturas;
     }
 
-    public void desativar(Long id) {
+    public void desativar(Candidatura candidatura) {
         String sql = """
             UPDATE candidaturas
             SET ativo = FALSE
-            WHERE id_candidatura = ?;
+            WHERE id_candidatura = ? AND version = ?;
         """;
 
         try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, id);
+            p.setLong(1, candidatura.getIdCandidatura());
+            p.setInt(2, candidatura.getVersion());
 
-            p.executeUpdate();
+            if(p.executeUpdate() == 0) {
+                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+            }
+
+            candidatura.setVersion(candidatura.getVersion() + 1);
+
         } catch(Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao desativar candidatura!");
