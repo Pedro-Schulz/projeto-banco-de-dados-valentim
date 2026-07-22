@@ -115,25 +115,20 @@ public class VagaRepository {
         return vagas;
     }
 
-    public void desativar(Vaga vaga) throws RuntimeException {
+    public void desativar(Long id) throws RuntimeException {
         String sql = """
                     UPDATE vagas
                     SET ativo = FALSE
-                    WHERE id_vaga = ? AND version = ?;
+                    WHERE id_vaga = ? AND ativo = true;
                 """;
 
         try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, vaga.getIdVaga());
-            p.setInt(2, vaga.getVersion());
+            p.setLong(1, id);
 
-            if(p.executeUpdate() == 0) {
-                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
-            }
-
-            vaga.setVersion(vaga.getVersion() + 1);
+            p.executeUpdate();
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -164,25 +164,20 @@ public class FuncionarioRepository {
         return funcionarios;
     }
 
-    public void desativar(Funcionario funcionario) throws RuntimeException {
+    public void desativar(Long id) throws RuntimeException {
         String sql = """
             UPDATE funcionarios
             SET ativo = false
-            WHERE id_funcionario = ? AND version = ?;
+            WHERE id_funcionario = ? AND ativo = true;
         """;
 
         try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, funcionario.getIdFuncionario());
-            p.setInt(2, funcionario.getVersion());
+            p.setLong(1, id);
 
-            if(p.executeUpdate() == 0) {
-                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
-            }
-
-            funcionario.setVersion(funcionario.getVersion() + 1);
+            p.executeUpdate();
 
         } catch(Exception e) {
             e.printStackTrace();

@@ -115,25 +115,20 @@ public class CandidatoRepository {
         return candidatos;
     }
 
-    public void desativar(Candidato candidato) {
+    public void desativar(Long id) {
         String sql = """
             UPDATE candidatos
             SET ativo = FALSE
-            WHERE id_candidato = ? AND version = ?;
+            WHERE id_candidato = ? AND ativo = true;
         """;
 
         try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, candidato.getIdCandidato());
-            p.setInt(2, candidato.getVersion());
+            p.setLong(1, id);
 
-            if(p.executeUpdate() == 0) {
-                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
-            }
-
-            candidato.setVersion(candidato.getVersion() + 1);
+            p.executeUpdate();
 
         } catch(Exception e) {
             e.printStackTrace();

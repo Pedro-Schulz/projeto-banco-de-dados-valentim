@@ -38,7 +38,8 @@ public class FolhaDePagamentoRepository {
             }
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao salvar folha de pagamento!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao salvar folha de pagamento!");
         }
     }
 
@@ -64,7 +65,8 @@ public class FolhaDePagamentoRepository {
             return null;
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao buscar folha de pagamento!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao buscar folha de pagamento!");
         }
     }
 
@@ -97,7 +99,8 @@ public class FolhaDePagamentoRepository {
                 folhasDePagamento.add(folhaDePagamento);
             }
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao listar folhas de pagamento! \n", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao listar folhas de pagamento! \n");
         }
 
         return folhasDePagamento;
@@ -118,7 +121,8 @@ public class FolhaDePagamentoRepository {
             p.executeUpdate();
 
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao dessativar folha de pagamento!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao dessativar folha de pagamento!");
         }
     }
 
@@ -148,32 +152,29 @@ public class FolhaDePagamentoRepository {
             folha.setVersion(folha.getVersion() + 1);
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao atualizar folha de pagamento!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar folha de pagamento!");
         }
     }
 
-    public void desativar(FolhaDePagamento folhaDePagamento) throws RuntimeException {
+    public void desativar(Long id) throws RuntimeException {
         String sql = """
             UPDATE folhas_de_pagamento
             SET ativo = false
-            WHERE id_folha = ? AND version = ?;
+            WHERE id_folha = ? AND ativo = true;
         """;
 
         try (
                 Connection c = ConnectionFactory.getConnection();
                 PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, folhaDePagamento.getIdFolha());
-            p.setInt(2, folhaDePagamento.getVersion());
+            p.setLong(1, id);
 
-            if(p.executeUpdate() == 0) {
-                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
-            }
-
-            folhaDePagamento.setVersion(folhaDePagamento.getVersion() + 1);
+            p.executeUpdate();
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao desativar folha de pagamento!", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao desativar folha de pagamento!");
         }
     }
 
@@ -196,7 +197,8 @@ public class FolhaDePagamentoRepository {
             return rs.next();
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao verificar vínculo folha de pagamento -> funcionário", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao verificar vínculo folha de pagamento -> funcionário");
         }
     }
 

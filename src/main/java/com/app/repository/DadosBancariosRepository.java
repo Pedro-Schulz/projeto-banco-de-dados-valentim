@@ -114,25 +114,20 @@ public class DadosBancariosRepository {
         }
     }
 
-    public void desativar(DadosBancarios dadosBancarios) throws RuntimeException {
+    public void desativar(Long id) throws RuntimeException {
         String sql = """
             UPDATE dados_bancarios
             SET ativo = false
-            WHERE id_dados_bancarios = ? AND version = ?;
+            WHERE id_dados_bancarios = ? AND ativo = true;
         """;
 
         try (
             Connection c = ConnectionFactory.getConnection();
             PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, dadosBancarios.getIdDadosBancarios());
-            p.setInt(2, dadosBancarios.getVersion());
+            p.setLong(1, id);
 
-            if(p.executeUpdate() == 0) {
-                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
-            }
-
-            dadosBancarios.setVersion(dadosBancarios.getVersion() + 1);
+            p.executeUpdate();
 
         } catch(Exception e) {
             e.printStackTrace();
