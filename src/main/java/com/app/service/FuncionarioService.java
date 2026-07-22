@@ -9,17 +9,10 @@ import com.app.repository.FuncionarioRepository;
 import java.util.ArrayList;
 
 public class FuncionarioService {
-    private final FuncionarioRepository funcionarioRepository;
-    private final ContratoRepository contratoRepository;
-    private final DadosBancariosRepository dadosBancariosRepository;
-    private final FolhaDePagamentoRepository folhaDePagamentoRepository;
-
-    public FuncionarioService(FuncionarioRepository funcionarioRepository, ContratoRepository contratoRepository, DadosBancariosRepository dadosBancariosRepository, FolhaDePagamentoRepository folhaDePagamentoRepository) {
-        this.funcionarioRepository = funcionarioRepository;
-        this.contratoRepository = contratoRepository;
-        this.dadosBancariosRepository = dadosBancariosRepository;
-        this.folhaDePagamentoRepository = folhaDePagamentoRepository;
-    }
+    private final FuncionarioRepository funcionarioRepository = new FuncionarioRepository();
+    private final ContratoService contratoService = new ContratoService();
+    private final DadosBancariosService dadosBancariosService = new DadosBancariosService();
+    private final FolhaDePagamentoService folhaDePagamentoService = new FolhaDePagamentoService();
 
     public void salvar(Funcionario funcionario) {
         funcionarioRepository.salvar(funcionario);
@@ -34,7 +27,7 @@ public class FuncionarioService {
     }
 
     public StatusVinculos desativar(Long id) {
-        if(dadosBancariosRepository.vinculoFuncionario(id) || contratoRepository.vinculoFuncionario(id) || folhaDePagamentoRepository.vinculoFuncionario(id)) {
+        if(dadosBancariosService.vinculoFuncionario(id) || contratoService.vinculoFuncionario(id) || folhaDePagamentoService.vinculoFuncionario(id)) {
             return StatusVinculos.POSSUI_VINCULOS;
         }
         funcionarioRepository.desativar(id);
@@ -43,5 +36,9 @@ public class FuncionarioService {
 
     public void desativarPorVaga(Long idVaga) {
         funcionarioRepository.desativarPorVaga(idVaga);
+    }
+
+    public boolean vinculoVaga(Long idVaga) {
+        return funcionarioRepository.vinculoVaga(idVaga);
     }
 }

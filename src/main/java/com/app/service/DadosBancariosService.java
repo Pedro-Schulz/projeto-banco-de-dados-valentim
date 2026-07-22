@@ -7,11 +7,7 @@ import com.app.repository.DadosBancariosRepository;
 import java.util.ArrayList;
 
 public class DadosBancariosService {
-    private final DadosBancariosRepository dadosBancariosRepository;
-
-    public DadosBancariosService(DadosBancariosRepository dadosBancariosRepository) {
-        this.dadosBancariosRepository = dadosBancariosRepository;
-    }
+    private final DadosBancariosRepository dadosBancariosRepository = new DadosBancariosRepository();
 
     public void salvar(DadosBancarios dadosBancarios) {
         dadosBancariosRepository.salvar(dadosBancarios);
@@ -31,5 +27,9 @@ public class DadosBancariosService {
 
     public void desativarPorFuncionario(Long idFuncionario) {
         dadosBancariosRepository.desativarPorFuncionario(idFuncionario);
+    }
+
+    public boolean vinculoFuncionario(Long idFuncionario) {
+        return dadosBancariosRepository.vinculoFuncionario(idFuncionario);
     }
 }

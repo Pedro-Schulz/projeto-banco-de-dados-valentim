@@ -9,13 +9,8 @@ import com.app.repository.DepartamentoRepository;
 import com.app.repository.VagaRepository;
 
 public class DepartamentoService {
-    private final DepartamentoRepository departamentoRepository;
-    private final VagaRepository vagaRepository;
-
-    public DepartamentoService(DepartamentoRepository departamentoRepository, VagaRepository vagaRepository) {
-        this.departamentoRepository = departamentoRepository;
-        this.vagaRepository = vagaRepository;
-    }
+    private final DepartamentoRepository departamentoRepository = new DepartamentoRepository();
+    private final VagaService vagaService = new VagaService();
 
     public void salvar(Departamento departamento) {
         departamentoRepository.salvar(departamento);
@@ -30,10 +25,10 @@ public class DepartamentoService {
     }
 
     public StatusVinculos desativar(Long id) {
-        if(vagaRepository.vinculoDepartamento(id)) {
+        if(vagaService.vinculoDepartamento(id)) {
             return StatusVinculos.POSSUI_VINCULOS;
-        } else {
-            return StatusVinculos.SUCESSO;
         }
+        departamentoRepository.desativar(id);
+        return StatusVinculos.SUCESSO;
     }
 }

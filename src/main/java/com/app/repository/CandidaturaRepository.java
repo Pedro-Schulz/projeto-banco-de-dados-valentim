@@ -176,7 +176,7 @@ public class CandidaturaRepository {
         }
     }
 
-    public boolean vinculoVaga(Long id) throws RuntimeException {
+    public boolean vinculoVaga(Long idVaga) throws RuntimeException {
         String sql = """
             SELECT 1
             FROM candidaturas
@@ -188,7 +188,7 @@ public class CandidaturaRepository {
                 Connection c = ConnectionFactory.getConnection();
                 PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, id);
+            p.setLong(1, idVaga);
 
             ResultSet rs = p.executeQuery();
 

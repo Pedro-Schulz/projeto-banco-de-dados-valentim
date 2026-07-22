@@ -6,11 +6,7 @@ import com.app.repository.ContratoRepository;
 import java.util.ArrayList;
 
 public class ContratoService {
-    private final ContratoRepository contratoRepository;
-
-    public ContratoService(ContratoRepository contratoRepository) {
-        this.contratoRepository = contratoRepository;
-    }
+    private final ContratoRepository contratoRepository = new ContratoRepository();
 
     public void salvar(Contrato contrato) {
         contratoRepository.salvar(contrato);
@@ -30,5 +26,9 @@ public class ContratoService {
 
     public void desativarPorFuncionario(Long idFuncionario) {
         contratoRepository.desativarPorFuncionario(idFuncionario);
+    }
+
+    public boolean vinculoFuncionario(Long idFuncionario) {
+        return contratoRepository.vinculoFuncionario(idFuncionario);
     }
 }

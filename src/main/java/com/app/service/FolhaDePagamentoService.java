@@ -7,11 +7,7 @@ import com.app.repository.FolhaDePagamentoRepository;
 import java.util.ArrayList;
 
 public class FolhaDePagamentoService {
-    private final FolhaDePagamentoRepository folhaDePagamentoRepository;
-
-    public FolhaDePagamentoService(FolhaDePagamentoRepository folhaDePagamentoRepository) {
-        this.folhaDePagamentoRepository = folhaDePagamentoRepository;
-    }
+    private final FolhaDePagamentoRepository folhaDePagamentoRepository = new FolhaDePagamentoRepository();
 
     public void salvar(FolhaDePagamento folhaDePagamento) {
         folhaDePagamentoRepository.salvar(folhaDePagamento);
@@ -31,5 +27,9 @@ public class FolhaDePagamentoService {
 
     public void desativarPorFuncionario(Long idFuncionario) {
         folhaDePagamentoRepository.desativar(idFuncionario);
+    }
+
+    public boolean vinculoFuncionario(Long idFuncionario) {
+        return folhaDePagamentoRepository.vinculoFuncionario(idFuncionario);
     }
 }

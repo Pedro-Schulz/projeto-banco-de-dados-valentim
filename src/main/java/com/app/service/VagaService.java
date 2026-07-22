@@ -10,15 +10,9 @@ import com.app.repository.FuncionarioRepository;
 import com.app.repository.VagaRepository;
 
 public class VagaService {
-    private final VagaRepository vagaRepository;
-    private final CandidaturaRepository candidaturaRepository;
-    private final FuncionarioRepository funcionarioRepository;
-
-    public VagaService(VagaRepository vagaRepository, CandidaturaRepository candidaturaRepository, FuncionarioRepository funcionarioRepository) {
-        this.vagaRepository = vagaRepository;
-        this.candidaturaRepository = candidaturaRepository;
-        this.funcionarioRepository = funcionarioRepository;
-    }
+    private final VagaRepository vagaRepository = new VagaRepository();
+    private final CandidaturaService candidaturaService = new CandidaturaService();
+    private final FuncionarioService funcionarioService = new FuncionarioService();
 
     public void salvar(Vaga vaga) {
         vagaRepository.salvar(vaga);
@@ -33,7 +27,7 @@ public class VagaService {
     }
 
     public StatusVinculos desativar(Long id) {
-        if(candidaturaRepository.vinculoVaga(id) || funcionarioRepository.vinculoVaga(id)) {
+        if(candidaturaService.vinculoVaga(id) || funcionarioService.vinculoVaga(id)) {
             return StatusVinculos.POSSUI_VINCULOS;
         } else {
             return  StatusVinculos.SUCESSO;
@@ -42,5 +36,9 @@ public class VagaService {
 
     public void desativarPorDepartamento(Long idDepartamento) {
         vagaRepository.desativarPorDepartamento(idDepartamento);
+    }
+
+    public boolean vinculoDepartamento(Long idDepartamento) {
+        return vagaRepository.vinculoDepartamento(idDepartamento);
     }
 }

@@ -106,25 +106,6 @@ public class FolhaDePagamentoRepository {
         return folhasDePagamento;
     }
 
-    public void desativarPorFuncionario(Long idFuncionario) throws RuntimeException {
-        String sql = """
-            UPDATE folhas_de_pagamento
-            SET ativo = false
-            WHERE id_funcionario = ?;
-        """;
-
-        try (
-                Connection c = ConnectionFactory.getConnection();
-                PreparedStatement p = c.prepareStatement(sql);
-        ) {
-            p.setLong(1, idFuncionario);
-            p.executeUpdate();
-
-        } catch(Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Erro ao dessativar folha de pagamento!");
-        }
-    }
 
     public void atualizar(FolhaDePagamento folha) throws RuntimeException {
         String sql = """
@@ -175,6 +156,26 @@ public class FolhaDePagamentoRepository {
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao desativar folha de pagamento!");
+        }
+    }
+
+    public void desativarPorFuncionario(Long idFuncionario) throws RuntimeException {
+        String sql = """
+            UPDATE folhas_de_pagamento
+            SET ativo = false
+            WHERE id_funcionario = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, idFuncionario);
+            p.executeUpdate();
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao dessativar folha de pagamento!");
         }
     }
 

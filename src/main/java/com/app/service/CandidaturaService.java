@@ -12,11 +12,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class CandidaturaService {
-    private final CandidaturaRepository candidaturaRepository;
-
-    public CandidaturaService(CandidaturaRepository candidaturaRepository) {
-        this.candidaturaRepository = candidaturaRepository;
-    }
+    private final CandidaturaRepository candidaturaRepository = new CandidaturaRepository();
 
     public void salvar(Candidatura candidatura) {
         candidaturaRepository.salvar(candidatura);
@@ -40,5 +36,13 @@ public class CandidaturaService {
 
     public void desativarPorCandidato(Long idCandidato) {
         candidaturaRepository.desativarPorCandidato(idCandidato);
+    }
+
+    public boolean vinculoCandidato(Long idCandidato) {
+        return candidaturaRepository.vinculoCandidato(idCandidato);
+    }
+
+    public boolean vinculoVaga(Long idVaga) {
+        return candidaturaRepository.vinculoVaga(idVaga);
     }
 }

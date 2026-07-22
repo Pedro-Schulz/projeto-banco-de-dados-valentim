@@ -8,13 +8,8 @@ import com.app.repository.CandidaturaRepository;
 import java.util.ArrayList;
 
 public class CandidatoService {
-    private final CandidatoRepository candidatoRepository;
-    private final CandidaturaRepository candidaturaRepository;
-
-    public CandidatoService(CandidatoRepository candidatoRepository, CandidaturaRepository candidaturaRepository) {
-        this.candidatoRepository = candidatoRepository;
-        this.candidaturaRepository = candidaturaRepository;
-    }
+    private final CandidatoRepository candidatoRepository = new CandidatoRepository();
+    private final CandidaturaService candidaturaService = new CandidaturaService();
 
     public void salvar(Candidato candidato) {
         candidatoRepository.salvar(candidato);
@@ -29,10 +24,10 @@ public class CandidatoService {
     }
 
     public StatusVinculos desativar(Long id) {
-        if(candidaturaRepository.vinculoCandidato(id)) {
+        if(candidaturaService.vinculoCandidato(id)) {
             return StatusVinculos.POSSUI_VINCULOS;
-        } else {
-            return StatusVinculos.SUCESSO;
         }
+        candidatoRepository.desativar(id);
+        return StatusVinculos.SUCESSO;
     }
 }
