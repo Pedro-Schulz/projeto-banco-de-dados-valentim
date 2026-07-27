@@ -107,6 +107,35 @@ public class ContratoRepository {
         }
     }
 
+    public void atualizar(Contrato contrato) throws RuntimeException {
+        String sql = """
+            UPDATE contratos
+            SET status_contrato = ?,data_emissao = ?, prazo = ?,  version = version + 1
+            WHERE id_contrato = ? AND version = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setBoolean(1, contrato.getStatusContrato());
+            p.setDate(2, java.sql.Date.valueOf(contrato.getDataEmissao()));
+            p.setInt(3, contrato.getPrazo());
+            p.setLong(4, contrato.getIdContrato());
+            p.setInt(5, contrato.getVersion());
+
+            if(p.executeUpdate() == 0) {
+                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+            }
+
+            contrato.setVersion(contrato.getVersion() + 1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar contrato!");
+        }
+    }
+
     public void desativar(Long id) throws RuntimeException {
         String sql = """
             UPDATE contratos

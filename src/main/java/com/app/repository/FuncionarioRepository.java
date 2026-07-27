@@ -1,6 +1,7 @@
 package com.app.repository;
 
 import com.app.config.ConnectionFactory;
+import com.app.model.FolhaDePagamento;
 import com.app.model.Funcionario;
 import com.app.model.Vaga;
 import java.sql.*;
@@ -162,6 +163,40 @@ public class FuncionarioRepository {
         }
 
         return funcionarios;
+    }
+
+    public void atualizar(Funcionario funcionario) throws RuntimeException {
+        String sql = """
+            UPDATE funcionarios
+            SET nome = ?, data_nascimento = ?, cpf = ?, cep = ?, email = ?, telefone = ?, estadoCivil = ?, genero = ?, version = version + 1
+            WHERE id_funcionario = ? AND version = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setString(1, funcionario.getNome());
+            p.setDate(2, Date.valueOf(funcionario.getDataNascimento()));
+            p.setString(3, funcionario.getCpf());
+            p.setString(4, funcionario.getCep());
+            p.setString(5, funcionario.getEmail());
+            p.setString(6, funcionario.getTelefone());
+            p.setString(7, funcionario.getEstadoCivil());
+            p.setString(8, funcionario.getGenero());
+            p.setLong(9, funcionario.getIdFuncionario());
+            p.setInt(10, funcionario.getVersion());
+
+            if(p.executeUpdate() == 0) {
+                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+            }
+
+            funcionario.setVersion(funcionario.getVersion() + 1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar funcionario!");
+        }
     }
 
     public void desativar(Long id) throws RuntimeException {

@@ -2,6 +2,7 @@ package com.app.repository;
 
 import com.app.config.ConnectionFactory;
 import com.app.model.DadosBancarios;
+import com.app.model.FolhaDePagamento;
 import com.app.model.Funcionario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -111,6 +112,35 @@ public class DadosBancariosRepository {
         } catch(Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao listar os dados bancários! \n");
+        }
+    }
+
+    public void atualizar(DadosBancarios dadosBancarios) throws RuntimeException {
+        String sql = """
+            UPDATE dados_bancarios
+            SET numero_conta = ?,instituicao_bancaria = ?, agencia_bancaria = ?,version = version + 1
+            WHERE id_dados_bancarios = ? AND version = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setInt(1, dadosBancarios.getNumeroConta());
+            p.setString(2, dadosBancarios.getInstituicaoBancaria());
+            p.setString(3, dadosBancarios.getAgenciaBancaria());
+            p.setLong(4, dadosBancarios.getIdDadosBancarios());
+            p.setInt(5, dadosBancarios.getVersion());
+
+            if(p.executeUpdate() == 0) {
+                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+            }
+
+            dadosBancarios.setVersion(dadosBancarios.getVersion() + 1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar dados bancarios!");
         }
     }
 

@@ -2,6 +2,8 @@ package com.app.repository;
 
 import com.app.config.ConnectionFactory;
 import com.app.model.Candidato;
+import com.app.model.FolhaDePagamento;
+
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -113,6 +115,40 @@ public class CandidatoRepository {
             throw new RuntimeException("Erro ao listar candidatos!");
         }
         return candidatos;
+    }
+
+    public void atualizar(Candidato candidato) throws RuntimeException {
+        String sql = """
+            UPDATE candidatos
+            SET nome = ?, cpf = ?, cep = ?, email = ?, telefone = ?, genero = ?, estado_civil = ?, data_nascimento = ?, version = version + 1
+            WHERE id_candidato = ? AND version = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setString(1, candidato.getNome());
+            p.setString(2, candidato.getCpf());
+            p.setString(3, candidato.getCep());
+            p.setString(4, candidato.getEmail());
+            p.setString(5, candidato.getTelefone());
+            p.setString(6, candidato.getGenero());
+            p.setString(7, candidato.getEstadoCivil());
+            p.setDate(8, Date.valueOf(candidato.getDataNascimento()));
+            p.setLong(9, candidato.getIdCandidato());
+            p.setInt(10, candidato.getVersion());
+
+            if(p.executeUpdate() == 0) {
+                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+            }
+
+            candidato.setVersion(candidato.getVersion() + 1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar candidato!");
+        }
     }
 
     public void desativar(Long id) {

@@ -2,6 +2,7 @@ package com.app.repository;
 
 import com.app.config.ConnectionFactory;
 import com.app.model.Departamento;
+import com.app.model.Usuario;
 import com.app.model.Vaga;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -113,6 +114,35 @@ public class VagaRepository {
             throw new RuntimeException("Erro ao listar as vagas!");
         }
         return vagas;
+    }
+
+    public void atualizar(Vaga vaga) throws RuntimeException {
+        String sql = """
+            UPDATE vagas
+            SET turno = ?, salario_hora = ?, cargo = ?, version = version + 1
+            WHERE id_vaga = ? AND version = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setString(1, vaga.getTurno());
+            p.setDouble(2, vaga.getSalarioHora());
+            p.setString(3, vaga.getCargo());
+            p.setLong(4, vaga.getIdVaga());
+            p.setInt(5, vaga.getVersion());
+
+            if(p.executeUpdate() == 0) {
+                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+            }
+
+            vaga.setVersion(vaga.getVersion() + 1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar vaga!");
+        }
     }
 
     public void desativar(Long id) throws RuntimeException {

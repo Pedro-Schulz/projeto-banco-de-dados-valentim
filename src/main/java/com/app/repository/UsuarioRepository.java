@@ -1,11 +1,10 @@
 package com.app.repository;
 
 import com.app.config.ConnectionFactory;
+import com.app.model.Funcionario;
 import com.app.model.Usuario;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+
+import java.sql.*;
 
 public class UsuarioRepository {
     public void salvar(Usuario usuario) throws RuntimeException {
@@ -64,5 +63,34 @@ public class UsuarioRepository {
             throw new RuntimeException("Erro ao buscar funcionário!");
         }
         return null;
+    }
+
+    public void atualizar(Usuario usuario) throws RuntimeException {
+        String sql = """
+            UPDATE usuarios
+            SET senha = ?, perfil = ?, ativo = ?, version = version + 1
+            WHERE id_usuario = ? AND version = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setString(1, usuario.getSenhaHash());
+            p.setString(2, usuario.getPerfil());
+            p.setBoolean(3, usuario.getAtivo());
+            p.setString(4, usuario.getCpf());
+            p.setInt(5, usuario.getVersion());
+
+            if(p.executeUpdate() == 0) {
+                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+            }
+
+            usuario.setVersion(usuario.getVersion() + 1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar usuario!");
+        }
     }
 }
