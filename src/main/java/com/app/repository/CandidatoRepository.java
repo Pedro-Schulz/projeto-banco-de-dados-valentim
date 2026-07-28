@@ -2,23 +2,24 @@ package com.app.repository;
 
 import com.app.config.ConnectionFactory;
 import com.app.model.Candidato;
-import java.sql.*;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class CandidatoRepository {
 
     public void salvar(Candidato candidato) {
         String sql = """
-            INSERT INTO candidatos (nome, cpf, cep, email, telefone, genero, estado_civil, data_nascimento)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+            INSERT INTO candidatos (nome, cpf, cep, email, telefone, genero, estado_civil, data_nascimento, ativo)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ) {
             p.setString(1, candidato.getNome());
             p.setString(2, candidato.getCpf());
@@ -28,6 +29,7 @@ public class CandidatoRepository {
             p.setString(6, candidato.getGenero());
             p.setString(7, candidato.getEstadoCivil());
             p.setDate(8, Date.valueOf(candidato.getDataNascimento()));
+            p.setBoolean(9, candidato.getAtivo());
 
             p.executeUpdate();
 
@@ -51,8 +53,8 @@ public class CandidatoRepository {
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, id);
 
@@ -69,8 +71,7 @@ public class CandidatoRepository {
                         rs.getString("genero"),
                         rs.getString("estado_civil"),
                         rs.getDate("data_nascimento").toLocalDate(),
-                        rs.getBoolean("ativo"),
-                        rs.getInt("version")
+                        rs.getBoolean("ativo")
                 );
                 return candidato;
             }
@@ -103,8 +104,7 @@ public class CandidatoRepository {
                         rs.getString("genero"),
                         rs.getString("estado_civil"),
                         rs.getDate("data_nascimento").toLocalDate(),
-                        rs.getBoolean("ativo"),
-                        rs.getInt("version")
+                        rs.getBoolean("ativo")
                 );
                 candidatos.add(candidato);
             }
@@ -123,8 +123,8 @@ public class CandidatoRepository {
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, id);
 

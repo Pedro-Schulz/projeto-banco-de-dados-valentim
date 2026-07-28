@@ -1,18 +1,21 @@
 package com.app.service;
 
-import com.app.enums.StatusVinculos;
 import com.app.model.Funcionario;
-import com.app.repository.ContratoRepository;
-import com.app.repository.DadosBancariosRepository;
-import com.app.repository.FolhaDePagamentoRepository;
 import com.app.repository.FuncionarioRepository;
+
 import java.util.ArrayList;
 
 public class FuncionarioService {
-    private final FuncionarioRepository funcionarioRepository = new FuncionarioRepository();
-    private final ContratoService contratoService = new ContratoService();
-    private final DadosBancariosService dadosBancariosService = new DadosBancariosService();
-    private final FolhaDePagamentoService folhaDePagamentoService = new FolhaDePagamentoService();
+
+    private FuncionarioRepository funcionarioRepository;
+
+    public FuncionarioService() {
+        this.funcionarioRepository = new FuncionarioRepository();
+    }
+
+    public FuncionarioService(FuncionarioRepository funcionarioRepository) {
+        this.funcionarioRepository = funcionarioRepository;
+    }
 
     public void salvar(Funcionario funcionario) {
         funcionarioRepository.salvar(funcionario);
@@ -26,12 +29,8 @@ public class FuncionarioService {
         return funcionarioRepository.listarTodos();
     }
 
-    public StatusVinculos desativar(Long id) {
-        if(dadosBancariosService.vinculoFuncionario(id) || contratoService.vinculoFuncionario(id) || folhaDePagamentoService.vinculoFuncionario(id)) {
-            return StatusVinculos.POSSUI_VINCULOS;
-        }
+    public void desativar(Long id) {
         funcionarioRepository.desativar(id);
-        return StatusVinculos.SUCESSO;
     }
 
     public void desativarPorVaga(Long idVaga) {
@@ -40,5 +39,13 @@ public class FuncionarioService {
 
     public boolean vinculoVaga(Long idVaga) {
         return funcionarioRepository.vinculoVaga(idVaga);
+    }
+
+    public Funcionario buscarPorEmail(String email) {
+        return funcionarioRepository.buscarPorEmail(email);
+    }
+
+    public Funcionario buscarPorCpf(String cpf) {
+        return funcionarioRepository.buscarPorCpf(cpf);
     }
 }

@@ -1,18 +1,21 @@
 package com.app.service;
 
-import com.app.config.ConnectionFactory;
-import com.app.enums.StatusVinculos;
-import com.app.model.Candidato;
 import com.app.model.Candidatura;
 import com.app.repository.CandidaturaRepository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class CandidaturaService {
-    private final CandidaturaRepository candidaturaRepository = new CandidaturaRepository();
+
+    private CandidaturaRepository candidaturaRepository;
+
+    public CandidaturaService() {
+        this.candidaturaRepository = new CandidaturaRepository();
+    }
+
+    public CandidaturaService(CandidaturaRepository candidaturaRepository) {
+        this.candidaturaRepository = candidaturaRepository;
+    }
 
     public void salvar(Candidatura candidatura) {
         candidaturaRepository.salvar(candidatura);
