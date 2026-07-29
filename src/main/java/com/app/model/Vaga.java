@@ -1,45 +1,83 @@
 package com.app.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Vaga {
+
     private Long idVaga;
-    private String turno;
-    private String cargo;
-    private Double salarioHora;
-    private Departamento departamento;
-    private Boolean ativo;
-    private Integer version = 1;
+    private String tituloVaga;
+    private String descricao;
+    private double salario;
+    private String setor;
+    private boolean disponivel;
+
+    public Vaga() {
+    }
 
     public Vaga(Long idVaga) {
         this.idVaga = idVaga;
     }
 
-    public Vaga(String cargo) {
-        this.cargo = cargo;
+    public Vaga(String tituloVaga, String descricao, double salario, String setor, boolean disponivel) {
+        this.tituloVaga = tituloVaga;
+        this.descricao = descricao;
+        this.salario = salario;
+        this.setor = setor;
+        this.disponivel = disponivel;
     }
 
-    public Vaga(String turno, String cargo, Double salarioHora, Departamento departamento, Boolean ativo) {
-        this.turno = turno;
-        this.cargo = cargo;
-        this.salarioHora = salarioHora;
-        this.departamento = departamento;
-        this.ativo = ativo;
+    public Vaga(Long idVaga, String tituloVaga, String descricao, double salario, String setor, boolean disponivel) {
+        this.idVaga = idVaga;
+        this.tituloVaga = tituloVaga;
+        this.descricao = descricao;
+        this.salario = salario;
+        this.setor = setor;
+        this.disponivel = disponivel;
     }
 
-    @Override
-    public String toString() {
-        return "\n> ID: " + idVaga +
-                "\n> TURNO: " + turno +
-                "\n> CARGO: " + cargo +
-                "\n> ID DEPARTAMENTO: " + departamento.getIdDepartamento() +
-                "\n> SALÁRIO P/ HORA: " + salarioHora;
+    public Long getIdVaga() {
+        return idVaga;
+    }
+
+    public void setIdVaga(Long idVaga) {
+        this.idVaga = idVaga;
+    }
+
+    public String getTituloVaga() {
+        return tituloVaga;
+    }
+
+    public void setTituloVaga(String tituloVaga) {
+        this.tituloVaga = tituloVaga;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public double getSalario() {
+        return salario;
+    }
+
+    public void setSalario(double salario) {
+        this.salario = salario;
+    }
+
+    public String getSetor() {
+        return setor;
+    }
+
+    public void setSetor(String setor) {
+        this.setor = setor;
+    }
+
+    public boolean isDisponivel() {
+        return disponivel;
+    }
+
+    public void setDisponivel(boolean disponivel) {
+        this.disponivel = disponivel;
     }
 }

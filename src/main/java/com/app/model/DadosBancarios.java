@@ -1,37 +1,87 @@
 package com.app.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class DadosBancarios {
+
     private Long idDadosBancarios;
     private Integer numeroConta;
     private String instituicaoBancaria;
     private String agenciaBancaria;
     private Funcionario funcionario;
-    private Boolean ativo;
-    private Integer version = 1;
+    private Boolean contaAtiva;
 
-    public DadosBancarios(Integer numeroConta, String instituicaoBancaria, String agenciaBancaria, Funcionario funcionario, Boolean ativo) {
+    public DadosBancarios() {
+    }
+
+    public DadosBancarios(Integer numeroConta, String instituicaoBancaria, String agenciaBancaria, Funcionario funcionario, Boolean contaAtiva) {
         this.numeroConta = numeroConta;
         this.instituicaoBancaria = instituicaoBancaria;
         this.agenciaBancaria = agenciaBancaria;
         this.funcionario = funcionario;
-        this.ativo = ativo;
+        this.contaAtiva = contaAtiva;
     }
 
-    @Override
-    public String toString() {
-        return "\n> ID: " + idDadosBancarios +
-                "\n> ID FUNCIONÁRIO: " + funcionario.getIdFuncionario() +
-                "\n> NÚMERO DA CONTA: " + numeroConta +
-                "\n> INSTITUIÇÃO BANCÁRIA: " + instituicaoBancaria +
-                "\n> AGÊNCIA BANCÁRIA: " + agenciaBancaria;
+    public DadosBancarios(Long idDadosBancarios, Integer numeroConta, String instituicaoBancaria, String agenciaBancaria, Funcionario funcionario, Boolean contaAtiva) {
+        this.idDadosBancarios = idDadosBancarios;
+        this.numeroConta = numeroConta;
+        this.instituicaoBancaria = instituicaoBancaria;
+        this.agenciaBancaria = agenciaBancaria;
+        this.funcionario = funcionario;
+        this.contaAtiva = contaAtiva;
+    }
+
+    public Long getIdDadosBancarios() {
+        return idDadosBancarios;
+    }
+
+    public void setIdDadosBancarios(Long idDadosBancarios) {
+        this.idDadosBancarios = idDadosBancarios;
+    }
+
+    public Integer getNumeroConta() {
+        return numeroConta;
+    }
+
+    public void setNumeroConta(Integer numeroConta) {
+        this.numeroConta = numeroConta;
+    }
+
+    public String getInstituicaoBancaria() {
+        return instituicaoBancaria;
+    }
+
+    public void setInstituicaoBancaria(String instituicaoBancaria) {
+        this.instituicaoBancaria = instituicaoBancaria;
+    }
+
+    public String getAgenciaBancaria() {
+        return agenciaBancaria;
+    }
+
+    public void setAgenciaBancaria(String agenciaBancaria) {
+        this.agenciaBancaria = agenciaBancaria;
+    }
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
+    }
+
+    public Boolean getContaAtiva() {
+        return contaAtiva;
+    }
+
+    public void setContaAtiva(Boolean contaAtiva) {
+        this.contaAtiva = contaAtiva;
+    }
+
+    public Boolean getAtivo() {
+        return contaAtiva;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.contaAtiva = ativo;
     }
 }

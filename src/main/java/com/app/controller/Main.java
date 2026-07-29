@@ -1,266 +1,379 @@
-/*package com.app.controller;
+package com.app.controller;
 
-import com.app.enums.StatusVinculos;
-import com.app.exception.*;
-import com.app.model.*;
-import com.app.repository.*;
-import com.app.service.*;
+import com.app.model.Funcionario;
+import com.app.model.Vaga;
+import com.app.repository.UsuarioRepository;
+import com.app.service.CandidaturaService;
+import com.app.service.DepartamentoService;
+import com.app.service.FuncionarioService;
+import com.app.service.VagaService;
+
 import java.util.ArrayList;
-import java.awt.*;
 import java.util.Scanner;
 
 public class Main {
 
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final FuncionarioService funcionarioService = new FuncionarioService();
+    private static final VagaService vagaService = new VagaService();
+    private static final CandidaturaService candidaturaService = new CandidaturaService();
+    private static final DepartamentoService departamentoService = new DepartamentoService();
+
     public static void main(String[] args) {
-        FuncionarioService funcionarioService = new FuncionarioService();
-        DadosBancariosService dadosBancariosService = new DadosBancariosService();
-        FolhaDePagamentoService folhaDePagamentoService = new FolhaDePagamentoService();
-        ContratoService contratoService = new ContratoService();
-        VagaService vagaService = new VagaService();
-        DepartamentoService departamentoService = new DepartamentoService();
-        CandidatoService candidatoService = new CandidatoService();
-        CandidaturaService candidaturaService = new CandidaturaService();
-        Scanner scanner = new Scanner(System.in);
+        System.out.println("=======================================");
+        System.out.println("         SISTEMA DE GESTÃO DE RH       ");
+        System.out.println("=======================================");
 
-        int opcao = 0;
-        long id = 0;
+        if (autenticar()) {
+            menuPrincipal();
+        } else {
+            System.out.println("\nEncerrando aplicação. Até logo!");
+        }
 
-        do {
-            System.out.println("=============== MENU ===============\n1 - Criar funcionário\n2 - Desativar funcionário\n3 - Cadastrar vaga\n4 - Folha de pagamento\n5 - Departamento\n6 - Dados Bancarios\n7- Criar contrato\n8 - Candidatura\n>>>");
-            opcao = Integer.parseInt(scanner.nextLine());
+        scanner.close();
+    }
+
+    private static final UsuarioRepository usuarioRepository = new UsuarioRepository();
+
+    private static boolean autenticar() {
+        while (true) {
+            // MENU DE AUTENTICAÇÃO
+            System.out.println("\n=======================================");
+            System.out.println("            AUTENTICAÇÃO               ");
+            System.out.println("=======================================");
+            System.out.println("1. Entrar no Sistema (Login)");
+            System.out.println("2. Cadastrar Novo Usuário");
+            System.out.println("0. Sair");
+            System.out.print("Escolha uma opção: ");
+
+            int opcao = lerOpcaoInt();
 
             switch (opcao) {
                 case 1:
+                    // LOGIN EXISTENTE
+                    System.out.println("\n--- LOGIN ---");
+                    System.out.print("Digite seu CPF: ");
+                    String cpfLogin = scanner.nextLine().trim();
+                    System.out.print("Digite sua Senha: ");
+                    String senhaLogin = scanner.nextLine().trim();
+
+                    String perfil = usuarioRepository.autenticarEObterPerfil(cpfLogin, senhaLogin);
+
+                    if (perfil != null) {
+                        System.out.println("\n Login realizado com sucesso!");
+
+                        if ("ADM".equalsIgnoreCase(perfil)) {
+                            System.out.println(">>> Nível de Acesso: ADMINISTRADOR <<<");
+                            exibirMenuAdmin();
+                        } else {
+                            System.out.println(">>> Nível de Acesso: FUNCIONÁRIO <<<");
+                            exibirMenuFuncionario(cpfLogin);
+                        }
+                        return false;
+                    } else {
+                        System.out.println("\n [ERRO]: CPF/Senha incorretos ou usuário desativado!");
+                    }
                     break;
 
                 case 2:
-                    System.out.println("ID do funcionário a ser desativado: ");
-                    id = Integer.parseInt(scanner.nextLine());
+                    // CADASTRO DE NOVO USUÁRIO
+                    System.out.println("\n--- CADASTRO DE USUÁRIO ---");
+                    System.out.print("Digite o CPF do Funcionário: ");
+                    String cpfNovo = scanner.nextLine().trim();
 
-                    StatusVinculos status = funcionarioService.desativar(id);
-
-                    if(status == StatusVinculos.SUCESSO) {
-                        System.out.println("Funcionário desativado com sucesso!");
+                    if (!usuarioRepository.existeFuncionarioPorCpf(cpfNovo)) {
+                        System.out.println("\n [ERRO]: CPF não encontrado na base de funcionários!");
                         break;
                     }
 
-                    System.out.println("O funcionário informado possui vínculos, deseja desativá-los também? (S/N) ");
-                    String resposta = scanner.nextLine();
+                    System.out.print("Crie uma Senha: ");
+                    String senhaNova = scanner.nextLine().trim();
 
-                    if(resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
-                        dadosBancariosService.desativarPorFuncionario(id);
-                        contratoService.desativarPorFuncionario(id);
-                        folhaDePagamentoService.desativarPorFuncionario(id);
+                    System.out.print("Informe o Perfil (ADM / USER) [Padrão: USER]: ");
+                    String perfilNovo = scanner.nextLine().trim();
 
-                        status = funcionarioService.desativar(id);
-                        if(status == StatusVinculos.POSSUI_VINCULOS) {
-                            System.out.println("A");
-                        }
-                        System.out.println("Funcionário desativado com sucesso!");
+                    if (usuarioRepository.cadastrarUsuario(cpfNovo, senhaNova, perfilNovo)) {
+                        System.out.println("\n Usuário cadastrado com sucesso! Faça login para continuar.");
                     } else {
-                        System.out.println("Desativação cancelada!");
-                    }
-                    break;
-                case 3:
-                    System.out.println("Informe o turno");
-                    String turno = scanner.next();
-                    System.out.println("Perfeito agora informe o cargo");
-                    String cargo = scanner.next();
-                    System.out.println("Certo, informe o salário por hora");
-                    double salarioHora = scanner.nextDouble();
-                    System.out.println("Agora informe o departamento");
-                    String departamentos = scanner.next();
-                    System.out.println("Essa vaga está ativa?");
-                    boolean ativa = scanner.nextBoolean();
-                    Vaga vaga = new Vaga(turno , cargo , salarioHora,  departamentos , ativa);
-
-                case 100:
-                    try {
-                        ArrayList<Funcionario> funcionarios = funcionarioService.listarTodos();
-                        for(Funcionario funcionario : funcionarios) {
-                            if(funcionario.getVaga() == null) {
-                                System.out.println("Funcionário ID:" + funcionario.getIdFuncionario() + ", não possui vaga vinculada!");
-                            } else {
-                                System.out.println(funcionario);
-                            }
-                        }
-                        funcionarios.forEach(funcionario -> System.out.println(funcionario));
-                    } catch(Exception e) {
-                        System.out.println(e.getMessage());
+                        System.out.println("\n [ERRO]: Falha ao cadastrar usuário.");
                     }
                     break;
 
-                case 101:
-                    try {
-                        ArrayList<Vaga> vagas = vagaService.listarTodos();
-                        for(Vaga vaga : vagas) {
-                            System.out.println(vaga);
-                        }
-                    } catch(NullPointerException e) {
-                        System.out.println("Vaga com departamento null(inexistente)" + e);
-                    } catch(Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
-
-                case 102:
-                    try {
-                        ArrayList<FolhaDePagamento> folhasDePagamento = folhaDePagamentoService.listarTodos();
-                        for(FolhaDePagamento folhaDePagamento : folhasDePagamento) {
-                            if(folhaDePagamento.getFuncionario() == null) {
-                                System.out.println("Folha de pagamento ID:" + folhaDePagamento.getIdFolha() + ", não possui funcionário vinculado!");
-                            } else {
-                                System.out.println(folhaDePagamento);
-                            }
-                        }
-                    } catch(Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
-
-                case 103:
-                    try {
-                        ArrayList<Departamento> departamentos = departamentoService.listarTodos();
-                        departamentos.forEach(departamento -> System.out.println(departamento));
-                    } catch(Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
-
-                case 104:
-                    try {
-                        ArrayList<DadosBancarios> dadosBancariosList = dadosBancariosService.listarTodos();
-                        for(DadosBancarios dadosBancarios : dadosBancariosList) {
-                            if(dadosBancarios.getFuncionario() == null) {
-                                System.out.println("Dados bancários ID:" + dadosBancarios.getIdDadosBancarios() + ", não possui funcionário vinculado!");
-                            } else {
-                                System.out.println(dadosBancarios);
-                            }
-                        }
-                    } catch(Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
-
-                case 105:
-                    try {
-                        ArrayList<Contrato> contratos = contratoService.listarTodos();
-                        for(Contrato contrato : contratos) {
-                            if(contrato.getFuncionario() == null) {
-                                System.out.println("Contrato ID:" + contrato.getIdContrato() + ", não possui funcionário vinculado!");
-                            } else {
-                                System.out.println(contrato);
-                            }
-                        }
-                    } catch(Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
-
-                case 106:
-                    try {
-                        ArrayList<Candidato> candidatos = candidatoService.listarTodos();
-                        candidatos.forEach(candidato -> System.out.println(candidato));
-                    } catch(Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
-
-                case 107:
-                    try {
-                        ArrayList<Candidatura> candidaturas = candidaturaService.listarTodos();
-                        for(Candidatura candidatura : candidaturas) {
-                            if(candidatura.getVaga() == null) {
-                                System.out.println("Candidatura ID:" + candidatura.getIdCandidatura() + ", não possui vaga vinculada!");
-                            } else if(candidatura.getCandidato() == null) {
-                                System.out.println("Candidatura ID:" + candidatura.getIdCandidatura() + ", não possui candidato vinculado!");
-                            } else {
-                                System.out.println(candidatura);
-                            }
-                        }
-                        candidaturas.forEach(candidatura -> System.out.println(candidatura));
-                    } catch(Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
+                case 0:
+                    System.out.println("Saindo do sistema...");
+                    return false;
 
                 default:
+                    System.out.println("\n Opção inválida!");
+            }
+        }
+    }
+
+    // --- PAINEL DO ADMINISTRADOR ---
+    private static void exibirMenuAdmin() {
+        boolean rodando = true;
+
+        while (rodando) {
+            System.out.println("\n=======================================");
+            System.out.println("       PAINEL DO ADMINISTRADOR         ");
+            System.out.println("=======================================");
+            System.out.println("1. Gestão de Funcionários");
+            System.out.println("2. Gestão de Vagas");
+            System.out.println("3. Gestão de Candidaturas");
+            System.out.println("4. Cadastrar Novo Usuário no Sistema");
+            System.out.println("0. Sair / Logoff");
+            System.out.print("Escolha uma opção: ");
+
+            int opcao = lerOpcaoInt();
+
+            switch (opcao) {
+                case 1:
+                    menuFuncionarios();
+                    break;
+
+                case 2:
+                    menuVagas();
+                    break;
+
+                case 3:
+                    menuCandidaturas();
                     break;
 
                 case 4:
-                    System.out.println("Fale as horas trabalhadas");
-                    int horasTrabalhadas = scanner.nextInt();
-                    System.out.println("Quando foi a data de emissão?");
-                    int dataEmissao = scanner.nextInt();
-                    System.out.println("Quantos descontos tem?");
-                    int descontos = scanner.nextInt();
-                    System.out.println("Qual a quantidade de horas-extras?");
-                    int horasExtras = scanner.nextInt();
-                    System.out.println("Informe o nome do funcionario");
-                    String nomeFuncionario = scanner.next();
-                    System.out.println("Está ativo?");
-                    boolean funicionarioAtivo = scanner.nextBoolean();
-            FolhaDePagamento folhadepagamento = new FolhaDePagamento(horasTrabalhadas , dataEmissao , descontos , horasExtras , nomeFuncionario , funicionarioAtivo);
-            break;
-
-            case 5:
-                System.out.println("Informe o nome do departamento");
-                String departamentoNome = scanner.next();
-                System.out.println("Informe a quantidade de gastos que ele fez");
-                double gastos = scanner.nextDouble();
-                System.out.println("Informe o quanto de retorno ele fez");
-                double retorno = scanner.nextDouble();
-                System.out.println("Ele ainda está ativo?");
-                boolean departamentoAtivo = scanner.nextBoolean();
-                Departamento departamento = new Departamento(departamentoNome , gastos , retorno , departamentoAtivo);
-                break;
-                case 6:
-                    System.out.println("Informe o número da conta");
-                    Integer numeroConta = scanner.nextInt();
-                    System.out.println("Informe a instituição bancaria");
-                    String instituicaoBancaria = scanner.next();
-                    System.out.println("Agora informe a Agencia bancaria");
-                    String agenciaBancaria = scanner.next();
-                    System.out.println("Informe o nome do funcionario");
-                    String nomeFuncionarioBanco = scanner.next();
-                    System.out.println("Esse agencia ainda está ativa");
-                    Boolean contaAtiva = scanner.nextBoolean();
-                    DadosBancarios dadoBanco = new DadosBancarios(numeroConta , instituicaoBancaria , agenciaBancaria , nomeFuncionarioBanco , contaAtiva);
-                    break;
-                case 7:
-                System.out.println("Como está o status do contrato?");
-                boolean statusContrato = scanner.nextBoolean();
-                System.out.println("Quando foi a data do contrato?");
-                int dataContrato = scanner.nextInt();
-                    System.out.println("Quando foi o prazo do contrato?");
-                    integer prazoContrato = scanner.nextInt();
-                    System.out.println("Qual o nome do funcionario?");
-                    String nomeFuncionarioContrato = scanner.next();
-                    System.out.println("O contrato ainda está ativo");
-                    boolean contratoAtivo = scanner.nextBoolean();
-
-                    Contrato contratos = new Contrato(statusContrato , dataContrato , prazoContrato , nomeFuncionarioContrato , contratoAtivo);
+                    cadastrarUsuarioAdmin();
                     break;
 
-                case 8:
-            System.out.println("Como está o status da candidatura;");
-            Boolean statusCandidatura = scanner.nextBoolean();
-            System.out.println("Quando será a data da candidatura?");
-            int dataCandidatura = scanner.nextInt();
-            System.out.println("Quando será o prazo?");
-            int prazoCandidatura = scanner.nextInt();
-            System.out.println("Qual etapa?");
-            String etapa = scanner.next();
-            System.out.println("Qual vaga está interessado?");
-            String vagaInteresse = scanner.next();
-            System.out.println("Qual nome do candidato?");
-            String nomeCandidato = scanner.next();
-            System.out.println("Ainda está ativo essa candidatura?");
-            boolean candidaturaAtiva = scanner.nextBoolean();
-            Candidatura candidatura = new Candidatura(statusCandidatura , dataCandidatura , prazoCandidatura , etapa , vagaInteresse , nomeCandidato , candidaturaAtiva);
-            
+                case 0:
+                    System.out.println("\nSaindo do Painel Administrativo...");
+                    rodando = false;
+                    break;
 
+                default:
+                    System.out.println("\n [ERRO]: Opção inválida!");
             }
-        } while(opcao != 10);
+        }
     }
-}*/
+
+    // --- FUNÇÃO PARA CADASTRAR NOVO USUÁRIO ---
+    private static void cadastrarUsuarioAdmin() {
+        System.out.println("\n--- CADASTRAR NOVO USUÁRIO ---");
+        System.out.print("Digite o CPF do Funcionário: ");
+        String cpfNovo = scanner.nextLine().trim();
+
+        if (!usuarioRepository.existeFuncionarioPorCpf(cpfNovo)) {
+            System.out.println("\n [ERRO]: CPF não encontrado na base de funcionários!");
+            return;
+        }
+
+        System.out.print("Crie uma Senha: ");
+        String senhaNova = scanner.nextLine().trim();
+
+        System.out.print("Informe o Perfil (ADM / USER) [Padrão: USER]: ");
+        String perfilNovo = scanner.nextLine().trim();
+
+        if (usuarioRepository.cadastrarUsuario(cpfNovo, senhaNova, perfilNovo)) {
+            System.out.println("\n Usuário cadastrado com sucesso!");
+        } else {
+            System.out.println("\n [ERRO]: Falha ao cadastrar usuário.");
+        }
+    }
+
+    private static void exibirMenuFuncionario(String cpf) {
+        boolean rodando = true;
+
+        while (rodando) {
+            // SUB-MENU DO FUNCIONÁRIO
+            System.out.println("\n=== PAINEL DO FUNCIONÁRIO ===");
+            System.out.println("1. Visualizar Meus Dados");
+            System.out.println("2. Consultar Vagas Abertas");
+            System.out.println("0. Sair / Logoff");
+            System.out.print("Escolha uma opção: ");
+
+            int opcao = lerOpcaoInt();
+
+            switch (opcao) {
+                case 1:
+                    // Exibe os dados do funcionário logado
+                    System.out.println("\n--- MEUS DADOS ---");
+                    // Busca os dados do funcionário logado pelo CPF
+                    Funcionario f = funcionarioService.buscarPorCpf(cpf);
+                    if (f != null) {
+                        System.out.println("ID: " + f.getIdFuncionario());
+                        System.out.println("Nome: " + f.getNome());
+                        System.out.println("CPF: " + f.getCpf());
+                        System.out.println("E-mail: " + f.getEmail());
+                    } else {
+                        System.out.println("Não foi possível carregar os dados deste funcionário.");
+                    }
+                    break;
+
+                case 2:
+                    // Consulta e exibe todas as vagas abertas
+                    System.out.println("\n--- VAGAS ABERTAS ---");
+                    ArrayList<Vaga> vagas = vagaService.listarTodos();
+                    if (vagas.isEmpty()) {
+                        System.out.println("Nenhuma vaga aberta no momento.");
+                    } else {
+                        for (Vaga v : vagas) {
+                            System.out.println("ID: " + v.getIdVaga() + " | Vaga: " + v.getTituloVaga() + " | Salário: R$ " + v.getSalario());
+                        }
+                    }
+                    break;
+
+                case 0:
+                    System.out.println("\nSaindo do painel...");
+                    rodando = false;
+                    break;
+
+                default:
+                    System.out.println("\nOpção inválida!");
+            }
+        }
+    }
+
+    private static void menuPrincipal() {
+        int opcao = -1;
+
+        while (opcao != 0) {
+            // MENU PRINCIPAL
+            System.out.println("\n=======================================");
+            System.out.println("            MENU PRINCIPAL             ");
+            System.out.println("=======================================");
+            System.out.println("1. Gerenciar Funcionários");
+            System.out.println("2. Gerenciar Vagas");
+            System.out.println("3. Gerenciar Candidaturas");
+            System.out.println("0. Sair do Sistema");
+            System.out.print("Escolha uma opção: ");
+
+            opcao = lerOpcaoInt();
+
+            switch (opcao) {
+                case 1:
+                    menuFuncionarios();
+                    break;
+                case 2:
+                    menuVagas();
+                    break;
+                case 3:
+                    menuCandidaturas();
+                    break;
+                case 0:
+                    System.out.println("\nSaindo do sistema...");
+                    break;
+                default:
+                    System.out.println("\n Opção inválida!");
+            }
+        }
+    }
+
+    // --- 3. SUB-MENU DE FUNCIONÁRIOS ---
+    private static void menuFuncionarios() {
+        System.out.println("\n--- GESTÃO DE FUNCIONÁRIOS ---");
+        System.out.println("1. Listar todos os funcionários");
+        System.out.println("2. Buscar funcionário por ID");
+        System.out.println("3. Desativar funcionário");
+        System.out.println("0. Voltar ao menu anterior");
+        System.out.print("Escolha uma opção: ");
+
+        int opcao = lerOpcaoInt();
+
+        switch (opcao) {
+            case 1:
+                System.out.println("\n--- LISTA DE FUNCIONÁRIOS ---");
+                ArrayList<Funcionario> lista = funcionarioService.listarTodos();
+                for (Funcionario f : lista) {
+                    System.out.println("ID: " + f.getIdFuncionario() + " | Nome: " + f.getNome() + " | CPF: " + f.getCpf());
+                }
+                break;
+            case 2:
+                System.out.print("Digite o ID do funcionário: ");
+                long id = scanner.nextLong();
+                scanner.nextLine();
+                Funcionario f = funcionarioService.buscarPorId(id);
+                if (f != null) {
+                    System.out.println("\nEncontrado: " + f.getNome() + " - E-mail: " + f.getEmail());
+                } else {
+                    System.out.println("\nFuncionário não encontrado.");
+                }
+                break;
+            case 3:
+                System.out.print("Digite o ID para desativar: ");
+                long idDesativar = scanner.nextLong();
+                scanner.nextLine();
+                funcionarioService.desativar(idDesativar);
+                System.out.println("\nFuncionário desativado com sucesso!");
+                break;
+            case 0:
+                break;
+            default:
+                System.out.println("\nOpção inválida!");
+        }
+    }
+
+    // --- 4. SUB-MENU DE VAGAS ---
+    private static void menuVagas() {
+        System.out.println("\n--- GESTÃO DE VAGAS ---");
+        System.out.println("1. Listar todas as vagas");
+        System.out.println("2. Desativar vaga por ID");
+        System.out.println("0. Voltar ao menu anterior");
+        System.out.print("Escolha uma opção: ");
+
+        int opcao = lerOpcaoInt();
+
+        switch (opcao) {
+            case 1:
+                System.out.println("\n--- LISTA DE VAGAS ---");
+                ArrayList<Vaga> vagas = vagaService.listarTodos();
+                for (Vaga v : vagas) {
+                    System.out.println("ID: " + v.getIdVaga() + " | Cargo: " + v.getTituloVaga() + " | Salário: R$ " + v.getSalario());
+                }
+                break;
+            case 2:
+                System.out.print("Digite o ID da vaga para desativar: ");
+                long idVaga = scanner.nextLong();
+                scanner.nextLine();
+                vagaService.desativar(idVaga);
+                System.out.println("\nVaga desativada com sucesso!");
+                break;
+            case 0:
+                break;
+            default:
+                System.out.println("\nOpção inválida!");
+        }
+    }
+
+    // --- 5. SUB-MENU DE CANDIDATURAS ---
+    private static void menuCandidaturas() {
+        System.out.println("\n--- GESTÃO DE CANDIDATURAS ---");
+        System.out.println("1. Desativar candidatura por ID");
+        System.out.println("0. Voltar ao menu anterior");
+        System.out.print("Escolha uma opção: ");
+
+        int opcao = lerOpcaoInt();
+
+        switch (opcao) {
+            case 1:
+                System.out.print("Digite o ID da candidatura para desativar: ");
+                long idCandidatura = scanner.nextLong();
+                scanner.nextLine();
+                candidaturaService.desativar(idCandidatura);
+                System.out.println("\nCandidatura desativada com sucesso!");
+                break;
+            case 0:
+                break;
+            default:
+                System.out.println("\nOpção inválida!");
+        }
+    }
+
+    private static int lerOpcaoInt() {
+        try {
+            int val = scanner.nextInt();
+            scanner.nextLine();
+            return val;
+        } catch (Exception e) {
+            scanner.nextLine();
+            return -1;
+        }
+    }
+}

@@ -1,119 +1,111 @@
 package com.app.repository;
 
 import com.app.config.ConnectionFactory;
-import com.app.model.Candidato;
 import com.app.model.Candidatura;
-import com.app.model.FolhaDePagamento;
+import com.app.model.Funcionario;
 import com.app.model.Vaga;
+
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
-
-import java.sql.*;
 
 public class CandidaturaRepository {
 
     public void salvar(Candidatura candidatura) {
         String sql = """
-            INSERT INTO candidaturas (status_candidatura, data_candidatura, prazo, etapa, id_vaga, id_candidato)
-            VALUES (?, ?, ?, ?, ?, ?);
+            INSERT INTO candidaturas (id_funcionario, id_vaga, data_candidatura, status, ativo)
+            VALUES (?, ?, ?, ?, ?);
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ) {
-            p.setBoolean(1, candidatura.getStatusCandidatura());
-            p.setDate(2, Date.valueOf(candidatura.getDataCandidatura()));
-            p.setDate(3, Date.valueOf(candidatura.getPrazo()));
-            p.setString(4, candidatura.getEtapa());
-            p.setLong(5, candidatura.getVaga().getIdVaga());
-            p.setLong(6, candidatura.getCandidato().getIdCandidato());
+            p.setLong(1, candidatura.getFuncionario().getIdFuncionario());
+            p.setLong(2, candidatura.getVaga().getIdVaga());
+            p.setDate(3, Date.valueOf(candidatura.getDataCandidatura()));
+            p.setString(4, candidatura.getStatus());
+            p.setBoolean(5, candidatura.isAtivo());
 
             p.executeUpdate();
 
             ResultSet rs = p.getGeneratedKeys();
-
-            if(rs.next()) {
-                Long id = rs.getLong(1);
-                candidatura.setIdCandidatura(id);
+            if (rs.next()) {
+                candidatura.setIdCandidatura(rs.getLong(1));
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao salvar candidatura!");
         }
     }
 
-    public Candidatura buscarPorId(Long id) {
-        String sql = """
-            SELECT *
-            FROM candidaturas
-            WHERE id_candidatura = ?;
-        """;
-
-        try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
-        ) {
-            p.setLong(1, id);
-
-            ResultSet rs = p.executeQuery();
-
-            if(rs.next()) {
-                Candidatura candidatura = new Candidatura(
-                        rs.getLong("id_candidatura"),
-                        rs.getBoolean("status_candidatura"),
-                        rs.getDate("data_candidatura").toLocalDate(),
-                        rs.getDate("prazo").toLocalDate(),
-                        rs.getString("etapa"),
-                        new Vaga(rs.getLong("id_vaga")),
-                        new Candidato(rs.getLong("id_candidato")),
-                        rs.getBoolean("ativo"),
-                        rs.getInt("version")
-                );
-
-                return candidatura;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Erro ao buscar candidatura!");
-        }
-        return null;
-    }
-
     public ArrayList<Candidatura> listarTodos() {
-        ArrayList<Candidatura> candidaturas = new ArrayList<>();
-        String sql = """
-            SELECT c.*, v.id_vaga, candidato.id_candidato
-            FROM candidaturas AS c
-            JOIN vagas AS v ON v.id_vaga = c.id_vaga
-            JOIN candidatos AS candidato ON candidato.id_candidato = c.id_candidato;
-        """;
+        ArrayList<Candidatura> lista = new ArrayList<>();
+        String sql = "SELECT * FROM candidaturas;";
+
         try (
                 Connection c = ConnectionFactory.getConnection();
                 PreparedStatement p = c.prepareStatement(sql);
         ) {
             ResultSet rs = p.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
+                Funcionario funcionario = new Funcionario();
+                funcionario.setIdFuncionario(rs.getLong("id_funcionario"));
+
+                Vaga vaga = new Vaga();
+                vaga.setIdVaga(rs.getLong("id_vaga"));
+
                 Candidatura candidatura = new Candidatura(
                         rs.getLong("id_candidatura"),
-                        rs.getBoolean("status_candidatura"),
+                        funcionario,
+                        vaga,
                         rs.getDate("data_candidatura").toLocalDate(),
-                        rs.getDate("prazo").toLocalDate(),
-                        rs.getString("etapa"),
-                        new Vaga(rs.getLong("id_vaga")),
-                        new Candidato(rs.getLong("id_candidato")),
-                        rs.getBoolean("ativo"),
-                        rs.getInt("version")
+                        rs.getString("status"),
+                        rs.getBoolean("ativo")
                 );
-                candidaturas.add(candidatura);
+                lista.add(candidatura);
             }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao listar candidaturas!");
         }
-        return candidaturas;
+        return lista;
+    }
+
+    public Candidatura buscarPorId(Long id) {
+        String sql = "SELECT * FROM candidaturas WHERE id_candidatura = ?;";
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, id);
+            ResultSet rs = p.executeQuery();
+
+            if (rs.next()) {
+                Funcionario funcionario = new Funcionario();
+                funcionario.setIdFuncionario(rs.getLong("id_funcionario"));
+
+                Vaga vaga = new Vaga();
+                vaga.setIdVaga(rs.getLong("id_vaga"));
+
+                return new Candidatura(
+                        rs.getLong("id_candidatura"),
+                        funcionario,
+                        vaga,
+                        rs.getDate("data_candidatura").toLocalDate(),
+                        rs.getString("status"),
+                        rs.getBoolean("ativo")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao buscar candidatura por ID!");
+        }
+        return null;
     }
 
     public void atualizar(Candidatura candidatura) throws RuntimeException {
@@ -147,111 +139,79 @@ public class CandidaturaRepository {
     }
 
     public void desativar(Long id) {
-        String sql = """
-            UPDATE candidaturas
-            SET ativo = FALSE
-            WHERE id_candidatura = ? AND ativo = true;
-        """;
+        String sql = "UPDATE candidaturas SET ativo = false WHERE id_candidatura = ?;";
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, id);
-
             p.executeUpdate();
-
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao desativar candidatura!");
         }
     }
 
     public void desativarPorVaga(Long idVaga) {
-        String sql = """
-            UPDATE candidaturas
-            SET ativo = FALSE
-            WHERE id_vaga = ?;
-        """;
+        String sql = "UPDATE candidaturas SET ativo = false WHERE id_vaga = ?;";
 
         try (
                 Connection c = ConnectionFactory.getConnection();
                 PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, idVaga);
-
             p.executeUpdate();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao desativar candidatura!");
+            throw new RuntimeException("Erro ao desativar candidaturas por vaga!");
         }
     }
 
     public void desativarPorCandidato(Long idCandidato) {
-        String sql = """
-            UPDATE candidaturas
-            SET ativo = FALSE
-            WHERE id_candidato = ?;
-        """;
+        String sql = "UPDATE candidaturas SET ativo = false WHERE id_funcionario = ?;";
 
         try (
                 Connection c = ConnectionFactory.getConnection();
                 PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, idCandidato);
-
             p.executeUpdate();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao desativar candidatura!");
+            throw new RuntimeException("Erro ao desativar candidaturas por candidato!");
         }
     }
 
-    public boolean vinculoVaga(Long idVaga) throws RuntimeException {
-        String sql = """
-            SELECT 1
-            FROM candidaturas
-            WHERE id_vaga = ? AND ativo = 1
-            LIMIT 1;
-        """;
+    public boolean vinculoCandidato(Long idCandidato) {
+        String sql = "SELECT 1 FROM candidaturas WHERE id_funcionario = ? AND ativo = true LIMIT 1;";
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, idCandidato);
+            ResultSet rs = p.executeQuery();
+            return rs.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao verificar vínculo com o candidato!");
+        }
+    }
+
+    public boolean vinculoVaga(Long idVaga) {
+        String sql = "SELECT 1 FROM candidaturas WHERE id_vaga = ? AND ativo = true LIMIT 1;";
 
         try (
                 Connection c = ConnectionFactory.getConnection();
                 PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, idVaga);
-
             ResultSet rs = p.executeQuery();
-
             return rs.next();
-
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao verificar vínculo candidatura -> vaga");
-        }
-    }
-
-    public boolean vinculoCandidato(Long idCandidato) throws RuntimeException {
-        String sql = """
-            SELECT 1
-            FROM candidaturas
-            WHERE id_candidato = ? AND ativo = 1
-            LIMIT 1;
-        """;
-
-        try (
-                Connection c = ConnectionFactory.getConnection();
-                PreparedStatement p = c.prepareStatement(sql);
-        ) {
-            p.setLong(1, idCandidato);
-
-            ResultSet rs = p.executeQuery();
-
-            return rs.next();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Erro ao verificar vínculo candidatura -> candidato");
+            throw new RuntimeException("Erro ao verificar vínculo com a vaga!");
         }
     }
 }
