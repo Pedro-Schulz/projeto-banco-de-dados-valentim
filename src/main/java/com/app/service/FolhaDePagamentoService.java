@@ -1,24 +1,16 @@
 package com.app.service;
 
+import com.app.model.Candidato;
 import com.app.model.FolhaDePagamento;
 import com.app.repository.FolhaDePagamentoRepository;
 
 import java.util.ArrayList;
 
 public class FolhaDePagamentoService {
+    private final FolhaDePagamentoRepository folhaDePagamentoRepository = new FolhaDePagamentoRepository();
 
-    private FolhaDePagamentoRepository folhaDePagamentoRepository;
-
-    public FolhaDePagamentoService() {
-        this.folhaDePagamentoRepository = new FolhaDePagamentoRepository();
-    }
-
-    public FolhaDePagamentoService(FolhaDePagamentoRepository folhaDePagamentoRepository) {
-        this.folhaDePagamentoRepository = folhaDePagamentoRepository;
-    }
-
-    public void salvar(FolhaDePagamento folha) {
-        folhaDePagamentoRepository.salvar(folha);
+    public void salvar(FolhaDePagamento folhaDePagamento) {
+        folhaDePagamentoRepository.salvar(folhaDePagamento);
     }
 
     public FolhaDePagamento buscarPorId(Long id) {
@@ -34,7 +26,7 @@ public class FolhaDePagamentoService {
     }
 
     public void desativarPorFuncionario(Long idFuncionario) {
-        folhaDePagamentoRepository.desativarPorFuncionario(idFuncionario);
+        folhaDePagamentoRepository.desativar(idFuncionario);
     }
 
     public boolean vinculoFuncionario(Long idFuncionario) {

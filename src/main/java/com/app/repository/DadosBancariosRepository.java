@@ -15,18 +15,18 @@ public class DadosBancariosRepository {
     public void salvar(DadosBancarios dadosBancarios) throws RuntimeException {
         String sql = """
             INSERT INTO dados_bancarios (numero_conta, agencia_bancaria, instituicao_bancaria, id_funcionario, ativo)
-            VALUES (?, ?, ?, ?, ?);
+            VALUES (?, ?, ?, ?);
         """;
 
         try (
-                Connection c = ConnectionFactory.getConnection();
-                PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ) {
             p.setInt(1, dadosBancarios.getNumeroConta());
             p.setString(2, dadosBancarios.getAgenciaBancaria());
             p.setString(3, dadosBancarios.getInstituicaoBancaria());
             p.setLong(4, dadosBancarios.getFuncionario().getIdFuncionario());
-            p.setBoolean(5, dadosBancarios.getContaAtiva());
+            p.setBoolean(5, dadosBancarios.getAtivo());
 
             p.executeUpdate();
 
@@ -51,8 +51,8 @@ public class DadosBancariosRepository {
         """;
 
         try (
-                Connection c = ConnectionFactory.getConnection();
-                PreparedStatement p = c.prepareStatement(sql);
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, id);
 
@@ -65,12 +65,13 @@ public class DadosBancariosRepository {
                 Funcionario funcionario = fr.buscarPorId(idFuncionario);
 
                 DadosBancarios dadosBancarios = new DadosBancarios(
-                        rs.getLong("id_dados_bancarios"),
-                        rs.getInt("numero_conta"),
-                        rs.getString("instituicao_bancaria"),
-                        rs.getString("agencia_bancaria"),
-                        funcionario,
-                        rs.getBoolean("ativo")
+                    rs.getLong("id_dados_bancarios"),
+                    rs.getInt("numero_conta"),
+                    rs.getString("instituicao_bancaria"),
+                    rs.getString("agencia_bancaria"),
+                    funcionario,
+                    rs.getBoolean("ativo"),
+                    rs.getInt("version")
                 );
 
                 return dadosBancarios;
@@ -96,23 +97,21 @@ public class DadosBancariosRepository {
             ResultSet rs = p.executeQuery();
 
             while(rs.next()) {
-                Funcionario funcionario = new Funcionario();
-                funcionario.setIdFuncionario(rs.getLong("id_funcionario"));
-
                 DadosBancarios dadosBancarios = new DadosBancarios(
-                        rs.getLong("id_dados_bancarios"),
-                        rs.getInt("numero_conta"),
-                        rs.getString("instituicao_bancaria"),
-                        rs.getString("agencia_bancaria"),
-                        funcionario,
-                        rs.getBoolean("ativo")
+                    rs.getLong("id_dados_bancarios"),
+                    rs.getInt("numero_conta"),
+                    rs.getString("instituicao_bancaria"),
+                    rs.getString("agencia_bancaria"),
+                    new Funcionario(rs.getLong("id_funcionario")),
+                    rs.getBoolean("ativo"),
+                    rs.getInt("version")
                 );
                 dadosBancariosList.add(dadosBancarios);
             }
             return dadosBancariosList;
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao listar os dados bancários!");
+            throw new RuntimeException("Erro ao listar os dados bancários! \n");
         }
     }
 
@@ -153,8 +152,8 @@ public class DadosBancariosRepository {
         """;
 
         try (
-                Connection c = ConnectionFactory.getConnection();
-                PreparedStatement p = c.prepareStatement(sql);
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, id);
 
@@ -196,8 +195,8 @@ public class DadosBancariosRepository {
         """;
 
         try (
-                Connection c = ConnectionFactory.getConnection();
-                PreparedStatement p = c.prepareStatement(sql);
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, idFuncionario);
 

@@ -1,89 +1,38 @@
 package com.app.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Contrato {
-
     private Long idContrato;
-    private boolean statusContrato;
-    private LocalDate dataContrato;
-    private LocalDate prazoContrato;
+    private Boolean statusContrato;
+    private LocalDate dataEmissao;
+    private Integer prazo;
     private Funcionario funcionario;
-    private boolean contratoAtivo;
+    private Boolean ativo;
+    private Integer version = 1;
 
-    public Contrato() {
-    }
-
-    public Contrato(boolean statusContrato, LocalDate dataContrato, LocalDate prazoContrato, Funcionario funcionario, boolean contratoAtivo) {
+    public Contrato(Boolean statusContrato, LocalDate dataEmissao, Integer prazo, Funcionario funcionario, Boolean ativo) {
         this.statusContrato = statusContrato;
-        this.dataContrato = dataContrato;
-        this.prazoContrato = prazoContrato;
+        this.dataEmissao = dataEmissao;
+        this.prazo = prazo;
         this.funcionario = funcionario;
-        this.contratoAtivo = contratoAtivo;
+        this.ativo = ativo;
     }
 
-    public Contrato(Long idContrato, boolean statusContrato, LocalDate dataContrato, LocalDate prazoContrato, Funcionario funcionario, boolean contratoAtivo) {
-        this.idContrato = idContrato;
-        this.statusContrato = statusContrato;
-        this.dataContrato = dataContrato;
-        this.prazoContrato = prazoContrato;
-        this.funcionario = funcionario;
-        this.contratoAtivo = contratoAtivo;
-    }
-
-    public Long getIdContrato() {
-        return idContrato;
-    }
-
-    public void setIdContrato(Long idContrato) {
-        this.idContrato = idContrato;
-    }
-
-    public boolean isStatusContrato() {
-        return statusContrato;
-    }
-
-    public void setStatusContrato(boolean statusContrato) {
-        this.statusContrato = statusContrato;
-    }
-
-    public LocalDate getDataContrato() {
-        return dataContrato;
-    }
-
-    public void setDataContrato(LocalDate dataContrato) {
-        this.dataContrato = dataContrato;
-    }
-
-    public LocalDate getPrazoContrato() {
-        return prazoContrato;
-    }
-
-    public void setPrazoContrato(LocalDate prazoContrato) {
-        this.prazoContrato = prazoContrato;
-    }
-
-    public Funcionario getFuncionario() {
-        return funcionario;
-    }
-
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
-    }
-
-    public boolean isContratoAtivo() {
-        return contratoAtivo;
-    }
-
-    public void setContratoAtivo(boolean contratoAtivo) {
-        this.contratoAtivo = contratoAtivo;
-    }
-
-    public boolean getAtivo() {
-        return contratoAtivo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.contratoAtivo = ativo;
+    @Override
+    public String toString() {
+        return "\n> ID: " + this.idContrato +
+                "\n> ID FUNCIONÁRIO: " + this.funcionario.getIdFuncionario() +
+                "\n> STATUS DO CONTRATO: " + this.statusContrato +
+                "\n> DATA DE EMISSÃO: " + this.dataEmissao +
+                "\n> PRAZO: " + this.prazo;
     }
 }

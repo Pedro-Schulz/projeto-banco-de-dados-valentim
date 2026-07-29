@@ -1,9 +1,16 @@
 package com.app.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Candidato {
-
     private Long idCandidato;
     private String nome;
     private String cpf;
@@ -14,12 +21,11 @@ public class Candidato {
     private String estadoCivil;
     private LocalDate dataNascimento;
     private Boolean ativo;
+    private Integer version = 1;
 
-    public Candidato() {
-    }
+    public Candidato(Long idCandidato) { this.idCandidato = idCandidato; }
 
-    public Candidato(Long idCandidato, String nome, String cpf, String cep, String email, String telefone, String genero, String estadoCivil, LocalDate dataNascimento, Boolean ativo) {
-        this.idCandidato = idCandidato;
+    public Candidato(String nome, String cpf, String cep, String email, String telefone, String genero, String estadoCivil, LocalDate dataNascimento, Boolean ativo) {
         this.nome = nome;
         this.cpf = cpf;
         this.cep = cep;
@@ -31,87 +37,16 @@ public class Candidato {
         this.ativo = ativo;
     }
 
-    public Long getIdCandidato() {
-        return idCandidato;
-    }
-
-    public void setIdCandidato(Long idCandidato) {
-        this.idCandidato = idCandidato;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
-    }
-
-    public String getEstadoCivil() {
-        return estadoCivil;
-    }
-
-    public void setEstadoCivil(String estadoCivil) {
-        this.estadoCivil = estadoCivil;
-    }
-
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
-
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
-    public Boolean getAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
-    }
-
-    public Candidato(Long idCandidato) {
-        this.idCandidato = idCandidato;
+    @Override
+    public String toString() {
+        return "\n> ID: " + this.idCandidato +
+                "\n> NOME: " + this.nome +
+                "\n> CPF: " + this.cpf +
+                "\n> DATA DE NASCIMENTO: " + this.dataNascimento +
+                "\n> CEP: " + this.cep +
+                "\n> EMAIL: " + this.email +
+                "\n> TELEFONE: " + this.telefone +
+                "\n> GÊNERO: " + this.genero +
+                "\n> ESTADO CIVIL: " + this.estadoCivil;
     }
 }

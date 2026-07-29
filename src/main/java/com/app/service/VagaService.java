@@ -1,21 +1,18 @@
 package com.app.service;
 
-import com.app.model.Vaga;
-import com.app.repository.VagaRepository;
-
 import java.util.ArrayList;
 
+import com.app.enums.StatusVinculos;
+import com.app.model.Candidato;
+import com.app.model.Vaga;
+import com.app.repository.CandidaturaRepository;
+import com.app.repository.FuncionarioRepository;
+import com.app.repository.VagaRepository;
+
 public class VagaService {
-
-    private VagaRepository vagaRepository;
-
-    public VagaService() {
-        this.vagaRepository = new VagaRepository();
-    }
-
-    public VagaService(VagaRepository vagaRepository) {
-        this.vagaRepository = vagaRepository;
-    }
+    private final VagaRepository vagaRepository = new VagaRepository();
+    private final CandidaturaService candidaturaService = new CandidaturaService();
+    private final FuncionarioService funcionarioService = new FuncionarioService();
 
     public void salvar(Vaga vaga) {
         vagaRepository.salvar(vaga);
@@ -29,8 +26,12 @@ public class VagaService {
         return vagaRepository.listarTodos();
     }
 
-    public void desativar(Long id) {
-        vagaRepository.desativar(id);
+    public StatusVinculos desativar(Long id) {
+        if(candidaturaService.vinculoVaga(id) || funcionarioService.vinculoVaga(id)) {
+            return StatusVinculos.POSSUI_VINCULOS;
+        } else {
+            return  StatusVinculos.SUCESSO;
+        }
     }
 
     public void desativarPorDepartamento(Long idDepartamento) {
@@ -39,8 +40,5 @@ public class VagaService {
 
     public boolean vinculoDepartamento(Long idDepartamento) {
         return vagaRepository.vinculoDepartamento(idDepartamento);
-    }
-
-    public void listarVagasAbertas() {
     }
 }
