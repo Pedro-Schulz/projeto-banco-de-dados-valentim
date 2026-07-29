@@ -108,6 +108,36 @@ public class CandidaturaRepository {
         return null;
     }
 
+    public void atualizar(Candidatura candidatura) throws RuntimeException {
+        String sql = """
+            UPDATE candidaturas
+            SET status_candidatura = ?,data_candidatura = ?, prazo = ?, etapa = ?, version = version + 1
+            WHERE id_candidatura = ? AND version = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setBoolean(1, candidatura.getStatusCandidatura());
+            p.setDate(2, Date.valueOf(candidatura.getDataCandidatura()));
+            p.setDate(3, Date.valueOf(candidatura.getPrazo()));
+            p.setString(4, candidatura.getEtapa());
+            p.setLong(5, candidatura.getIdCandidatura());
+            p.setInt(6, candidatura.getVersion());
+
+            if(p.executeUpdate() == 0) {
+                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+            }
+
+            candidatura.setVersion(candidatura.getVersion() + 1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar candidatura!");
+        }
+    }
+
     public void desativar(Long id) {
         String sql = "UPDATE candidaturas SET ativo = false WHERE id_candidatura = ?;";
 

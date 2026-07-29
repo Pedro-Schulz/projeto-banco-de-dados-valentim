@@ -1,39 +1,37 @@
 package com.app.repository;
 
 import com.app.config.ConnectionFactory;
-import com.app.model.Contrato;
-import com.app.model.Funcionario;
-
+import com.app.model.*;
+import java.util.ArrayList;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
 
 public class ContratoRepository {
 
-    public void salvar(Contrato contrato) {
+    public void salvar(Contrato contrato) throws RuntimeException {
         String sql = """
-            INSERT INTO contratos (status_contrato, data_contrato, prazo_contrato, id_funcionario, contrato_ativo)
-            VALUES (?, ?, ?, ?, ?);
-        """;
+                    INSERT INTO contratos (status_contrato, data_emissao, prazo, id_funcionario)
+                    VALUES (?, ?, ?, ?);
+                """;
 
         try (
-                Connection c = ConnectionFactory.getConnection();
-                PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ) {
-            p.setBoolean(1, contrato.isStatusContrato());
-            p.setDate(2, Date.valueOf(contrato.getDataContrato()));
-            p.setDate(3, Date.valueOf(contrato.getPrazoContrato()));
+            p.setBoolean(1, contrato.getStatusContrato());
+            p.setDate(2, java.sql.Date.valueOf(contrato.getDataEmissao()));
+            p.setInt(3, contrato.getPrazo());
             p.setLong(4, contrato.getFuncionario().getIdFuncionario());
-            p.setBoolean(5, contrato.isContratoAtivo());
 
             p.executeUpdate();
 
             ResultSet rs = p.getGeneratedKeys();
+
             if (rs.next()) {
-                contrato.setIdContrato(rs.getLong(1));
+                Long id = rs.getLong(1);
+                contrato.setIdContrato(id);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,53 +39,129 @@ public class ContratoRepository {
         }
     }
 
+    public Contrato buscarPorId(Long id) {
+        String sql = """
+            SELECT *
+            FROM contratos
+            WHERE id_contrato = ?;
+        """;
+
+        try (
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, id);
+
+            ResultSet rs = p.executeQuery();
+
+            if(rs.next()) {
+                Contrato contrato = new Contrato(
+                        rs.getLong("id_contrato"),
+                        rs.getBoolean("status_contrato"),
+                        rs.getDate("data_emissao").toLocalDate(),
+                        rs.getInt("prazo"),
+                        new Funcionario(rs.getLong("id_funcionario")),
+                        rs.getBoolean("ativo"),
+                        rs.getInt("version")
+                );
+
+                return contrato;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao buscar contrato!");
+        }
+        return null;
+    }
+
     public ArrayList<Contrato> listarTodos() {
-        ArrayList<Contrato> lista = new ArrayList<>();
-        String sql = "SELECT * FROM contratos;";
+        ArrayList<Contrato> contratos = new ArrayList<>();
+        String sql = """
+            SELECT c.*, f.id_funcionario
+            FROM contratos AS c
+            JOIN funcionarios AS f ON f.id_funcionario = c.id_funcionario;
+        """;
 
         try (
                 Connection c = ConnectionFactory.getConnection();
                 PreparedStatement p = c.prepareStatement(sql);
         ) {
             ResultSet rs = p.executeQuery();
-            while (rs.next()) {
-                Funcionario funcionario = new Funcionario();
-                funcionario.setIdFuncionario(rs.getLong("id_funcionario"));
 
+            while(rs.next()) {
                 Contrato contrato = new Contrato(
                         rs.getLong("id_contrato"),
                         rs.getBoolean("status_contrato"),
-                        rs.getDate("data_contrato").toLocalDate(),
-                        rs.getDate("prazo_contrato").toLocalDate(),
-                        funcionario,
-                        rs.getBoolean("contrato_ativo")
+                        rs.getDate("data_emissao").toLocalDate(),
+                        rs.getInt("prazo"),
+                        new Funcionario(rs.getLong("id_funcionario")),
+                        rs.getBoolean("ativo"),
+                        rs.getInt("version")
                 );
-                lista.add(contrato);
+                contratos.add(contrato);
             }
-        } catch (Exception e) {
+            return contratos;
+        } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao listar contratos!");
+            throw new RuntimeException("Erro ao listar os contratos! \n");
         }
-        return lista;
     }
 
-    public void desativar(Long id) {
-        String sql = "UPDATE contratos SET contrato_ativo = false WHERE id_contrato = ?;";
+    public void atualizar(Contrato contrato) throws RuntimeException {
+        String sql = """
+            UPDATE contratos
+            SET status_contrato = ?,data_emissao = ?, prazo = ?,  version = version + 1
+            WHERE id_contrato = ? AND version = ?;
+        """;
 
         try (
                 Connection c = ConnectionFactory.getConnection();
                 PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, id);
-            p.executeUpdate();
+            p.setBoolean(1, contrato.getStatusContrato());
+            p.setDate(2, java.sql.Date.valueOf(contrato.getDataEmissao()));
+            p.setInt(3, contrato.getPrazo());
+            p.setLong(4, contrato.getIdContrato());
+            p.setInt(5, contrato.getVersion());
+
+            if(p.executeUpdate() == 0) {
+                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+            }
+
+            contrato.setVersion(contrato.getVersion() + 1);
+
         } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar contrato!");
+        }
+    }
+
+    public void desativar(Long id) throws RuntimeException {
+        String sql = """
+            UPDATE contratos
+            SET ativo = FALSE
+            WHERE id_contrato = ? AND ativo = true;
+        """;
+        try (
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setLong(1, id);
+
+            p.executeUpdate();
+
+        } catch(Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao desativar contrato!");
         }
     }
 
-    public void desativarPorFuncionario(Long idFuncionario) {
-        String sql = "UPDATE contratos SET contrato_ativo = false WHERE id_funcionario = ?;";
+    public void desativarPorFuncionario(Long idFuncionario) throws RuntimeException {
+        String sql = """
+            UPDATE contratos
+            SET ativo = false
+            WHERE id_funcionario = ?;
+        """;
 
         try (
                 Connection c = ConnectionFactory.getConnection();
@@ -95,25 +169,32 @@ public class ContratoRepository {
         ) {
             p.setLong(1, idFuncionario);
             p.executeUpdate();
-        } catch (Exception e) {
+        } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao desativar contratos do funcionário!");
+            throw new RuntimeException("Erro ao desativar contrato!");
         }
     }
 
-    public boolean vinculoFuncionario(Long idFuncionario) {
-        String sql = "SELECT 1 FROM contratos WHERE id_funcionario = ? AND contrato_ativo = true LIMIT 1;";
+    public boolean vinculoFuncionario(Long id_funcionario) throws RuntimeException {
+        String sql = """
+                    SELECT 1
+                    FROM contratos
+                    WHERE id_funcionario = ? AND ativo = 1
+                    LIMIT 1;        
+                """;
 
         try (
-                Connection c = ConnectionFactory.getConnection();
-                PreparedStatement p = c.prepareStatement(sql);
+            Connection c = ConnectionFactory.getConnection();
+            PreparedStatement p = c.prepareStatement(sql);
         ) {
-            p.setLong(1, idFuncionario);
+            p.setLong(1, id_funcionario);
+
             ResultSet rs = p.executeQuery();
+
             return rs.next();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao verificar vínculo de contrato!");
+            throw new RuntimeException("Erro ao verificar vinculo contrato -> funcionário");
         }
     }
 }

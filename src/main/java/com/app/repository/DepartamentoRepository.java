@@ -1,6 +1,7 @@
 package com.app.repository;
 
 import com.app.config.ConnectionFactory;
+import com.app.model.DadosBancarios;
 import com.app.model.Departamento;
 
 import java.sql.Connection;
@@ -101,6 +102,36 @@ public class DepartamentoRepository {
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao listar os departamentos!", e);
+        }
+    }
+
+    public void atualizar(Departamento departamento) throws RuntimeException {
+        String sql = """
+            UPDATE departamentos
+            SET nome = ?,gastos = ?, retorno = ?, ativo = ?,version = version + 1
+            WHERE id_departamento = ? AND version = ?;
+        """;
+
+        try (
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
+        ) {
+            p.setString(1, departamento.getNome());
+            p.setDouble(2, departamento.getGastos());
+            p.setDouble(3, departamento.getRetorno());
+            p.setBoolean(4, departamento.getAtivo());
+            p.setLong(5, departamento.getIdDepartamento());
+            p.setInt(6, departamento.getVersion());
+
+            if(p.executeUpdate() == 0) {
+                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+            }
+
+            departamento.setVersion(departamento.getVersion() + 1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar departamento!");
         }
     }
 
