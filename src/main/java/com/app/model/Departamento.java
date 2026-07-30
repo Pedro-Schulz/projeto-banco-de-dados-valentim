@@ -21,6 +21,11 @@ public class Departamento {
     // Construtor utilitário para busca/vínculo por ID
     public Departamento(Long idDepartamento, String nome, double gastos, double retorno, boolean ativo, int version) {
         this.idDepartamento = idDepartamento;
+        this.nome = nome;
+        this.gastos = gastos;
+        this.retorno = retorno;
+        this.ativo = ativo;
+        this.version = version;
     }
 
     // Construtor para cadastro (sem id nem version no parâmetro)
@@ -80,6 +85,6 @@ public class Departamento {
     }
 
     public void setVersion(int version) {
-
+        this.version = version;
     }
 }

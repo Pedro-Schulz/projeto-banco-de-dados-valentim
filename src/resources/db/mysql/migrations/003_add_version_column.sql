@@ -13,7 +13,7 @@ ADD COLUMN version INT NOT NULL DEFAULT 1;
 ALTER TABLE departamentos
 ADD COLUMN version INT NOT NULL DEFAULT 1;
 
-ALTER TABLE folhas_de_pagamento
+ALTER TABLE folhas_de_pagamentos
 ADD COLUMN version INT NOT NULL DEFAULT 1;
 
 ALTER TABLE funcionarios

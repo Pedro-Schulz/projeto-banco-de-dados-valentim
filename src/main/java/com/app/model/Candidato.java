@@ -14,11 +14,12 @@ public class Candidato {
     private String estadoCivil;
     private LocalDate dataNascimento;
     private Boolean ativo;
+    private int version = 1;
 
     public Candidato() {
     }
 
-    public Candidato(Long idCandidato, String nome, String cpf, String cep, String email, String telefone, String genero, String estadoCivil, LocalDate dataNascimento, Boolean ativo) {
+    public Candidato(Long idCandidato, String nome, String cpf, String cep, String email, String telefone, String genero, String estadoCivil, LocalDate dataNascimento, Boolean ativo, int version) {
         this.idCandidato = idCandidato;
         this.nome = nome;
         this.cpf = cpf;
@@ -29,6 +30,7 @@ public class Candidato {
         this.estadoCivil = estadoCivil;
         this.dataNascimento = dataNascimento;
         this.ativo = ativo;
+        this.version = version;
     }
 
     public Long getIdCandidato() {
@@ -113,5 +115,13 @@ public class Candidato {
 
     public Candidato(Long idCandidato) {
         this.idCandidato = idCandidato;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int i) {
+        this.version = i;
     }
 }

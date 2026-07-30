@@ -26,17 +26,8 @@ CREATE TABLE funcionarios(
     cep CHAR(8) NOT NULL,
     email VARCHAR(50) NOT NULL,
     telefone CHAR(11) NOT NULL,
-    estadoCivil VARCHAR(20) NOT NULL,
+    estado_civil VARCHAR(20) NOT NULL,
     genero CHAR(1) NOT NULL,
-	id_funcionario INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100),
-    data_nascimento DATE,
-    cpf CHAR(11),
-    cep CHAR(8),
-    email VARCHAR(50),
-    telefone CHAR(11),
-    estado_civil VARCHAR(20),
-    genero CHAR(1),
 
     id_vaga INT NOT NULL,
 
@@ -90,15 +81,7 @@ CREATE TABLE candidatos(
     telefone CHAR(11) NOT NULL,
     genero CHAR(1) NOT NULL,
     estado_civil VARCHAR(20) NOT NULL,
-    data_nascimento DATE NOT NULL
-    nome VARCHAR(100),
-    cpf CHAR(11),
-    cep CHAR(8),
-    email VARCHAR(100),
-    telefone CHAR(11),
-    genero CHAR(1),
-    estado_civil VARCHAR(20),
-    data_nascimento DATE,
+    data_nascimento DATE NOT NULL,
     ativo BOOLEAN NOT NULL DEFAULT TRUE
 );
 
@@ -119,6 +102,7 @@ CREATE TABLE candidaturas(
 
 CREATE TABLE usuarios (
 	id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+    cpf CHAR(11) NOT NULL UNIQUE,
     senha VARCHAR(60) NOT NULL,
     perfil VARCHAR(20) NOT NULL,
     ativo BOOLEAN NOT NULL,

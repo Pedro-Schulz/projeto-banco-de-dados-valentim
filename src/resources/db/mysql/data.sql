@@ -52,7 +52,7 @@ INSERT INTO vagas (turno, salario_hora, cargo, id_departamento) VALUES
 ('Integral', 18.00, 'Agente de Suporte N1', 6), ('Noturno', 20.00, 'Agente de Suporte N1', 6), ('Integral', 45.00, 'Dev Fullstack Pleno', 1);
 
 -- 3. FUNCIONÁRIOS (65 Colaboradores)
-INSERT INTO funcionarios (nome, data_nascimento, cpf, cep, email, telefone, estadoCivil, genero, id_vaga) VALUES
+INSERT INTO funcionarios (nome, data_nascimento, cpf, cep, email, telefone, estado_civil, genero, id_vaga) VALUES
 ('Carlos Silva', '1985-04-12', '10120230340', '01001000', 'carlos.silva@emp.com', '11988881001', 'Casado', 'M', 1),
 ('Ana Souza', '1990-08-22', '10120230341', '01001001', 'ana.souza@emp.com', '11988881002', 'Solteiro', 'F', 2),
 ('Bruno Oliveira', '1988-11-05', '10120230342', '01001002', 'bruno.oli@emp.com', '11988881003', 'Casado', 'M', 3),

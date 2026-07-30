@@ -10,6 +10,7 @@ public class Contrato {
     private LocalDate prazoContrato;
     private Funcionario funcionario;
     private boolean contratoAtivo;
+    private int version = 1;
 
     public Contrato() {
     }
@@ -22,13 +23,14 @@ public class Contrato {
         this.contratoAtivo = contratoAtivo;
     }
 
-    public Contrato(Long idContrato, boolean statusContrato, LocalDate dataContrato, LocalDate prazoContrato, Funcionario funcionario, boolean contratoAtivo) {
+    public Contrato(Long idContrato, boolean statusContrato, LocalDate dataContrato, LocalDate prazoContrato, Funcionario funcionario, boolean contratoAtivo, int version) {
         this.idContrato = idContrato;
         this.statusContrato = statusContrato;
         this.dataContrato = dataContrato;
         this.prazoContrato = prazoContrato;
         this.funcionario = funcionario;
         this.contratoAtivo = contratoAtivo;
+        this.version = version;
     }
 
     public Long getIdContrato() {
@@ -85,5 +87,28 @@ public class Contrato {
 
     public void setAtivo(boolean ativo) {
         this.contratoAtivo = ativo;
+    }
+
+    public boolean getStatusContrato() {
+        return statusContrato;
+    }
+
+    public LocalDate getDataEmissao() {
+        return dataContrato;
+    }
+
+    public int getPrazo() {
+        if(dataContrato == null || prazoContrato == null) {
+            return 0;
+        }
+        return (int) (prazoContrato.toEpochDay() - dataContrato.toEpochDay());
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int i) {
+        this.version = i;
     }
 }

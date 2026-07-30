@@ -10,6 +10,7 @@ public class Candidatura {
     private LocalDate dataCandidatura;
     private String status;
     private boolean ativo;
+    private int version = 1;
 
     public Candidatura() {
     }
@@ -80,5 +81,25 @@ public class Candidatura {
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public boolean getStatusCandidatura() {
+        return "APROVADO".equalsIgnoreCase(status);
+    }
+
+    public LocalDate getPrazo() {
+        return dataCandidatura;
+    }
+
+    public String getEtapa() {
+        return status;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int i) {
+        this.version = i;
     }
 }

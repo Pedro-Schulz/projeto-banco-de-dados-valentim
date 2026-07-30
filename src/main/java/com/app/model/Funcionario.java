@@ -15,21 +15,29 @@ public class Funcionario {
     private String genero;
     private Vaga vaga;
     private boolean ativo;
-    private int cargo; // ou o tipo correspondente no seu projeto
+    private String perfil; // "ADM" ou "USER"
+    private String senha;  // Armazena a senha (texto puro ou Hash BCrypt)
+    private int version = 1;
 
     // Construtor Padrão
     public Funcionario() {
     }
 
-    // Construtor auxiliar rápido (linha 68)
+    public Funcionario(Long idFuncionario) {
+        this.idFuncionario = idFuncionario;
+    }
+
+    // Construtor auxiliar rápido
     public Funcionario(Long idFuncionario, boolean ativo, Vaga vaga) {
         this.idFuncionario = idFuncionario;
         this.ativo = ativo;
         this.vaga = vaga;
     }
 
-    // Construtor Completo sem ID
-    public Funcionario(String nome, LocalDate dataNascimento, String cpf, String cep, String email, String telefone, String estadoCivil, String genero, Vaga vaga, boolean ativo, int cargo) {
+    // Construtor Completo sem ID (Útil para novos cadastros)
+    public Funcionario(String nome, LocalDate dataNascimento, String cpf, String cep, String email,
+                       String telefone, String estadoCivil, String genero, Vaga vaga, boolean ativo,
+                       String perfil, String senha) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.cpf = cpf;
@@ -40,11 +48,14 @@ public class Funcionario {
         this.genero = genero;
         this.vaga = vaga;
         this.ativo = ativo;
-        this.cargo = cargo;
+        this.perfil = perfil;
+        this.senha = senha;
     }
 
-    // Construtor Completo com ID (linhas 100 e 142)
-    public Funcionario(Long idFuncionario, String nome, LocalDate dataNascimento, String cpf, String cep, String email, String telefone, String estadoCivil, String genero, Vaga vaga, boolean ativo, int cargo) {
+    // Construtor Completo com ID (Usado ao buscar do Banco de Dados)
+    public Funcionario(Long idFuncionario, String nome, LocalDate dataNascimento, String cpf, String cep,
+                       String email, String telefone, String estadoCivil, String genero, Vaga vaga,
+                       boolean ativo, String perfil, String senha) {
         this.idFuncionario = idFuncionario;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
@@ -56,7 +67,8 @@ public class Funcionario {
         this.genero = genero;
         this.vaga = vaga;
         this.ativo = ativo;
-        this.cargo = cargo;
+        this.perfil = perfil;
+        this.senha = senha;
     }
 
     // Getters e Setters
@@ -152,24 +164,27 @@ public class Funcionario {
         this.ativo = ativo;
     }
 
-    public int getCargo() {
-        return cargo;
+    public String getPerfil() {
+        return perfil;
     }
 
-    public void setCargo(int cargo) {
-        this.cargo = cargo;
+    public void setPerfil(String perfil) {
+        this.perfil = perfil;
     }
 
-    public boolean getAcessoValido(String senha) {
-        if (this.cpf == null || senha == null || senha.isBlank()) {
-            return false;
-        }
+    public String getSenha() {
+        return senha;
+    }
 
-        // Limpa pontos, traços e espaços de ambos os lados para comparar de forma segura
-        String cpfLimpo = this.cpf.replaceAll("[^0-9]", "");
-        String senhaLimpa = senha.replaceAll("[^0-9]", "");
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
 
-        // Valida se a senha bate com o CPF completo ou com os primeiros 6 dígitos do CPF
-        return cpfLimpo.equals(senhaLimpa) || (cpfLimpo.length() >= 6 && cpfLimpo.startsWith(senhaLimpa));
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

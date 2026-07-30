@@ -70,7 +70,8 @@ public class DadosBancariosRepository {
                         rs.getString("instituicao_bancaria"),
                         rs.getString("agencia_bancaria"),
                         funcionario,
-                        rs.getBoolean("ativo")
+                        rs.getBoolean("ativo"),
+                        rs.getInt("version")
                 );
 
                 return dadosBancarios;
@@ -105,7 +106,8 @@ public class DadosBancariosRepository {
                         rs.getString("instituicao_bancaria"),
                         rs.getString("agencia_bancaria"),
                         funcionario,
-                        rs.getBoolean("ativo")
+                        rs.getBoolean("ativo"),
+                        rs.getInt("version")
                 );
                 dadosBancariosList.add(dadosBancarios);
             }

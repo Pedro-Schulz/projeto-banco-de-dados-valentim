@@ -3,35 +3,39 @@ package com.app.model;
 public class Vaga {
 
     private Long idVaga;
-    private String tituloVaga;
-    private String descricao;
-    private double salario;
-    private String setor;
-    private boolean disponivel;
+    private String turno;
+    private double salarioHora;
+    private String cargo;
+    private Long idDepartamento;
+    private boolean ativo;
+    private int version;
 
+    // 1. Construtor Vazio
     public Vaga() {
     }
 
+    // 2. Construtor só com Cargo (útil para consultas simples)
+    public Vaga(String cargo) {
+        this.cargo = cargo;
+    }
+
+    // 3. Construtor só com ID
     public Vaga(Long idVaga) {
         this.idVaga = idVaga;
     }
 
-    public Vaga(String tituloVaga, String descricao, double salario, String setor, boolean disponivel) {
-        this.tituloVaga = tituloVaga;
-        this.descricao = descricao;
-        this.salario = salario;
-        this.setor = setor;
-        this.disponivel = disponivel;
+    // 4. Construtor Completo
+    public Vaga(Long idVaga, String turno, double salarioHora, String cargo, Long idDepartamento, boolean ativo, int version) {
+        this.idVaga = idVaga;
+        this.turno = turno;
+        this.salarioHora = salarioHora;
+        this.cargo = cargo;
+        this.idDepartamento = idDepartamento;
+        this.ativo = ativo;
+        this.version = version;
     }
 
-    public Vaga(Long idVaga, String tituloVaga, String descricao, double salario, String setor, boolean disponivel) {
-        this.idVaga = idVaga;
-        this.tituloVaga = tituloVaga;
-        this.descricao = descricao;
-        this.salario = salario;
-        this.setor = setor;
-        this.disponivel = disponivel;
-    }
+    // Getters e Setters Sincronizados com o Banco de Dados
 
     public Long getIdVaga() {
         return idVaga;
@@ -41,43 +45,55 @@ public class Vaga {
         this.idVaga = idVaga;
     }
 
-    public String getTituloVaga() {
-        return tituloVaga;
+    public String getTurno() {
+        return turno;
     }
 
-    public void setTituloVaga(String tituloVaga) {
-        this.tituloVaga = tituloVaga;
+    public void setTurno(String turno) {
+        this.turno = turno;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public double getSalarioHora() {
+        return salarioHora;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setSalarioHora(double salarioHora) {
+        this.salarioHora = salarioHora;
     }
 
-    public double getSalario() {
-        return salario;
+    public String getCargo() {
+        return cargo;
     }
 
-    public void setSalario(double salario) {
-        this.salario = salario;
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
     }
 
-    public String getSetor() {
-        return setor;
+    public Long getIdDepartamento() {
+        return idDepartamento;
     }
 
-    public void setSetor(String setor) {
-        this.setor = setor;
+    public void setIdDepartamento(Long idDepartamento) {
+        this.idDepartamento = idDepartamento;
     }
 
-    public boolean isDisponivel() {
-        return disponivel;
+    public boolean isAtivo() {
+        return ativo;
     }
 
-    public void setDisponivel(boolean disponivel) {
-        this.disponivel = disponivel;
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public String getSalario() {
+        return "R$ " + String.format("%.2f", salarioHora);
     }
 }

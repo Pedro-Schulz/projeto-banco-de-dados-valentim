@@ -8,6 +8,7 @@ public class DadosBancarios {
     private String agenciaBancaria;
     private Funcionario funcionario;
     private Boolean contaAtiva;
+    private int version = 1;
 
     public DadosBancarios() {
     }
@@ -27,6 +28,17 @@ public class DadosBancarios {
         this.agenciaBancaria = agenciaBancaria;
         this.funcionario = funcionario;
         this.contaAtiva = contaAtiva;
+    }
+
+    // Construtor com version, usado ao carregar o registro já existente do banco
+    public DadosBancarios(Long idDadosBancarios, Integer numeroConta, String instituicaoBancaria, String agenciaBancaria, Funcionario funcionario, Boolean contaAtiva, int version) {
+        this.idDadosBancarios = idDadosBancarios;
+        this.numeroConta = numeroConta;
+        this.instituicaoBancaria = instituicaoBancaria;
+        this.agenciaBancaria = agenciaBancaria;
+        this.funcionario = funcionario;
+        this.contaAtiva = contaAtiva;
+        this.version = version;
     }
 
     public Long getIdDadosBancarios() {
@@ -83,5 +95,13 @@ public class DadosBancarios {
 
     public void setAtivo(Boolean ativo) {
         this.contaAtiva = ativo;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int i) {
+        this.version = i;
     }
 }

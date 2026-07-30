@@ -1,6 +1,5 @@
 package com.app.model;
 
-import com.app.repository.FuncionarioRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,12 +18,12 @@ public class Usuario {
     private Integer version = 1;
 
     public Usuario(String cpf, String senhaHash, String perfil, boolean ativo, long idFuncionario, int version) {
-        FuncionarioRepository funcionarioRepository = new FuncionarioRepository();
-        Funcionario funcionario = funcionarioRepository.buscarPorCpf(cpf);
         this.cpf = cpf;
         this.senhaHash = senhaHash;
-        this.idFuncionario = Long.valueOf(funcionario.getIdFuncionario());
-        this.ativo = funcionario.getAtivo();
+        this.perfil = perfil;
+        this.ativo = ativo;
+        this.idFuncionario = idFuncionario;
+        this.version = version;
     }
 
     public boolean getAtivo() {
@@ -41,5 +40,17 @@ public class Usuario {
 
     public String getSenhaHash() {
         return senhaHash;
+    }
+
+    public String getPerfil() {
+        return perfil;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int i) {
+        this.version = i;
     }
 }
