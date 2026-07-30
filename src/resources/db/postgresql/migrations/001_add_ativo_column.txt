@@ -1,6 +1,3 @@
--- 001_add_ativo_column.txt
--- Adds the 'ativo' (active) boolean column to all tables for soft delete support
-
 ALTER TABLE departamentos
     ADD COLUMN ativo BOOLEAN NOT NULL DEFAULT TRUE;
 

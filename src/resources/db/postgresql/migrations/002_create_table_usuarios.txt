@@ -1,0 +1,11 @@
+CREATE TABLE usuarios (
+    cpf BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    senha VARCHAR(60) NOT NULL,
+    perfil VARCHAR(20) NOT NULL,
+    ativo BOOLEAN NOT NULL DEFAULT TRUE,
+    id_funcionario INT NOT NULL,
+
+    CONSTRAINT fk_usuarios_funcionarios
+        FOREIGN KEY (id_funcionario)
+        REFERENCES funcionarios(id_funcionario)
+);
