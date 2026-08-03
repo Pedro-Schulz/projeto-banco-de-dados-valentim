@@ -2,8 +2,6 @@ package com.app.repository;
 
 import com.app.config.ConnectionFactory;
 import com.app.model.Candidato;
-import com.app.model.FolhaDePagamento;
-
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

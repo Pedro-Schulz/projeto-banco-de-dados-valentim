@@ -22,6 +22,10 @@ public class FuncionarioService {
         return funcionarioRepository.buscarPorId(id);
     }
 
+    public Funcionario buscarPorCpf(String cpf) {
+        return funcionarioRepository.buscarPorCpf(cpf);
+    }
+
     public ArrayList<Funcionario> listarTodos() {
         return funcionarioRepository.listarTodos();
     }

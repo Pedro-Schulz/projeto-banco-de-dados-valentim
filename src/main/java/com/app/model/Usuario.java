@@ -1,5 +1,6 @@
 package com.app.model;
 
+import com.app.enums.Perfis;
 import com.app.repository.FuncionarioRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,17 +15,16 @@ import org.mindrot.jbcrypt.BCrypt;
 public class Usuario {
     private String cpf;
     private String senhaHash;
-    private String perfil;
+    private Perfis perfil;
     private Boolean ativo;
     private Long idFuncionario;
     private Integer version = 1;
 
-    public Usuario(String cpf, String senhaHash) {
-        FuncionarioRepository funcionarioRepository = new FuncionarioRepository();
-        Funcionario funcionario = funcionarioRepository.buscarPorCpf(cpf);
+    public Usuario(String cpf, String senhaHash, Perfis perfil, Boolean ativo, Long idFuncionario) {
+        this.perfil = perfil;
         this.cpf = cpf;
         this.senhaHash = senhaHash;
-        this.idFuncionario = funcionario.getIdFuncionario();
-        this.ativo = funcionario.getAtivo();
+        this.idFuncionario = idFuncionario;
+        this.ativo = ativo;
     }
 }
