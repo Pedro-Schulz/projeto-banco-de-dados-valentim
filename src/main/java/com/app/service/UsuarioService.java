@@ -20,9 +20,15 @@ public class UsuarioService {
             Vaga vaga = funcionario.getVaga();
 
             Perfis perfil = Perfis.VIEWER;
-            if (vaga.getCargo().equalsIgnoreCase("gerente")) {
+            if (vaga.getCargo().equalsIgnoreCase("presidente")
+                    || vaga.getCargo().equalsIgnoreCase("diretor")
+                    || vaga.getCargo().equalsIgnoreCase("gerente")) {
+
                 perfil = Perfis.ADMIN;
-            } else if (vaga.getCargo().equalsIgnoreCase("analista")) {
+            } else if (vaga.getCargo().equalsIgnoreCase("coordenador")
+                    || vaga.getCargo().equalsIgnoreCase("supervisor")
+                    || vaga.getCargo().equalsIgnoreCase("especialista")) {
+
                 perfil = Perfis.USER;
             }
 

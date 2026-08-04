@@ -77,7 +77,8 @@ public class DadosBancariosRepository {
                 return dadosBancarios;
             }
         } catch(Exception e) {
-            throw new RepositoryException("Erro ao buscar um conjunto de dados bancários!", e);
+            e.printStackTrace();
+            throw new RepositoryException("Erro ao buscar um conjunto de dados bancários!");
         }
         return null;
     }

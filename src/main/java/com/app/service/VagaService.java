@@ -3,6 +3,7 @@ package com.app.service;
 import java.util.ArrayList;
 
 import com.app.enums.StatusVinculos;
+import com.app.exception.DadosInvalidosException;
 import com.app.model.Candidato;
 import com.app.model.Vaga;
 import com.app.repository.CandidaturaRepository;
@@ -15,7 +16,27 @@ public class VagaService {
     private final FuncionarioService funcionarioService = new FuncionarioService();
 
     public void salvar(Vaga vaga) {
+        validarCargo(vaga);
         vagaRepository.salvar(vaga);
+    }
+
+    public void validarCargo(Vaga vaga) {
+        if (vaga.getCargo().equals("estagiario")
+                || vaga.getCargo().equals("auxiliar")
+                || vaga.getCargo().equals("assistente")
+                || vaga.getCargo().equals("tecnico")
+                || vaga.getCargo().equals("analista")
+                || vaga.getCargo().equals("consultor")
+                || vaga.getCargo().equals("especialista")
+                || vaga.getCargo().equals("supervisor")
+                || vaga.getCargo().equals("coordenador")
+                || vaga.getCargo().equals("gerente")
+                || vaga.getCargo().equals("diretor")
+                || vaga.getCargo().equals("presidente")) {
+            return;
+        } else {
+            throw new DadosInvalidosException("Erro! Este cargo não existe!");
+        }
     }
 
     public Vaga buscarPorId(Long id) {
