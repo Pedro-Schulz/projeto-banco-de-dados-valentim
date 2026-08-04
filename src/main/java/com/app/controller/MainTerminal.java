@@ -518,7 +518,8 @@ public class MainTerminal {
             System.out.println("1 - Cadastrar vagas");
             System.out.println("2 - Listar vagas");
             System.out.println("3 - Buscar vaga");
-            System.out.println("4 - Excluir vaga");
+            System.out.println("4 - Atualizar vaga");
+            System.out.println("5 - Excluir vaga");
             System.out.println("0 - Voltar");
 
             int opcao = Integer.parseInt(scanner.nextLine());
@@ -637,7 +638,8 @@ public class MainTerminal {
             System.out.println("1 - Cadastrar departamentos");
             System.out.println("2 - Listar departamentos");
             System.out.println("3 - Buscar departamento");
-            System.out.println("4 - Excluir departamento");
+            System.out.println("4 - Atualizar departamento");
+            System.out.println("5 - Excluir departamento");
             System.out.println("0 - Voltar");
 
             int opcao = Integer.parseInt(scanner.nextLine());
@@ -669,8 +671,28 @@ public class MainTerminal {
                         System.out.println("Departamento não encontrado!");
                     }
                 }
-
                 case 4 -> {
+                    try {
+                        System.out.print("ID: ");
+                        Long id = Long.parseLong(scanner.nextLine());
+
+                        if (departamentoService.buscarPorId(id) == null) {
+                            System.out.println("Departamento não encontrado");
+                            return;
+                        }
+
+                        Departamento departamento = criarDepartamento();
+                        departamento.setIdDepartamento(id);
+                        departamentoService.atualizar(departamento);
+
+                        System.out.println("Departamento atualizado!");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new ControllerException("Erro ao atualizar departamento");
+                    }
+                }
+                case 5 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
 
