@@ -1,5 +1,8 @@
 package com.app.model;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,11 +15,24 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Contrato {
     private Long idContrato;
+
+    @NotNull(message = "O status do contrato é obrigatório")
     private Boolean statusContrato;
+
+    @NotNull(message = "A data de emissão é obrigatória")
+    @PastOrPresent(message = "A data de emissão não pode ser futura")
     private LocalDate dataEmissao;
+
+    @NotNull(message = "O prazo é obrigatório")
+    @Positive(message = "O prazo deve ser maior que zero")
     private Integer prazo;
+
+    @NotNull(message = "O funcionário é obrigatório")
     private Funcionario funcionario;
+
+    @NotNull(message = "O status de ativo é obrigatório")
     private Boolean ativo;
+
     private Integer version = 1;
 
     public Contrato(Boolean statusContrato, LocalDate dataEmissao, Integer prazo, Funcionario funcionario, Boolean ativo) {
