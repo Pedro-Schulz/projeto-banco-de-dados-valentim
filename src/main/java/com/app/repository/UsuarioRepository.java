@@ -1,6 +1,7 @@
 package com.app.repository;
 
 import com.app.config.ConnectionFactory;
+import com.app.enums.Perfis;
 import com.app.model.Funcionario;
 import com.app.model.Usuario;
 
@@ -20,7 +21,7 @@ public class UsuarioRepository {
             p.setString(1, usuario.getCpf());
             p.setBoolean(2, usuario.getAtivo());
             p.setLong(3, usuario.getIdFuncionario());
-            p.setString(4, "ADMIN");
+            p.setString(4, usuario.getPerfil().name());
             p.setString(5, usuario.getSenhaHash());
 
             p.executeUpdate();
@@ -51,7 +52,7 @@ public class UsuarioRepository {
                 Usuario usuario = new Usuario(
                         rs.getString("cpf"),
                         rs.getString("senha"),
-                        rs.getString("perfil"),
+                        Perfis.valueOf(rs.getString("perfil")),
                         rs.getBoolean("ativo"),
                         rs.getLong("id_funcionario"),
                         rs.getInt("version")
@@ -77,7 +78,7 @@ public class UsuarioRepository {
                 PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setString(1, usuario.getSenhaHash());
-            p.setString(2, usuario.getPerfil());
+            p.setString(2, usuario.getPerfil().name());
             p.setBoolean(3, usuario.getAtivo());
             p.setString(4, usuario.getCpf());
             p.setInt(5, usuario.getVersion());
