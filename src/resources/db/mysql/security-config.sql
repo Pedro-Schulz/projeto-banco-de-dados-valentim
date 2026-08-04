@@ -23,6 +23,9 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON candidatos TO 'analistas_rh';
 GRANT SELECT, INSERT, UPDATE, DELETE ON candidaturas TO 'analistas_rh';
 GRANT SELECT, INSERT, UPDATE, DELETE ON funcionarios TO 'analistas_rh';
 GRANT SELECT, INSERT, UPDATE, DELETE ON vagas TO 'analistas_rh';
+GRANT SELECT, INSERT, UPDATE, DELETE ON dados_bancarios TO 'analistas_rh';
+GRANT SELECT, INSERT, UPDATE, DELETE ON contratos TO 'analistas_rh';
+GRANT SELECT, INSERT, UPDATE, DELETE ON folhas_de_pagamentos TO 'analistas_rh';
 
 -- Permissões da ROLE gerentes_rh
 
@@ -31,9 +34,9 @@ GRANT SELECT, SHOW VIEW ON vagas TO gerentes_rh;
 GRANT SELECT, SHOW VIEW ON funcionarios TO gerentes_rh;
 GRANT SELECT, SHOW VIEW ON candidatos TO gerentes_rh;
 GRANT SELECT, SHOW VIEW ON candidaturas TO gerentes_rh;
-GRANT SELECT, SHOW VIEW ON dados_bancarios TO gerentes_rh;
-GRANT SELECT, SHOW VIEW ON contratos TO gerentes_rh;
-GRANT SELECT, SHOW VIEW ON folhas_de_pagamentos TO gerentes_rh;
+GRANT SELECT, INSERT, UPDATE, DELETE ON dados_bancarios TO gerentes_rh;
+GRANT SELECT, INSERT, UPDATE, DELETE ON contratos TO gerentes_rh;
+GRANT SELECT, INSERT, UPDATE, DELETE ON folhas_de_pagamentos TO gerentes_rh;
 
 -- Permissões da ROLE diretores_rh
 
@@ -94,6 +97,7 @@ SET DEFAULT ROLE analistas_rh TO 'Guilherme'@'%';
 CREATE USER 'Cassiano'@'%' IDENTIFIED BY 'gerentes_senha';
 GRANT 'gerentes_rh' TO 'Cassiano'@'%';
 SET DEFAULT ROLE 'gerentes_rh' TO 'Cassiano'@'%';
+
 
 CREATE USER 'Daniela'@'%' IDENTIFIED BY 'gerentes_senha';
 GRANT 'gerentes_rh' TO 'Daniela'@'%';
