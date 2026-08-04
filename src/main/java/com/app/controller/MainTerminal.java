@@ -278,7 +278,7 @@ public class MainTerminal {
                         }
 
                         Candidato candidato = criarCandidato();
-
+                        candidato.setIdCandidato(id);
                         candidatoService.atualizar(candidato);
 
                         System.out.println("Candidato atualizado!");
@@ -408,7 +408,7 @@ public class MainTerminal {
                         }
 
                         Funcionario funcionario = criarFuncionario();
-
+                        funcionario.setIdFuncionario(id);
                         funcionarioService.atualizar(funcionario);
 
                         System.out.println("Funcionário atualizado!");
@@ -479,7 +479,7 @@ public class MainTerminal {
         Vaga vaga = vagaService.buscarPorId(idVaga);
 
         if (vaga == null) {
-            System.out.println("Vaga não encontrada.");
+            System.out.println("Vaga não encontrada");
             return null;
         }
 
@@ -551,6 +551,27 @@ public class MainTerminal {
                     }
                 }
                 case 4 -> {
+                    try {
+                        System.out.print("ID: ");
+                        Long id = Long.parseLong(scanner.nextLine());
+
+                        if (vagaService.buscarPorId(id) == null) {
+                            System.out.println("Vaga não encontrada");
+                            return;
+                        }
+
+                        Vaga vaga = criarVaga();
+                        vaga.setIdVaga(id);
+                        vagaService.atualizar(vaga);
+
+                        System.out.println("Vaga atualizada!");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new ControllerException("Erro ao atualizar vaga");
+                    }
+                }
+                case 5 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
 

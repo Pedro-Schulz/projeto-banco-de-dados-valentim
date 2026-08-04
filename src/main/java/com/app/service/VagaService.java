@@ -49,6 +49,10 @@ public class VagaService {
         return vagaRepository.listarTodos();
     }
 
+    public void atualizar(Vaga vaga) {
+        vagaRepository.atualizar(vaga);
+    }
+
     public StatusVinculos desativar(Long id) {
         if(candidaturaService.vinculoVaga(id) || funcionarioService.vinculoVaga(id)) {
             return StatusVinculos.POSSUI_VINCULOS;
