@@ -1,9 +1,6 @@
 package com.app.model;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,19 +13,56 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Candidato {
     private Long idCandidato;
-    @NotEmpty
+
+    @NotBlank(message = "O nome é obrigatório.")
+    @Size(min = 3, max = 100, message = "O nome deve possuir entre 3 e 100 caracteres.")
     private String nome;
+
+    @NotBlank(message = "O CPF é obrigatório.")
+    @Pattern(
+            regexp = "^\\d{11}$",
+            message = "O CPF deve conter exatamente 11 dígitos"
+    )
     private String cpf;
+
+    @NotBlank(message = "O CEP é obrigatório")
+    @Pattern(
+            regexp = "^\\d{8}$",
+            message = "O CEP deve conter exatamente 8 dígitos"
+    )
     private String cep;
-    @Email
+
+    @NotBlank(message = "O e-mail é obrigatório")
+    @Email(message = "E-mail inválido")
+    @Size(max = 100, message = "O e-mail deve possuir no máximo 100 caracteres")
     private String email;
+
+    @NotBlank(message = "O telefone é obrigatório")
+    @Pattern(
+            regexp = "^\\d{10,11}$",
+            message = "O telefone deve conter 10 ou 11 dígitos"
+    )
     private String telefone;
-    @Size(min = 1, max = 1)
+
+    @NotBlank(message = "O gênero é obrigatório")
+    @Pattern(
+            regexp = "^[MFOmfo]$",
+            message = "O gênero deve ser M, F ou O"
+    )
     private String genero;
-    @NotEmpty
+
+    @NotBlank(message = "O estado civil é obrigatório")
+    @Size(max = 30, message = "O estado civil deve possuir no máximo 30 caracteres")
     private String estadoCivil;
+
+    @NotNull(message = "A data de nascimento é obrigatória")
+    @Past(message = "A data de nascimento deve ser anterior à data atual")
     private LocalDate dataNascimento;
+
+    @NotNull(message = "O status do candidato é obrigatório")
     private Boolean ativo;
+
+    @NotNull
     private Integer version = 1;
 
     public Candidato(Long idCandidato) { this.idCandidato = idCandidato; }
