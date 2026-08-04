@@ -1,6 +1,7 @@
 package com.app.repository;
 
 import com.app.config.ConnectionFactory;
+import com.app.exception.RepositoryException;
 import com.app.model.FolhaDePagamento;
 import com.app.model.Funcionario;
 import com.app.model.Vaga;
@@ -11,15 +12,15 @@ import java.util.ArrayList;
 public class FuncionarioRepository {
     private VagaRepository vagaRepository = new VagaRepository();
 
-    public void salvar(Funcionario funcionario) throws RuntimeException {
+    public void salvar(Funcionario funcionario) throws RepositoryException {
         String sql = """
             INSERT INTO funcionarios (nome, data_nascimento, cpf, cep, email, telefone, estado_civil, genero, id_vaga, ativo)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ) {
             p.setString(1, funcionario.getNome());
             p.setObject(2, funcionario.getDataNascimento());
@@ -43,11 +44,11 @@ public class FuncionarioRepository {
 
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao salvar funcionário!");
+            throw new RepositoryException("Erro ao salvar funcionário!");
         }
     }
 
-    public Funcionario buscarPorCpf(String cpf) throws RuntimeException {
+    public Funcionario buscarPorCpf(String cpf) throws RepositoryException {
         String sql = """
             SELECT f.id_funcionario, f.ativo, v.cargo
             FROM funcionarios AS f
@@ -75,12 +76,12 @@ public class FuncionarioRepository {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao buscar funcionário!");
+            throw new RepositoryException("Erro ao buscar funcionário!");
         }
         return null;
     }
 
-    public Funcionario buscarPorId(Long id) throws RuntimeException {
+    public Funcionario buscarPorId(Long id) throws RepositoryException {
         String sql = """
             SELECT * 
             FROM funcionarios
@@ -88,8 +89,8 @@ public class FuncionarioRepository {
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, id);
 
@@ -102,25 +103,25 @@ public class FuncionarioRepository {
                 Vaga vaga = vagaRepository.buscarPorId(idVaga);
 
                 Funcionario funcionario = new Funcionario(
-                    rs.getLong("id_funcionario"),
-                    rs.getString("nome"),
-                    dataNascimento,
-                    rs.getString("cpf"),
-                    rs.getString("cep"),
-                    rs.getString("email"),
-                    rs.getString("telefone"),
-                    rs.getString("estado_civil"),
-                    rs.getString("genero"),
-                    vaga,
-                    rs.getBoolean("ativo"),
-                    rs.getInt("version")
+                        rs.getLong("id_funcionario"),
+                        rs.getString("nome"),
+                        dataNascimento,
+                        rs.getString("cpf"),
+                        rs.getString("cep"),
+                        rs.getString("email"),
+                        rs.getString("telefone"),
+                        rs.getString("estado_civil"),
+                        rs.getString("genero"),
+                        vaga,
+                        rs.getBoolean("ativo"),
+                        rs.getInt("version")
                 );
 
                 return funcionario;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao buscar funcionário!");
+            throw new RepositoryException("Erro ao buscar funcionário!");
         }
         return null;
     }
@@ -134,38 +135,38 @@ public class FuncionarioRepository {
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
         ) {
             ResultSet rs = p.executeQuery();
 
             while(rs.next()) {
                 Funcionario funcionario = new Funcionario(
-                    rs.getLong("id_funcionario"),
-                    rs.getString("nome"),
-                    rs.getDate("data_nascimento").toLocalDate(),
-                    rs.getString("cpf"),
-                    rs.getString("cep"),
-                    rs.getString("email"),
-                    rs.getString("telefone"),
-                    rs.getString("estado_civil"),
-                    rs.getString("genero"),
-                    new Vaga(rs.getLong("id_vaga")),
-                    rs.getBoolean("ativo"),
-                    rs.getInt("version")
+                        rs.getLong("id_funcionario"),
+                        rs.getString("nome"),
+                        rs.getDate("data_nascimento").toLocalDate(),
+                        rs.getString("cpf"),
+                        rs.getString("cep"),
+                        rs.getString("email"),
+                        rs.getString("telefone"),
+                        rs.getString("estado_civil"),
+                        rs.getString("genero"),
+                        new Vaga(rs.getLong("id_vaga")),
+                        rs.getBoolean("ativo"),
+                        rs.getInt("version")
                 );
 
                 funcionarios.add(funcionario);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao listar funcionários!");
+            throw new RepositoryException("Erro ao listar funcionários!");
         }
 
         return funcionarios;
     }
 
-    public void atualizar(Funcionario funcionario) throws RuntimeException {
+    public void atualizar(Funcionario funcionario) throws RepositoryException {
         String sql = """
             UPDATE funcionarios
             SET nome = ?, data_nascimento = ?, cpf = ?, cep = ?, email = ?, telefone = ?, estadoCivil = ?, genero = ?, version = version + 1
@@ -188,18 +189,18 @@ public class FuncionarioRepository {
             p.setInt(10, funcionario.getVersion());
 
             if(p.executeUpdate() == 0) {
-                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+                throw new RepositoryException("Este dado foi alterado por outra pessoa. Atualize a página!");
             }
 
             funcionario.setVersion(funcionario.getVersion() + 1);
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao atualizar funcionario!");
+            throw new RepositoryException("Erro ao atualizar funcionario!");
         }
     }
 
-    public void desativar(Long id) throws RuntimeException {
+    public void desativar(Long id) throws RepositoryException {
         String sql = """
             UPDATE funcionarios
             SET ativo = false
@@ -207,8 +208,8 @@ public class FuncionarioRepository {
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, id);
 
@@ -216,11 +217,11 @@ public class FuncionarioRepository {
 
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao desativar funcionário!");
+            throw new RepositoryException("Erro ao desativar funcionário!");
         }
     }
 
-    public void desativarPorVaga(Long idVaga) throws RuntimeException {
+    public void desativarPorVaga(Long idVaga) throws RepositoryException {
         String sql = """
             UPDATE funcionarios
             SET ativo = false
@@ -237,11 +238,11 @@ public class FuncionarioRepository {
 
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao desativar funcionário!");
+            throw new RepositoryException("Erro ao desativar funcionário!");
         }
     }
 
-    public boolean vinculoVaga(Long idVaga) throws RuntimeException {
+    public boolean vinculoVaga(Long idVaga) throws RepositoryException {
         String sql = """
             SELECT 1
             FROM funcionarios
@@ -250,8 +251,8 @@ public class FuncionarioRepository {
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, idVaga);
 
@@ -260,7 +261,7 @@ public class FuncionarioRepository {
             return rs.next();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao verificar vínculo funcionário -> vaga");
+            throw new RepositoryException("Erro ao verificar vínculo funcionário -> vaga");
         }
     }
 }
