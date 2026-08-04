@@ -236,7 +236,7 @@ public class MainTerminal {
             System.out.println("1 - Cadastrar candidato");
             System.out.println("2 - Listar candidatos");
             System.out.println("3 - Buscar candidato");
-            System.out.println("4 - Excluir candidato");
+            System.out.println("4 - Desativar candidato");
             System.out.println("0 - Voltar");
 
             int opcao = Integer.parseInt(scanner.nextLine());
@@ -294,21 +294,18 @@ public class MainTerminal {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
                     Candidato candidato = candidatoService.buscarPorId(id);
-                    if(candidato != null)
+                    if(candidato != null) {
                         System.out.println(candidato);
-                    else
+                    } else {
                         System.out.println("Não encontrado!");
+                    }
                 }
                 case 4 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
                     StatusVinculos status = candidatoService.desativar(id);
 
-                    if(status == StatusVinculos.SUCESSO)
-                        System.out.println("Candidato removido!");
-                    else
-                        System.out.println(
-                                "Não foi possível remover: possui vínculos.");
+                    System.out.println("Candidato removido!");
                 }
                 case 0 -> {
                     return;
@@ -409,10 +406,11 @@ public class MainTerminal {
                     Long id = Long.parseLong(scanner.nextLine());
                     Funcionario funcionario = funcionarioService.buscarPorId(id);
 
-                    if(funcionario != null)
+                    if(funcionario != null) {
                         System.out.println(funcionario);
-                    else
+                    } else {
                         System.out.println("Não encontrado!");
+                    }
                 }
 
                 case 4 -> {
@@ -422,10 +420,18 @@ public class MainTerminal {
 
                     StatusVinculos status = funcionarioService.desativar(id);
 
-                    if(status == StatusVinculos.SUCESSO)
+                    if(status == StatusVinculos.SUCESSO) {
                         System.out.println("Funcionário desativado!");
-                    else
-                        System.out.println("Funcionário possui vínculos!");
+                    } else {
+                        System.out.println("Funcionário possui vínculos!\nDeseja desativá-los? (S/N) ");
+                        String opcaoVinculo = scanner.nextLine();
+                        if(opcaoVinculo.equalsIgnoreCase("s")) {
+                            dadosBancariosService.desativarPorFuncionario(id);
+                            folhaDePagamentoService.desativarPorFuncionario(id);
+                            funcionarioService.desativar(id);
+                            System.out.println("Funcionário desativado!");
+                        }
+                    }
                 }
                 case 0 -> {
                     return;
@@ -519,10 +525,8 @@ public class MainTerminal {
                     Long id = Long.parseLong(scanner.nextLine());
 
                     StatusVinculos status = vagaService.desativar(id);
-                    if(status == StatusVinculos.SUCESSO)
-                        System.out.println("Vaga removida!");
-                    else
-                        System.out.println("Vaga possui vínculos!");
+
+                    System.out.println("Vaga desativada!");
                 }
                 case 0 -> {
                     return;
@@ -599,10 +603,17 @@ public class MainTerminal {
 
                     StatusVinculos status = departamentoService.desativar(id);
 
-                    if(status == StatusVinculos.SUCESSO)
-                        System.out.println("Departamento removido!");
-                    else
-                        System.out.println("Departamento possui vínculos!");
+                    if(status == StatusVinculos.SUCESSO) {
+                        System.out.println("Departamento desativado!");
+                    } else {
+                        System.out.println("Departamento possui vínculos! \nDeseja desativá-los? (S/N) ");
+                        String opcaoVinculo = scanner.nextLine();
+                        if(opcaoVinculo.equalsIgnoreCase("s")) {
+                            vagaService.desativarPorDepartamento(id);
+                            departamentoService.desativar(id);
+                            System.out.println("Departamente desativado!");
+                        }
+                    }
                 }
 
                 case 0 -> {
@@ -661,7 +672,7 @@ public class MainTerminal {
 
                     candidaturaService.desativar(id);
 
-                    System.out.println("Candidatura removida!");
+                    System.out.println("Candidatura desativada!");
                 }
 
                 case 0 -> {
@@ -760,7 +771,7 @@ public class MainTerminal {
 
                     contratoService.desativar(id);
 
-                    System.out.println("Contrato removido!");
+                    System.out.println("Contrato desativado!");
                 }
 
                 case 0 -> {
@@ -859,7 +870,7 @@ public class MainTerminal {
 
                     dadosBancariosService.desativar(id);
 
-                    System.out.println("Dados bancários removidos!");
+                    System.out.println("Dados bancários desativados!");
                 }
 
                 case 0 -> {
@@ -888,18 +899,62 @@ public class MainTerminal {
     private static void menuFolhasPagamento() {
         while(true) {
             System.out.println("\n====== FOLHAS DE PAGAMENTO ======");
-            System.out.println("1 - Listar folhas de pagamento");
-            System.out.println("2 - Buscar folha de pagamento");
-            System.out.println("3 - Excluir folha de pagamento");
+            System.out.println("1 - Cadastrar folhas de pagamento");
+            System.out.println("2 - Listar folhas de pagamento");
+            System.out.println("3 - Buscar folha de pagamento");
+            System.out.println("4 - Excluir folha de pagamento");
             System.out.println("0 - Voltar");
 
             int opcao = Integer.parseInt(scanner.nextLine());
 
             switch(opcao) {
+                case 1 -> {
+                    try {
 
-                case 1 -> listarFolhasPagamento();
+                        System.out.print("Horas trabalhadas: ");
+                        Integer horas = Integer.parseInt(scanner.nextLine());
 
-                case 2 -> {
+                        System.out.print("Data emissão (AAAA-MM-DD): ");
+                        LocalDate data = LocalDate.parse(scanner.nextLine());
+
+                        System.out.print("Descontos: ");
+                        Double descontos = Double.parseDouble(scanner.nextLine());
+
+                        System.out.print("Horas extras: ");
+                        Integer extras = Integer.parseInt(scanner.nextLine());
+
+                        System.out.print("ID do funcionário: ");
+                        Long id = Long.parseLong(scanner.nextLine());
+
+                        Funcionario funcionario = funcionarioService.buscarPorId(id);
+
+                        if (funcionario == null) {
+                            System.out.println("Funcionário não encontrado.");
+                            return;
+                        }
+
+                        FolhaDePagamento folha = new FolhaDePagamento(
+                                horas,
+                                data,
+                                descontos,
+                                extras,
+                                funcionario,
+                                true
+                        );
+
+                        folhaDePagamentoService.salvar(folha);
+
+                        System.out.println("Folha cadastrada!");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new ControllerException("Erro ao cadastrar folha de pagamento");
+                    }
+                }
+
+                case 2 -> listarFolhasPagamento();
+
+                case 3 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
 
@@ -912,13 +967,13 @@ public class MainTerminal {
                     }
                 }
 
-                case 3 -> {
+                case 4 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
 
                     folhaDePagamentoService.desativar(id);
 
-                    System.out.println("Folha de pagamento removida!");
+                    System.out.println("Folha de pagamento desativada!");
                 }
 
                 case 0 -> {
