@@ -23,6 +23,10 @@ public class ContratoService {
         return contratoRepository.listarTodos();
     }
 
+    public void atualizar(Contrato contrato) {
+        contratoRepository.atualizar(contrato);
+    }
+
     public void desativar(Long id) {
         contratoRepository.desativar(id);
     }

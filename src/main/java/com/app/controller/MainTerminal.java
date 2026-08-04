@@ -885,7 +885,8 @@ public class MainTerminal {
             System.out.println("1 - Cadastrar contratos");
             System.out.println("2 - Listar contratos");
             System.out.println("3 - Buscar contrato");
-            System.out.println("4 - Excluir contrato");
+            System.out.println("4 - Atualizar contrato");
+            System.out.println("5 - Excluir contrato");
             System.out.println("0 - Voltar");
 
             int opcao = Integer.parseInt(scanner.nextLine());
@@ -919,8 +920,28 @@ public class MainTerminal {
                         System.out.println("Contrato não encontrado!");
                     }
                 }
-
                 case 4 -> {
+                    try {
+                        System.out.print("ID: ");
+                        Long id = Long.parseLong(scanner.nextLine());
+
+                        if (contratoService.buscarPorId(id) == null) {
+                            System.out.println("Contrato não encontrado");
+                            return;
+                        }
+
+                        Contrato contrato = criarContrato();
+                        contrato.setIdContrato(id);
+                        contratoService.atualizar(contrato);
+
+                        System.out.println("Contrato atualizado!");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new ControllerException("Erro ao atualizar contrato");
+                    }
+                }
+                case 5 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
 
