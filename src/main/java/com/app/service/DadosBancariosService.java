@@ -23,6 +23,10 @@ public class DadosBancariosService {
         return dadosBancariosRepository.listarTodos();
     }
 
+    public void atualizar(DadosBancarios dadosBancarios) {
+        dadosBancariosRepository.atualizar(dadosBancarios);
+    }
+
     public void desativar(Long id) {
         dadosBancariosRepository.desativar(id);
     }

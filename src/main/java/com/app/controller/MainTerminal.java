@@ -1009,7 +1009,8 @@ public class MainTerminal {
             System.out.println("1 - Cadastrar dados bancários");
             System.out.println("2 - Listar dados bancários");
             System.out.println("3 - Buscar dados bancários");
-            System.out.println("4 - Excluir dados bancários");
+            System.out.println("4 - Atualizar dados bancários");
+            System.out.println("5 - Excluir dados bancários");
             System.out.println("0 - Voltar");
 
             int opcao = Integer.parseInt(scanner.nextLine());
@@ -1043,8 +1044,28 @@ public class MainTerminal {
                         System.out.println("Dados bancários não encontrados!");
                     }
                 }
-
                 case 4 -> {
+                    try {
+                        System.out.print("ID: ");
+                        Long id = Long.parseLong(scanner.nextLine());
+
+                        if (dadosBancariosService.buscarPorId(id) == null) {
+                            System.out.println("Dados bancários não encontrados");
+                            return;
+                        }
+
+                        DadosBancarios dadosBancarios = crirDadosBancarios();
+                        dadosBancarios.setIdDadosBancarios(id);
+                        dadosBancariosService.atualizar(dadosBancarios);
+
+                        System.out.println("Dados bancários atualizados!");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new ControllerException("Erro ao atualizar dados bancários");
+                    }
+                }
+                case 5 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
 
