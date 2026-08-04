@@ -2,13 +2,14 @@ package com.app.repository;
 
 import com.app.config.ConnectionFactory;
 import com.app.enums.Perfis;
+import com.app.exception.RepositoryException;
 import com.app.model.Funcionario;
 import com.app.model.Usuario;
 
 import java.sql.*;
 
 public class UsuarioRepository {
-    public void salvar(Usuario usuario) throws RuntimeException {
+    public void salvar(Usuario usuario) throws RepositoryException {
         String sql = """
             INSERT INTO usuarios (cpf, ativo, id_funcionario, perfil, senha)
             VALUES (?, ?, ?, ?, ?);
@@ -30,11 +31,11 @@ public class UsuarioRepository {
 
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao criar usuário!");
+            throw new RepositoryException("Erro ao criar usuário!");
         }
     }
 
-    public Usuario buscarPorCpf(String cpf) throws RuntimeException {
+    public Usuario buscarPorCpf(String cpf) throws RepositoryException {
         String sql = """
             SELECT *
             FROM usuarios
@@ -61,12 +62,12 @@ public class UsuarioRepository {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao buscar funcionário!");
+            throw new RepositoryException("Erro ao buscar funcionário!");
         }
         return null;
     }
 
-    public void atualizar(Usuario usuario) throws RuntimeException {
+    public void atualizar(Usuario usuario) throws RepositoryException {
         String sql = """
             UPDATE usuarios
             SET senha = ?, perfil = ?, ativo = ?, version = version + 1
@@ -84,14 +85,14 @@ public class UsuarioRepository {
             p.setInt(5, usuario.getVersion());
 
             if(p.executeUpdate() == 0) {
-                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+                throw new RepositoryException("Este dado foi alterado por outra pessoa. Atualize a página!");
             }
 
             usuario.setVersion(usuario.getVersion() + 1);
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao atualizar usuario!");
+            throw new RepositoryException("Erro ao atualizar usuario!");
         }
     }
 }
