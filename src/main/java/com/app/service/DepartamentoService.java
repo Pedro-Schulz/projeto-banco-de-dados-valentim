@@ -26,6 +26,10 @@ public class DepartamentoService {
         return departamentoRepository.listarTodos();
     }
 
+    public void atualizar(Departamento departamento) {
+        departamentoRepository.atualizar(departamento);
+    }
+
     public StatusVinculos desativar(Long id) {
         if(vagaService.vinculoDepartamento(id)) {
             return StatusVinculos.POSSUI_VINCULOS;
