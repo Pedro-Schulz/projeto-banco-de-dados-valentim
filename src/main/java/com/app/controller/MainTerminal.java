@@ -1132,7 +1132,8 @@ public class MainTerminal {
             System.out.println("1 - Cadastrar folhas de pagamento");
             System.out.println("2 - Listar folhas de pagamento");
             System.out.println("3 - Buscar folha de pagamento");
-            System.out.println("4 - Excluir folha de pagamento");
+            System.out.println("4 - Atualizar folha de pagamento");
+            System.out.println("5 - Excluir folha de pagamento");
             System.out.println("0 - Voltar");
 
             int opcao = Integer.parseInt(scanner.nextLine());
@@ -1166,8 +1167,28 @@ public class MainTerminal {
                         System.out.println("Folha de pagamento não encontrada!");
                     }
                 }
-
                 case 4 -> {
+                    try {
+                        System.out.print("ID: ");
+                        Long id = Long.parseLong(scanner.nextLine());
+
+                        if (folhaDePagamentoService.buscarPorId(id) == null) {
+                            System.out.println("Folha de pagamento não encontrada");
+                            return;
+                        }
+
+                        FolhaDePagamento folhaDePagamento = criarFolha();
+                        folhaDePagamento.setIdFolha(id);
+                        folhaDePagamentoService.atualizar(folhaDePagamento);
+
+                        System.out.println("Folha de pagamento atualizada!");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new ControllerException("Erro ao atualizar folha de pagamento");
+                    }
+                }
+                case 5 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
 

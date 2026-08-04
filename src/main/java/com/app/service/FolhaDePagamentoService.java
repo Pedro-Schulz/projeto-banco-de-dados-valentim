@@ -23,6 +23,10 @@ public class FolhaDePagamentoService {
         return folhaDePagamentoRepository.listarTodos();
     }
 
+    public void atualizar(FolhaDePagamento folhaDePagamento) {
+        folhaDePagamentoRepository.atualizar(folhaDePagamento);
+    }
+
     public void desativar(Long id) {
         folhaDePagamentoRepository.desativar(id);
     }
