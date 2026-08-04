@@ -28,6 +28,10 @@ public class CandidaturaService {
         return candidaturaRepository.listarTodos();
     }
 
+    public void atualizar(Candidatura candidatura) {
+        candidaturaRepository.atualizar(candidatura);
+    }
+
     public void desativar(Long id) {
         candidaturaRepository.desativar(id);
     }

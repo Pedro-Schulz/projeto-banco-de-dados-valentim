@@ -754,7 +754,8 @@ public class MainTerminal {
             System.out.println("1 - Cadastrar candidaturas");
             System.out.println("2 - Listar candidaturas");
             System.out.println("3 - Buscar candidatura");
-            System.out.println("4 - Excluir candidatura");
+            System.out.println("4 - Atualizar candidatura");
+            System.out.println("5 - Excluir candidatura");
             System.out.println("0 - Voltar");
 
             int opcao = Integer.parseInt(scanner.nextLine());
@@ -787,8 +788,28 @@ public class MainTerminal {
                         System.out.println("Candidatura não encontrada!");
                     }
                 }
-
                 case 4 -> {
+                    try {
+                        System.out.print("ID: ");
+                        Long id = Long.parseLong(scanner.nextLine());
+
+                        if (candidaturaService.buscarPorId(id) == null) {
+                            System.out.println("Candidatura não encontrada");
+                            return;
+                        }
+
+                        Candidatura candidatura = criarCandidatura();
+                        candidatura.setIdCandidatura(id);
+                        candidaturaService.atualizar(candidatura);
+
+                        System.out.println("Candidatura atualizada!");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new ControllerException("Erro ao atualizar candidatura");
+                    }
+                }
+                case 5 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
 
