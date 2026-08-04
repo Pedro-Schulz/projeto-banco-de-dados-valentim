@@ -4,6 +4,7 @@ import com.app.enums.StatusVinculos;
 import com.app.model.Candidato;
 import com.app.repository.CandidatoRepository;
 import com.app.repository.CandidaturaRepository;
+import com.app.util.Validar;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,7 @@ public class CandidatoService {
     private final CandidaturaService candidaturaService = new CandidaturaService();
 
     public void salvar(Candidato candidato) {
+        Validar.validar(candidato);
         candidatoRepository.salvar(candidato);
     }
 

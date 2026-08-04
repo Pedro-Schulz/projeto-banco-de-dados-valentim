@@ -7,12 +7,14 @@ import com.app.model.Candidato;
 import com.app.model.Departamento;
 import com.app.repository.DepartamentoRepository;
 import com.app.repository.VagaRepository;
+import com.app.util.Validar;
 
 public class DepartamentoService {
     private final DepartamentoRepository departamentoRepository = new DepartamentoRepository();
     private final VagaService vagaService = new VagaService();
 
     public void salvar(Departamento departamento) {
+        Validar.validar(departamento);
         departamentoRepository.salvar(departamento);
     }
 
