@@ -279,8 +279,6 @@ public class MainTerminal {
 
                         Candidato candidato = criarCandidato();
 
-                        candidato.setIdCandidato(id);
-
                         candidatoService.atualizar(candidato);
 
                         System.out.println("Candidato atualizado!");
@@ -366,7 +364,8 @@ public class MainTerminal {
             System.out.println("1 - Cadastrar funcionários");
             System.out.println("2 - Listar funcionários");
             System.out.println("3 - Buscar funcionário");
-            System.out.println("4 - Excluir funcionário");
+            System.out.println("4 - Atualizar funcionário");
+            System.out.println("5 - Desativar funcionário");
             System.out.println("0 - Voltar");
 
             int opcao = Integer.parseInt(scanner.nextLine());
@@ -399,6 +398,28 @@ public class MainTerminal {
                 }
 
                 case 4 -> {
+                    try {
+                        System.out.print("ID: ");
+                        Long id = Long.parseLong(scanner.nextLine());
+
+                        if (funcionarioService.buscarPorId(id) == null) {
+                            System.out.println("Funcionário não encontrado.");
+                            return;
+                        }
+
+                        Funcionario funcionario = criarFuncionario();
+
+                        funcionarioService.atualizar(funcionario);
+
+                        System.out.println("Funcionário atualizado!");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new ControllerException("Erro ao atualizar funcionário");
+                    }
+                }
+
+                case 5 -> {
                     System.out.print("ID: ");
 
                     Long id = Long.parseLong(scanner.nextLine());

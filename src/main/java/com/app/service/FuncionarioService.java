@@ -29,6 +29,10 @@ public class FuncionarioService {
         return funcionarioRepository.buscarPorCpf(cpf);
     }
 
+    public void atualizar(Funcionario funcionario) {
+        funcionarioRepository.atualizar(funcionario);
+    }
+
     public ArrayList<Funcionario> listarTodos() {
         return funcionarioRepository.listarTodos();
     }
