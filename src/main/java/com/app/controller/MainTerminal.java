@@ -547,17 +547,40 @@ public class MainTerminal {
     private static void menuDepartamentos() {
         while(true) {
             System.out.println("\n====== DEPARTAMENTOS ======");
-            System.out.println("1 - Listar departamentos");
-            System.out.println("2 - Buscar departamento");
-            System.out.println("3 - Excluir departamento");
+            System.out.println("1 - Cadastrar departamentos");
+            System.out.println("2 - Listar departamentos");
+            System.out.println("3 - Buscar departamento");
+            System.out.println("4 - Excluir departamento");
             System.out.println("0 - Voltar");
 
             int opcao = Integer.parseInt(scanner.nextLine());
 
             switch(opcao) {
-                case 1 -> listarDepartamentos();
+                case 1 -> {
+                    try {
+                        System.out.print("Nome: ");
+                        String nome = scanner.nextLine();
 
-                case 2 -> {
+                        System.out.print("Gastos: ");
+                        Double gastos = Double.parseDouble(scanner.nextLine());
+
+                        System.out.print("Retorno: ");
+                        Double retorno = Double.parseDouble(scanner.nextLine());
+
+                        Departamento departamento =
+                                new Departamento(nome, gastos, retorno, true);
+
+                        departamentoService.salvar(departamento);
+
+                        System.out.println("Departamento cadastrado!");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new ControllerException("Erro ao cadastrar departamento!");
+                    }
+                }
+                case 2 -> listarDepartamentos();
+
+                case 3 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
 
@@ -570,7 +593,7 @@ public class MainTerminal {
                     }
                 }
 
-                case 3 -> {
+                case 4 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
 
