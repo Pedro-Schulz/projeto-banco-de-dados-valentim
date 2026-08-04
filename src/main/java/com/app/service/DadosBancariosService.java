@@ -3,6 +3,7 @@ package com.app.service;
 import com.app.model.Candidato;
 import com.app.model.DadosBancarios;
 import com.app.repository.DadosBancariosRepository;
+import com.app.util.Validar;
 
 import java.util.ArrayList;
 
@@ -10,6 +11,7 @@ public class DadosBancariosService {
     private final DadosBancariosRepository dadosBancariosRepository = new DadosBancariosRepository();
 
     public void salvar(DadosBancarios dadosBancarios) {
+        Validar.validar(dadosBancarios);
         dadosBancariosRepository.salvar(dadosBancarios);
     }
 

@@ -5,6 +5,7 @@ import com.app.enums.StatusVinculos;
 import com.app.model.Candidato;
 import com.app.model.Candidatura;
 import com.app.repository.CandidaturaRepository;
+import com.app.util.Validar;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +16,7 @@ public class CandidaturaService {
     private final CandidaturaRepository candidaturaRepository = new CandidaturaRepository();
 
     public void salvar(Candidatura candidatura) {
+        Validar.validar(candidatura);
         candidaturaRepository.salvar(candidatura);
     }
 

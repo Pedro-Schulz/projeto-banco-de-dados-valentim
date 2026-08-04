@@ -3,6 +3,7 @@ package com.app.service;
 import com.app.model.Candidato;
 import com.app.model.FolhaDePagamento;
 import com.app.repository.FolhaDePagamentoRepository;
+import com.app.util.Validar;
 
 import java.util.ArrayList;
 
@@ -10,6 +11,7 @@ public class FolhaDePagamentoService {
     private final FolhaDePagamentoRepository folhaDePagamentoRepository = new FolhaDePagamentoRepository();
 
     public void salvar(FolhaDePagamento folhaDePagamento) {
+        Validar.validar(folhaDePagamento);
         folhaDePagamentoRepository.salvar(folhaDePagamento);
     }
 

@@ -9,6 +9,7 @@ import com.app.model.Vaga;
 import com.app.repository.CandidaturaRepository;
 import com.app.repository.FuncionarioRepository;
 import com.app.repository.VagaRepository;
+import com.app.util.Validar;
 
 public class VagaService {
     private final VagaRepository vagaRepository = new VagaRepository();
@@ -16,6 +17,7 @@ public class VagaService {
     private final FuncionarioService funcionarioService = new FuncionarioService();
 
     public void salvar(Vaga vaga) {
+        Validar.validar(vaga);
         validarCargo(vaga);
         vagaRepository.salvar(vaga);
     }
