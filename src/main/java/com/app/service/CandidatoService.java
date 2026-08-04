@@ -25,6 +25,10 @@ public class CandidatoService {
         return candidatoRepository.listarTodos();
     }
 
+    public void atualizar(Candidato candidato) {
+        candidatoRepository.atualizar(candidato);
+    }
+
     public StatusVinculos desativar(Long id) {
         if(candidaturaService.vinculoCandidato(id)) {
             return StatusVinculos.POSSUI_VINCULOS;

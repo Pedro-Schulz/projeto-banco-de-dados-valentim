@@ -236,7 +236,8 @@ public class MainTerminal {
             System.out.println("1 - Cadastrar candidato");
             System.out.println("2 - Listar candidatos");
             System.out.println("3 - Buscar candidato");
-            System.out.println("4 - Desativar candidato");
+            System.out.println("4 - Atualizar candidato");
+            System.out.println("5 - Desativar candidato");
             System.out.println("0 - Voltar");
 
             int opcao = Integer.parseInt(scanner.nextLine());
@@ -267,6 +268,29 @@ public class MainTerminal {
                     }
                 }
                 case 4 -> {
+                    try {
+                        System.out.print("ID: ");
+                        Long id = Long.parseLong(scanner.nextLine());
+
+                        if (candidatoService.buscarPorId(id) == null) {
+                            System.out.println("Candidato não encontrado.");
+                            return;
+                        }
+
+                        Candidato candidato = criarCandidato();
+
+                        candidato.setIdCandidato(id);
+
+                        candidatoService.atualizar(candidato);
+
+                        System.out.println("Candidato atualizado!");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new ControllerException("Erro ao atualizar candidato");
+                    }
+                }
+                case 5 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
                     StatusVinculos status = candidatoService.desativar(id);
