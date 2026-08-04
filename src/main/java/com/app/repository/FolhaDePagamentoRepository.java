@@ -1,6 +1,7 @@
 package com.app.repository;
 
 import com.app.config.ConnectionFactory;
+import com.app.exception.RepositoryException;
 import com.app.model.FolhaDePagamento;
 import com.app.model.Funcionario;
 import java.sql.Connection;
@@ -11,15 +12,15 @@ import java.sql.*;
 
 public class FolhaDePagamentoRepository {
 
-    public void salvar(FolhaDePagamento folha) throws RuntimeException {
+    public void salvar(FolhaDePagamento folha) throws RepositoryException {
         String sql = """
             INSERT INTO folhas_de_pagamento (horas_trabalhadas, data_emissao, descontos, horas_extras, id_funcionario, ativo)
             VALUES (?, ?, ?, ?, ?, ?);
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ) {
             p.setInt(1, folha.getHorasTrabalhadas());
             p.setObject(2, folha.getDataEmissao());
@@ -39,11 +40,11 @@ public class FolhaDePagamentoRepository {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao salvar folha de pagamento!");
+            throw new RepositoryException("Erro ao salvar folha de pagamento!");
         }
     }
 
-    public FolhaDePagamento buscarPorId(Long id) throws RuntimeException {
+    public FolhaDePagamento buscarPorId(Long id) throws RepositoryException {
         String sql = """
             SELECT *
             FROM folhas_de_pagamento
@@ -51,8 +52,8 @@ public class FolhaDePagamentoRepository {
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, id);
 
@@ -66,7 +67,7 @@ public class FolhaDePagamentoRepository {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao buscar folha de pagamento!");
+            throw new RepositoryException("Erro ao buscar folha de pagamento!");
         }
     }
 
@@ -100,14 +101,14 @@ public class FolhaDePagamentoRepository {
             }
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao listar folhas de pagamento! \n");
+            throw new RepositoryException("Erro ao listar folhas de pagamento! \n");
         }
 
         return folhasDePagamento;
     }
 
 
-    public void atualizar(FolhaDePagamento folha) throws RuntimeException {
+    public void atualizar(FolhaDePagamento folha) throws RepositoryException {
         String sql = """
             UPDATE folhas_de_pagamento
             SET horas_trabalhadas = ?, data_emissao = ?, descontos = ?, horas_extras = ?, id_funcionario = ?, version = version + 1
@@ -127,18 +128,18 @@ public class FolhaDePagamentoRepository {
             p.setInt(7, folha.getVersion());
 
             if(p.executeUpdate() == 0) {
-                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+                throw new RepositoryException("Este dado foi alterado por outra pessoa. Atualize a página!");
             }
 
             folha.setVersion(folha.getVersion() + 1);
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao atualizar folha de pagamento!");
+            throw new RepositoryException("Erro ao atualizar folha de pagamento!");
         }
     }
 
-    public void desativar(Long id) throws RuntimeException {
+    public void desativar(Long id) throws RepositoryException {
         String sql = """
             UPDATE folhas_de_pagamento
             SET ativo = false
@@ -155,11 +156,11 @@ public class FolhaDePagamentoRepository {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao desativar folha de pagamento!");
+            throw new RepositoryException("Erro ao desativar folha de pagamento!");
         }
     }
 
-    public void desativarPorFuncionario(Long idFuncionario) throws RuntimeException {
+    public void desativarPorFuncionario(Long idFuncionario) throws RepositoryException {
         String sql = """
             UPDATE folhas_de_pagamento
             SET ativo = false
@@ -175,11 +176,11 @@ public class FolhaDePagamentoRepository {
 
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao dessativar folha de pagamento!");
+            throw new RepositoryException("Erro ao dessativar folha de pagamento!");
         }
     }
 
-    public boolean vinculoFuncionario(Long id) throws RuntimeException {
+    public boolean vinculoFuncionario(Long id) throws RepositoryException {
         String sql = """
             SELECT 1
             FROM folhas_de_pagamento
@@ -199,7 +200,7 @@ public class FolhaDePagamentoRepository {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao verificar vínculo folha de pagamento -> funcionário");
+            throw new RepositoryException("Erro ao verificar vínculo folha de pagamento -> funcionário");
         }
     }
 

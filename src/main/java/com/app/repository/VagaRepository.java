@@ -1,6 +1,7 @@
 package com.app.repository;
 
 import com.app.config.ConnectionFactory;
+import com.app.exception.RepositoryException;
 import com.app.model.Departamento;
 import com.app.model.Usuario;
 import com.app.model.Vaga;
@@ -19,8 +20,8 @@ public class VagaRepository {
                 """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ) {
             p.setString(1, vaga.getTurno());
             p.setString(2, vaga.getCargo());
@@ -37,7 +38,7 @@ public class VagaRepository {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao criar uma vaga!");
+            throw new RepositoryException("Erro ao criar uma vaga!");
         }
     }
 
@@ -49,8 +50,8 @@ public class VagaRepository {
                 """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, id);
 
@@ -77,12 +78,12 @@ public class VagaRepository {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao achar vaga pelo ID!");
+            throw new RepositoryException("Erro ao achar vaga pelo ID!");
         }
         return null;
     }
 
-    public ArrayList<Vaga> listarTodos() throws RuntimeException {
+    public ArrayList<Vaga> listarTodos() throws RepositoryException {
         ArrayList<Vaga> vagas = new ArrayList<>();
         String sql = """
                     SELECT v.*, d.id_departamento
@@ -111,12 +112,12 @@ public class VagaRepository {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao listar as vagas!");
+            throw new RepositoryException("Erro ao listar as vagas!");
         }
         return vagas;
     }
 
-    public void atualizar(Vaga vaga) throws RuntimeException {
+    public void atualizar(Vaga vaga) throws RepositoryException {
         String sql = """
             UPDATE vagas
             SET turno = ?, salario_hora = ?, cargo = ?, version = version + 1
@@ -134,18 +135,18 @@ public class VagaRepository {
             p.setInt(5, vaga.getVersion());
 
             if(p.executeUpdate() == 0) {
-                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+                throw new RepositoryException("Este dado foi alterado por outra pessoa. Atualize a página!");
             }
 
             vaga.setVersion(vaga.getVersion() + 1);
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao atualizar vaga!");
+            throw new RepositoryException("Erro ao atualizar vaga!");
         }
     }
 
-    public void desativar(Long id) throws RuntimeException {
+    public void desativar(Long id) throws RepositoryException {
         String sql = """
                     UPDATE vagas
                     SET ativo = FALSE
@@ -153,8 +154,8 @@ public class VagaRepository {
                 """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, id);
 
@@ -162,11 +163,11 @@ public class VagaRepository {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao desativar vaga!");
+            throw new RepositoryException("Erro ao desativar vaga!");
         }
     }
 
-    public void desativarPorDepartamento(Long idDepartamento) throws RuntimeException {
+    public void desativarPorDepartamento(Long idDepartamento) throws RepositoryException {
         String sql = """
                     UPDATE vagas
                     SET ativo = FALSE
@@ -183,11 +184,11 @@ public class VagaRepository {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao desativar vaga!");
+            throw new RepositoryException("Erro ao desativar vaga!");
         }
     }
 
-    public boolean vinculoDepartamento(Long idDepartamento) throws RuntimeException {
+    public boolean vinculoDepartamento(Long idDepartamento) throws RepositoryException {
         String sql = """
             SELECT 1
             FROM vagas
@@ -206,7 +207,7 @@ public class VagaRepository {
             return rs.next();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao verificar vínculo vaga -> departamento");
+            throw new RepositoryException("Erro ao verificar vínculo vaga -> departamento");
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.app.repository;
 
 import com.app.config.ConnectionFactory;
+import com.app.exception.RepositoryException;
 import com.app.model.DadosBancarios;
 import com.app.model.Departamento;
 import java.sql.*;
@@ -8,15 +9,15 @@ import java.util.ArrayList;
 
 public class DepartamentoRepository {
 
-    public void salvar(Departamento departamento) throws RuntimeException {
+    public void salvar(Departamento departamento) throws RepositoryException {
         String sql = """
             INSERT INTO departamentos (nome, gastos, retorno, ativo)
             VALUES (?, ?, ?);
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ) {
             p.setString(1, departamento.getNome());
             p.setDouble(2, departamento.getGastos());
@@ -33,11 +34,11 @@ public class DepartamentoRepository {
             }
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao salvar departamento!");
+            throw new RepositoryException("Erro ao salvar departamento!");
         }
     }
 
-    public Departamento buscarPorId(Long id) throws RuntimeException {
+    public Departamento buscarPorId(Long id) throws RepositoryException {
         String sql = """
             SELECT *
             FROM departamentos
@@ -45,8 +46,8 @@ public class DepartamentoRepository {
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, id);
 
@@ -54,18 +55,18 @@ public class DepartamentoRepository {
 
             if(rs.next()) {
                 Departamento departamento = new Departamento(
-                    rs.getLong("id_departamento"),
-                    rs.getString("nome"),
-                    rs.getDouble("gastos"),
-                    rs.getDouble("retorno"),
-                    rs.getBoolean("ativo"),
-                    rs.getInt("version")
+                        rs.getLong("id_departamento"),
+                        rs.getString("nome"),
+                        rs.getDouble("gastos"),
+                        rs.getDouble("retorno"),
+                        rs.getBoolean("ativo"),
+                        rs.getInt("version")
                 );
 
                 return departamento;
             }
         } catch(Exception e) {
-            throw new RuntimeException("Erro ao buscar o departamento pelo ID!");
+            throw new RepositoryException("Erro ao buscar o departamento pelo ID!");
         }
         return null;
     }
@@ -78,30 +79,30 @@ public class DepartamentoRepository {
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
         ) {
             ResultSet rs = p.executeQuery();
 
             while(rs.next()) {
                 Departamento departamento = new Departamento(
-                    rs.getLong("id_departamento"),
-                    rs.getString("nome"),
-                    rs.getDouble("gastos"),
-                    rs.getDouble("retorno"),
-                    rs.getBoolean("ativo"),
-                    rs.getInt("version")
+                        rs.getLong("id_departamento"),
+                        rs.getString("nome"),
+                        rs.getDouble("gastos"),
+                        rs.getDouble("retorno"),
+                        rs.getBoolean("ativo"),
+                        rs.getInt("version")
                 );
                 departamentos.add(departamento);
             }
             return departamentos;
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao listar os departamentos! \n");
+            throw new RepositoryException("Erro ao listar os departamentos! \n");
         }
     }
 
-    public void atualizar(Departamento departamento) throws RuntimeException {
+    public void atualizar(Departamento departamento) throws RepositoryException {
         String sql = """
             UPDATE departamentos
             SET nome = ?,gastos = ?, retorno = ?, ativo = ?,version = version + 1
@@ -120,18 +121,18 @@ public class DepartamentoRepository {
             p.setInt(6, departamento.getVersion());
 
             if(p.executeUpdate() == 0) {
-                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+                throw new RepositoryException("Este dado foi alterado por outra pessoa. Atualize a página!");
             }
 
             departamento.setVersion(departamento.getVersion() + 1);
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao atualizar departamento!");
+            throw new RepositoryException("Erro ao atualizar departamento!");
         }
     }
 
-    public void desativar(Long id) throws RuntimeException {
+    public void desativar(Long id) throws RepositoryException {
         String sql = """
             SELECT departamentos
             SET ativo = false
@@ -139,8 +140,8 @@ public class DepartamentoRepository {
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, id);
 
@@ -148,7 +149,7 @@ public class DepartamentoRepository {
 
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao deletar departamento!");
+            throw new RepositoryException("Erro ao deletar departamento!");
         }
     }
 }

@@ -3,7 +3,6 @@ package com.app.repository;
 import com.app.config.ConnectionFactory;
 import com.app.exception.RepositoryException;
 import com.app.model.DadosBancarios;
-import com.app.model.FolhaDePagamento;
 import com.app.model.Funcionario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
