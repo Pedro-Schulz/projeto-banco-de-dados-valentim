@@ -1,5 +1,9 @@
 package com.app.model;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,12 +16,16 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Candidato {
     private Long idCandidato;
+    @NotEmpty
     private String nome;
     private String cpf;
     private String cep;
+    @Email
     private String email;
     private String telefone;
+    @Size(min = 1, max = 1)
     private String genero;
+    @NotEmpty
     private String estadoCivil;
     private LocalDate dataNascimento;
     private Boolean ativo;
