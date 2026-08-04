@@ -452,16 +452,57 @@ public class MainTerminal {
     private static void menuVagas() {
         while(true) {
             System.out.println("\n====== VAGAS ======");
-            System.out.println("1 - Listar vagas");
-            System.out.println("2 - Buscar vaga");
-            System.out.println("3 - Excluir vaga");
+            System.out.println("1 - Cadastrar vagas");
+            System.out.println("2 - Listar vagas");
+            System.out.println("3 - Buscar vaga");
+            System.out.println("4 - Excluir vaga");
             System.out.println("0 - Voltar");
 
             int opcao = Integer.parseInt(scanner.nextLine());
 
             switch(opcao) {
-                case 1 -> listarVagas();
-                case 2 -> {
+                case 1 -> {
+                    try {
+
+                        System.out.print("Turno: ");
+                        String turno = scanner.nextLine();
+
+                        System.out.print("Cargo: ");
+                        String cargo = scanner.nextLine();
+
+                        System.out.print("Salário por hora: ");
+                        Double salario = Double.parseDouble(scanner.nextLine());
+
+                        System.out.print("ID do departamento: ");
+                        Long idDepartamento = Long.parseLong(scanner.nextLine());
+
+                        Departamento departamento =
+                                departamentoService.buscarPorId(idDepartamento);
+
+                        if (departamento == null) {
+                            System.out.println("Departamento não encontrado.");
+                            return;
+                        }
+
+                        Vaga vaga = new Vaga(
+                                turno,
+                                cargo,
+                                salario,
+                                departamento,
+                                true
+                        );
+
+                        vagaService.salvar(vaga);
+
+                        System.out.println("Vaga cadastrada!");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new ControllerException("Erro ao cadastrar vaga!");
+                    }
+                }
+                case 2 -> listarVagas();
+                case 3 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
 
@@ -473,7 +514,7 @@ public class MainTerminal {
                         System.out.println("Vaga não encontrada!");
                     }
                 }
-                case 3 -> {
+                case 4 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
 
