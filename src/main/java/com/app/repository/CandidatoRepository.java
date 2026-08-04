@@ -1,6 +1,7 @@
 package com.app.repository;
 
 import com.app.config.ConnectionFactory;
+import com.app.exception.RepositoryException;
 import com.app.model.Candidato;
 import java.sql.*;
 import java.sql.Connection;
@@ -39,7 +40,7 @@ public class CandidatoRepository {
             }
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao salvar candidato!");
+            throw new RepositoryException("Erro ao salvar candidato!");
         }
     }
 
@@ -76,7 +77,7 @@ public class CandidatoRepository {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao buscar candidato!");
+            throw new RepositoryException("Erro ao buscar candidato!");
         }
         return null;
     }
@@ -110,7 +111,7 @@ public class CandidatoRepository {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao listar candidatos!");
+            throw new RepositoryException("Erro ao listar candidatos!");
         }
         return candidatos;
     }
@@ -145,7 +146,7 @@ public class CandidatoRepository {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao atualizar candidato!");
+            throw new RepositoryException("Erro ao atualizar candidato!");
         }
     }
 
@@ -166,7 +167,7 @@ public class CandidatoRepository {
 
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao desativar candidato!");
+            throw new RepositoryException("Erro ao desativar candidato!");
         }
     }
 }
