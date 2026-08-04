@@ -345,8 +345,65 @@ public class MainTerminal {
             int opcao = Integer.parseInt(scanner.nextLine());
 
             switch(opcao) {
-                case 1 -> listarFuncionarios();
-                case 2 -> {
+                case 1 -> {
+                    try {
+                        System.out.print("Nome: ");
+                        String nome = scanner.nextLine();
+
+                        System.out.print("Data nascimento (AAAA-MM-DD): ");
+                        LocalDate nascimento = LocalDate.parse(scanner.nextLine());
+
+                        System.out.print("CPF: ");
+                        String cpf = scanner.nextLine();
+
+                        System.out.print("CEP: ");
+                        String cep = scanner.nextLine();
+
+                        System.out.print("Email: ");
+                        String email = scanner.nextLine();
+
+                        System.out.print("Telefone: ");
+                        String telefone = scanner.nextLine();
+
+                        System.out.print("Estado civil: ");
+                        String estadoCivil = scanner.nextLine();
+
+                        System.out.print("Gênero: ");
+                        String genero = scanner.nextLine();
+
+                        System.out.print("ID da vaga: ");
+                        Long idVaga = Long.parseLong(scanner.nextLine());
+
+                        Vaga vaga = vagaService.buscarPorId(idVaga);
+
+                        if (vaga == null) {
+                            System.out.println("Vaga não encontrada.");
+                            return;
+                        }
+
+                        Funcionario funcionario = new Funcionario(
+                                nome,
+                                nascimento,
+                                cpf,
+                                cep,
+                                email,
+                                telefone,
+                                estadoCivil,
+                                genero,
+                                vaga,
+                                true
+                        );
+
+                        funcionarioService.salvar(funcionario);
+                        System.out.println("Funcionário cadastrado!");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new ControllerException("Erro ao cadastrar funcionário!");
+                    }
+                }
+                case 2 -> listarFuncionarios();
+                case 3 -> {
                     System.out.print("ID: ");
 
                     Long id = Long.parseLong(scanner.nextLine());
@@ -358,7 +415,7 @@ public class MainTerminal {
                         System.out.println("Não encontrado!");
                 }
 
-                case 3 -> {
+                case 4 -> {
                     System.out.print("ID: ");
 
                     Long id = Long.parseLong(scanner.nextLine());
