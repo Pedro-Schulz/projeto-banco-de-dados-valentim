@@ -42,8 +42,8 @@ FROM funcionarios
 JOIN folhas_de_pagamentos
    ON funcionarios.id_funcionario = folhas_de_pagamentos.id_funcionario
 WHERE folhas_de_pagamentos.horas_extras <> 0
-AND folhas_de_pagamentos.data_fechamento = (
-   SELECT MAX(data_fechamento)
+AND folhas_de_pagamentos.data_emissao = (
+   SELECT MAX(data_emissao)
    FROM folhas_de_pagamentos
 );
 
