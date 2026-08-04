@@ -1,0 +1,178 @@
+-- 1. Relatório exibindo nome do funcionário, cargo e departamento
+CREATE OR REPLACE VIEW vw_funcionarios AS
+SELECT
+    f.nome AS nome_funcionario,
+    v.cargo,
+    d.nome AS departamento
+FROM funcionarios f
+JOIN vagas v ON f.id_vaga = v.id_vaga
+JOIN departamentos d ON v.id_departamento = d.id_departamento;
+
+
+-- 2. Quantidade de funcionários por departamento
+CREATE OR REPLACE VIEW vw_funcionarios_departamento AS
+SELECT
+    d.nome AS departamento,
+    COUNT(f.id_funcionario) AS quantidade_funcionarios
+FROM departamentos d
+JOIN vagas v ON d.id_departamento = v.id_departamento
+JOIN funcionarios f ON v.id_vaga = f.id_vaga
+GROUP BY d.id_departamento, d.nome;
+
+
+-- 3. Valor médio do salário por hora dos cargos por departamento
+CREATE OR REPLACE VIEW vw_media_salario_departamento AS
+SELECT
+    d.nome AS departamento,
+    ROUND(AVG(v.salario_hora), 2) AS media_salario_hora
+FROM departamentos d
+JOIN vagas v ON d.id_departamento = v.id_departamento
+GROUP BY d.nome;
+
+
+-- 4. Funcionários com horas extras no último fechamento da folha
+CREATE OR REPLACE VIEW vw_funcionarios_horas_extras AS
+SELECT
+    f.nome AS nome_funcionario,
+    fp.horas_extras
+FROM funcionarios f
+JOIN folhas_de_pagamentos fp ON f.id_funcionario = fp.id_funcionario
+WHERE fp.horas_extras <> 0
+  AND fp.data_emissao = (
+      SELECT MAX(data_emissao)
+      FROM folhas_de_pagamentos
+  );
+
+
+-- 5. Total de horas extras realizadas por departamento
+CREATE OR REPLACE VIEW vw_horas_extras_departamento AS
+SELECT
+    d.nome AS departamento,
+    SUM(fp.horas_extras) AS total_horas_extras
+FROM departamentos d
+JOIN vagas v ON d.id_departamento = v.id_departamento
+JOIN funcionarios f ON v.id_vaga = f.id_vaga
+JOIN folhas_de_pagamentos fp ON f.id_funcionario = fp.id_funcionario
+GROUP BY d.nome;
+
+
+-- 6. Total de descontos na folha de pagamento por departamento
+CREATE OR REPLACE VIEW vw_descontos_folha_departamento AS
+SELECT
+    d.nome AS departamento,
+    SUM(fp.descontos) AS total_descontos
+FROM departamentos d
+JOIN vagas v ON d.id_departamento = v.id_departamento
+JOIN funcionarios f ON v.id_vaga = f.id_vaga
+JOIN folhas_de_pagamentos fp ON f.id_funcionario = fp.id_funcionario
+GROUP BY d.nome;
+
+
+-- 7. Quantidade de vagas existentes por departamento
+CREATE OR REPLACE VIEW vw_vagas_departamento AS
+SELECT
+    d.nome AS departamento,
+    COUNT(v.id_vaga) AS total_vagas
+FROM departamentos d
+LEFT JOIN vagas v ON d.id_departamento = v.id_departamento
+GROUP BY d.nome;
+
+
+-- 8. Vagas ocupadas vs. vagas disponíveis por departamento
+CREATE OR REPLACE VIEW vw_vagas_ocupadas_disponiveis AS
+SELECT
+    d.nome AS departamento,
+    COUNT(v.id_vaga) AS total_vagas,
+    SUM(CASE WHEN f.id_funcionario IS NOT NULL THEN 1 ELSE 0 END) AS vagas_ocupadas,
+    SUM(CASE WHEN f.id_funcionario IS NULL THEN 1 ELSE 0 END) AS vagas_disponiveis
+FROM departamentos d
+INNER JOIN vagas v ON v.id_departamento = d.id_departamento
+LEFT JOIN funcionarios f ON f.id_vaga = v.id_vaga
+GROUP BY d.nome;
+
+
+-- 9. Candidaturas em andamento
+CREATE OR REPLACE VIEW vw_candidaturas_andamento AS
+SELECT
+    c.nome AS candidato,
+    v.cargo AS vaga,
+    ca.etapa AS etapa_atual,
+    ca.data_candidatura,
+    ca.prazo
+FROM candidaturas ca
+INNER JOIN candidatos c ON c.id_candidato = ca.id_candidato
+INNER JOIN vagas v ON v.id_vaga = ca.id_vaga
+WHERE ca.status_candidatura = 1;
+
+
+-- 10. Quantidade de candidatos por etapa do processo seletivo
+CREATE OR REPLACE VIEW vw_candidatos_etapa AS
+SELECT
+    ca.etapa,
+    COUNT(ca.id_candidatura) AS quantidade_candidatos
+FROM candidaturas ca
+GROUP BY ca.etapa;
+
+
+-- 11. Quantidade de candidatos por vaga aberta
+CREATE OR REPLACE VIEW vw_candidatos_por_vaga AS
+SELECT
+    v.cargo AS vaga,
+    d.nome AS departamento,
+    COUNT(ca.id_candidatura) AS total_candidatos
+FROM vagas v
+INNER JOIN departamentos d ON d.id_departamento = v.id_departamento
+INNER JOIN candidaturas ca ON ca.id_vaga = v.id_vaga
+GROUP BY v.id_vaga, v.cargo, d.nome;
+
+
+-- 12. Estimativa do custo mensal da folha de pagamento por departamento
+CREATE OR REPLACE VIEW vw_custo_folha_departamento AS
+SELECT
+    d.nome AS departamento,
+    COUNT(DISTINCT f.id_funcionario) AS total_funcionarios,
+    SUM(fp.horas_trabalhadas) AS total_horas_mes,
+    SUM(v.salario_hora * fp.horas_trabalhadas) AS total_salario_base,
+    SUM(fp.horas_extras * v.salario_hora * 1.5) AS custo_estimado_horas_extras,
+    ROUND(
+        (SUM(v.salario_hora * fp.horas_trabalhadas) + SUM(fp.horas_extras * v.salario_hora * 1.5)) * 1.40,
+        2
+    ) AS custo_mensal_total_estimado
+FROM departamentos d
+INNER JOIN vagas v ON d.id_departamento = v.id_departamento
+INNER JOIN funcionarios f ON f.id_vaga = v.id_vaga
+INNER JOIN contratos c ON c.id_funcionario = f.id_funcionario
+INNER JOIN folhas_de_pagamentos fp ON fp.id_funcionario = f.id_funcionario
+WHERE c.status_contrato = 1
+GROUP BY d.nome;
+
+
+-- 13. Funcionários com remuneração acima da média salarial da empresa
+CREATE OR REPLACE VIEW vw_funcionarios_acima_media_salarial AS
+SELECT
+    f.id_funcionario,
+    f.nome AS funcionario,
+    v.cargo AS vaga,
+    v.salario_hora,
+    d.nome AS departamento
+FROM funcionarios f
+INNER JOIN vagas v ON v.id_vaga = f.id_vaga
+INNER JOIN departamentos d ON d.id_departamento = v.id_departamento
+WHERE v.salario_hora > (
+    SELECT AVG(salario_hora) FROM vagas
+);
+
+
+-- 14. Ranking dos departamentos com maior custo estimado de folha de pagamento
+CREATE OR REPLACE VIEW vw_maior_custo_departamento AS
+SELECT
+    d.nome AS departamento,
+    ROUND(
+        SUM((fp.horas_trabalhadas * v.salario_hora) + (fp.horas_extras * v.salario_hora * 1.5)),
+        2
+    ) AS custo_estimado_folha
+FROM departamentos d
+INNER JOIN vagas v ON v.id_departamento = d.id_departamento
+INNER JOIN funcionarios f ON f.id_vaga = v.id_vaga
+INNER JOIN folhas_de_pagamentos fp ON fp.id_funcionario = f.id_funcionario
+GROUP BY d.nome;
