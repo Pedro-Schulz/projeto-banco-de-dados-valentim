@@ -789,18 +789,58 @@ public class MainTerminal {
     private static void menuDadosBancarios() {
         while(true) {
             System.out.println("\n====== DADOS BANCÁRIOS ======");
-            System.out.println("1 - Listar dados bancários");
-            System.out.println("2 - Buscar dados bancários");
-            System.out.println("3 - Excluir dados bancários");
+            System.out.println("1 - Cadastrar dados bancários");
+            System.out.println("2 - Listar dados bancários");
+            System.out.println("3 - Buscar dados bancários");
+            System.out.println("4 - Excluir dados bancários");
             System.out.println("0 - Voltar");
 
             int opcao = Integer.parseInt(scanner.nextLine());
 
             switch(opcao) {
+                case 1 -> {
+                    try {
 
-                case 1 -> listarDadosBancarios();
+                        System.out.print("Número da conta: ");
+                        Integer conta = Integer.parseInt(scanner.nextLine());
 
-                case 2 -> {
+                        System.out.print("Instituição: ");
+                        String banco = scanner.nextLine();
+
+                        System.out.print("Agência: ");
+                        String agencia = scanner.nextLine();
+
+                        System.out.print("ID do funcionário: ");
+                        Long id = Long.parseLong(scanner.nextLine());
+
+                        Funcionario funcionario = funcionarioService.buscarPorId(id);
+
+                        if (funcionario == null) {
+                            System.out.println("Funcionário não encontrado.");
+                            return;
+                        }
+
+                        DadosBancarios dados = new DadosBancarios(
+                                conta,
+                                banco,
+                                agencia,
+                                funcionario,
+                                true
+                        );
+
+                        dadosBancariosService.salvar(dados);
+
+                        System.out.println("Dados bancários cadastrados!");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new ControllerException("Erro ao cadastrar dados bancários");
+                    }
+                }
+
+                case 2 -> listarDadosBancarios();
+
+                case 3 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
 
@@ -813,7 +853,7 @@ public class MainTerminal {
                     }
                 }
 
-                case 3 -> {
+                case 4 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
 
