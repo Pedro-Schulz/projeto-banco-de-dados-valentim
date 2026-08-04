@@ -244,41 +244,7 @@ public class MainTerminal {
             switch(opcao) {
                 case 1 -> {
                     try {
-                        System.out.print("Nome: ");
-                        String nome = scanner.nextLine();
-
-                        System.out.print("CPF: ");
-                        String cpf = scanner.nextLine();
-
-                        System.out.print("CEP: ");
-                        String cep = scanner.nextLine();
-
-                        System.out.print("Email: ");
-                        String email = scanner.nextLine();
-
-                        System.out.print("Telefone: ");
-                        String telefone = scanner.nextLine();
-
-                        System.out.print("Gênero: ");
-                        String genero = scanner.nextLine();
-
-                        System.out.print("Estado civil: ");
-                        String estadoCivil = scanner.nextLine();
-
-                        System.out.print("Data de nascimento (AAAA-MM-DD): ");
-                        LocalDate nascimento = LocalDate.parse(scanner.nextLine());
-
-                        Candidato candidato = new Candidato(
-                                nome,
-                                cpf,
-                                cep,
-                                email,
-                                telefone,
-                                genero,
-                                estadoCivil,
-                                nascimento,
-                                true
-                        );
+                        Candidato candidato = criarCandidato();
 
                         candidatoService.salvar(candidato);
 
@@ -317,6 +283,46 @@ public class MainTerminal {
         }
     }
 
+    private static Candidato criarCandidato() {
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+
+        System.out.print("CPF: ");
+        String cpf = scanner.nextLine();
+
+        System.out.print("CEP: ");
+        String cep = scanner.nextLine();
+
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
+
+        System.out.print("Telefone: ");
+        String telefone = scanner.nextLine();
+
+        System.out.print("Gênero: ");
+        String genero = scanner.nextLine();
+
+        System.out.print("Estado civil: ");
+        String estadoCivil = scanner.nextLine();
+
+        System.out.print("Data de nascimento (AAAA-MM-DD): ");
+        LocalDate nascimento = LocalDate.parse(scanner.nextLine());
+
+        Candidato candidato = new Candidato(
+                nome,
+                cpf,
+                cep,
+                email,
+                telefone,
+                genero,
+                estadoCivil,
+                nascimento,
+                true
+        );
+
+        return candidato;
+    }
+
     private static void listarCandidatos() {
         ArrayList<Candidato> lista = candidatoService.listarTodos();
 
@@ -344,52 +350,7 @@ public class MainTerminal {
             switch(opcao) {
                 case 1 -> {
                     try {
-                        System.out.print("Nome: ");
-                        String nome = scanner.nextLine();
-
-                        System.out.print("Data nascimento (AAAA-MM-DD): ");
-                        LocalDate nascimento = LocalDate.parse(scanner.nextLine());
-
-                        System.out.print("CPF: ");
-                        String cpf = scanner.nextLine();
-
-                        System.out.print("CEP: ");
-                        String cep = scanner.nextLine();
-
-                        System.out.print("Email: ");
-                        String email = scanner.nextLine();
-
-                        System.out.print("Telefone: ");
-                        String telefone = scanner.nextLine();
-
-                        System.out.print("Estado civil: ");
-                        String estadoCivil = scanner.nextLine();
-
-                        System.out.print("Gênero: ");
-                        String genero = scanner.nextLine();
-
-                        System.out.print("ID da vaga: ");
-                        Long idVaga = Long.parseLong(scanner.nextLine());
-
-                        Vaga vaga = vagaService.buscarPorId(idVaga);
-
-                        if (vaga == null) {
-                            System.out.println("Vaga não encontrada.");
-                            return;
-                        }
-
-                        Funcionario funcionario = new Funcionario(
-                                nome,
-                                nascimento,
-                                cpf,
-                                cep,
-                                email,
-                                telefone,
-                                estadoCivil,
-                                genero,
-                                vaga,
-                                true
-                        );
+                        Funcionario funcionario = criarFuncionario();
 
                         funcionarioService.salvar(funcionario);
                         System.out.println("Funcionário cadastrado!");
@@ -442,6 +403,57 @@ public class MainTerminal {
         }
     }
 
+    private static Funcionario criarFuncionario() {
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+
+        System.out.print("Data nascimento (AAAA-MM-DD): ");
+        LocalDate nascimento = LocalDate.parse(scanner.nextLine());
+
+        System.out.print("CPF: ");
+        String cpf = scanner.nextLine();
+
+        System.out.print("CEP: ");
+        String cep = scanner.nextLine();
+
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
+
+        System.out.print("Telefone: ");
+        String telefone = scanner.nextLine();
+
+        System.out.print("Estado civil: ");
+        String estadoCivil = scanner.nextLine();
+
+        System.out.print("Gênero: ");
+        String genero = scanner.nextLine();
+
+        System.out.print("ID da vaga: ");
+        Long idVaga = Long.parseLong(scanner.nextLine());
+
+        Vaga vaga = vagaService.buscarPorId(idVaga);
+
+        if (vaga == null) {
+            System.out.println("Vaga não encontrada.");
+            return null;
+        }
+
+        Funcionario funcionario = new Funcionario(
+                nome,
+                nascimento,
+                cpf,
+                cep,
+                email,
+                telefone,
+                estadoCivil,
+                genero,
+                vaga,
+                true
+        );
+
+        return funcionario;
+    }
+
     private static void listarFuncionarios() {
         ArrayList<Funcionario> lista = funcionarioService.listarTodos();
 
@@ -469,34 +481,7 @@ public class MainTerminal {
             switch(opcao) {
                 case 1 -> {
                     try {
-
-                        System.out.print("Turno: ");
-                        String turno = scanner.nextLine();
-
-                        System.out.print("Cargo: ");
-                        String cargo = scanner.nextLine();
-
-                        System.out.print("Salário por hora: ");
-                        Double salario = Double.parseDouble(scanner.nextLine());
-
-                        System.out.print("ID do departamento: ");
-                        Long idDepartamento = Long.parseLong(scanner.nextLine());
-
-                        Departamento departamento =
-                                departamentoService.buscarPorId(idDepartamento);
-
-                        if (departamento == null) {
-                            System.out.println("Departamento não encontrado.");
-                            return;
-                        }
-
-                        Vaga vaga = new Vaga(
-                                turno,
-                                cargo,
-                                salario,
-                                departamento,
-                                true
-                        );
+                        Vaga vaga = criarVaga();
 
                         vagaService.salvar(vaga);
 
@@ -536,6 +521,38 @@ public class MainTerminal {
         }
     }
 
+    private static Vaga criarVaga() {
+        System.out.print("Turno: ");
+        String turno = scanner.nextLine();
+
+        System.out.print("Cargo: ");
+        String cargo = scanner.nextLine();
+
+        System.out.print("Salário por hora: ");
+        Double salario = Double.parseDouble(scanner.nextLine());
+
+        System.out.print("ID do departamento: ");
+        Long idDepartamento = Long.parseLong(scanner.nextLine());
+
+        Departamento departamento =
+                departamentoService.buscarPorId(idDepartamento);
+
+        if (departamento == null) {
+            System.out.println("Departamento não encontrado.");
+            return null;
+        }
+
+        Vaga vaga = new Vaga(
+                turno,
+                cargo,
+                salario,
+                departamento,
+                true
+        );
+
+        return vaga;
+    }
+
     private static void listarVagas() {
         ArrayList<Vaga> lista = vagaService.listarTodos();
 
@@ -562,17 +579,7 @@ public class MainTerminal {
             switch(opcao) {
                 case 1 -> {
                     try {
-                        System.out.print("Nome: ");
-                        String nome = scanner.nextLine();
-
-                        System.out.print("Gastos: ");
-                        Double gastos = Double.parseDouble(scanner.nextLine());
-
-                        System.out.print("Retorno: ");
-                        Double retorno = Double.parseDouble(scanner.nextLine());
-
-                        Departamento departamento =
-                                new Departamento(nome, gastos, retorno, true);
+                        Departamento departamento = criarDepartamento();
 
                         departamentoService.salvar(departamento);
 
@@ -625,6 +632,20 @@ public class MainTerminal {
         }
     }
 
+    private static Departamento criarDepartamento() {
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+
+        System.out.print("Gastos: ");
+        Double gastos = Double.parseDouble(scanner.nextLine());
+
+        System.out.print("Retorno: ");
+        Double retorno = Double.parseDouble(scanner.nextLine());
+
+        Departamento departamento = new Departamento(nome, gastos, retorno, true);
+
+        return departamento;
+    }
 
     private static void listarDepartamentos() {
         ArrayList<Departamento> lista = departamentoService.listarTodos();
@@ -642,18 +663,31 @@ public class MainTerminal {
     private static void menuCandidaturas() {
         while(true) {
             System.out.println("\n====== CANDIDATURAS ======");
-            System.out.println("1 - Listar candidaturas");
-            System.out.println("2 - Buscar candidatura");
-            System.out.println("3 - Excluir candidatura");
+            System.out.println("1 - Cadastrar candidaturas");
+            System.out.println("2 - Listar candidaturas");
+            System.out.println("3 - Buscar candidatura");
+            System.out.println("4 - Excluir candidatura");
             System.out.println("0 - Voltar");
 
             int opcao = Integer.parseInt(scanner.nextLine());
 
             switch(opcao) {
+                case 1 -> {
+                    try {
+                        Candidatura candidatura = criarCandidatura();
 
-                case 1 -> listarCandidaturas();
+                        candidaturaService.salvar(candidatura);
 
-                case 2 -> {
+                        System.out.println("Candidatura cadastrada!");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new ControllerException("Erro ao cadastrar candidatura!");
+                    }
+                }
+                case 2 -> listarCandidaturas();
+
+                case 3 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
 
@@ -666,7 +700,7 @@ public class MainTerminal {
                     }
                 }
 
-                case 3 -> {
+                case 4 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
 
@@ -684,6 +718,44 @@ public class MainTerminal {
         }
     }
 
+    private static Candidatura criarCandidatura() {
+        System.out.print("Status (true/false): ");
+        Boolean status = Boolean.parseBoolean(scanner.nextLine());
+
+        System.out.print("Data candidatura (AAAA-MM-DD): ");
+        LocalDate data = LocalDate.parse(scanner.nextLine());
+
+        System.out.print("Prazo (AAAA-MM-DD): ");
+        LocalDate prazo = LocalDate.parse(scanner.nextLine());
+
+        System.out.print("Etapa: ");
+        String etapa = scanner.nextLine();
+
+        System.out.print("ID da vaga: ");
+        Long idVaga = Long.parseLong(scanner.nextLine());
+
+        System.out.print("ID do candidato: ");
+        Long idCandidato = Long.parseLong(scanner.nextLine());
+
+        Vaga vaga = vagaService.buscarPorId(idVaga);
+        Candidato candidato = candidatoService.buscarPorId(idCandidato);
+
+        if (vaga == null || candidato == null) {
+            System.out.println("Vaga ou candidato inexistente.");
+            return null;
+        }
+
+        Candidatura candidatura = new Candidatura(
+                status,
+                data,
+                prazo,
+                etapa,
+                vaga,
+                candidato
+        );
+
+        return candidatura;
+    }
 
     private static void listarCandidaturas() {
         ArrayList<Candidatura> lista = candidaturaService.listarTodos();
@@ -712,33 +784,7 @@ public class MainTerminal {
             switch(opcao) {
                 case 1 -> {
                     try {
-
-                        System.out.print("Status (true/false): ");
-                        Boolean status = Boolean.parseBoolean(scanner.nextLine());
-
-                        System.out.print("Data emissão (AAAA-MM-DD): ");
-                        LocalDate data = LocalDate.parse(scanner.nextLine());
-
-                        System.out.print("Prazo (dias): ");
-                        Integer prazo = Integer.parseInt(scanner.nextLine());
-
-                        System.out.print("ID do funcionário: ");
-                        Long id = Long.parseLong(scanner.nextLine());
-
-                        Funcionario funcionario = funcionarioService.buscarPorId(id);
-
-                        if (funcionario == null) {
-                            System.out.println("Funcionário não encontrado.");
-                            return;
-                        }
-
-                        Contrato contrato = new Contrato(
-                                status,
-                                data,
-                                prazo,
-                                funcionario,
-                                true
-                        );
+                        Contrato contrato = criarContrato();
 
                         contratoService.salvar(contrato);
 
@@ -783,6 +829,36 @@ public class MainTerminal {
         }
     }
 
+    private static Contrato criarContrato() {
+        System.out.print("Status (true/false): ");
+        Boolean status = Boolean.parseBoolean(scanner.nextLine());
+
+        System.out.print("Data emissão (AAAA-MM-DD): ");
+        LocalDate data = LocalDate.parse(scanner.nextLine());
+
+        System.out.print("Prazo (dias): ");
+        Integer prazo = Integer.parseInt(scanner.nextLine());
+
+        System.out.print("ID do funcionário: ");
+        Long id = Long.parseLong(scanner.nextLine());
+
+        Funcionario funcionario = funcionarioService.buscarPorId(id);
+
+        if (funcionario == null) {
+            System.out.println("Funcionário não encontrado.");
+            return null;
+        }
+
+        Contrato contrato = new Contrato(
+                status,
+                data,
+                prazo,
+                funcionario,
+                true
+        );
+
+        return contrato;
+    }
 
     private static void listarContratos() {
         ArrayList<Contrato> lista = contratoService.listarTodos();
@@ -811,35 +887,9 @@ public class MainTerminal {
             switch(opcao) {
                 case 1 -> {
                     try {
+                        DadosBancarios dadosBancarios = crirDadosBancarios();
 
-                        System.out.print("Número da conta: ");
-                        Integer conta = Integer.parseInt(scanner.nextLine());
-
-                        System.out.print("Instituição: ");
-                        String banco = scanner.nextLine();
-
-                        System.out.print("Agência: ");
-                        String agencia = scanner.nextLine();
-
-                        System.out.print("ID do funcionário: ");
-                        Long id = Long.parseLong(scanner.nextLine());
-
-                        Funcionario funcionario = funcionarioService.buscarPorId(id);
-
-                        if (funcionario == null) {
-                            System.out.println("Funcionário não encontrado.");
-                            return;
-                        }
-
-                        DadosBancarios dados = new DadosBancarios(
-                                conta,
-                                banco,
-                                agencia,
-                                funcionario,
-                                true
-                        );
-
-                        dadosBancariosService.salvar(dados);
+                        dadosBancariosService.salvar(dadosBancarios);
 
                         System.out.println("Dados bancários cadastrados!");
 
@@ -882,6 +932,35 @@ public class MainTerminal {
         }
     }
 
+    private static DadosBancarios crirDadosBancarios() {
+        System.out.print("Número da conta: ");
+        Integer conta = Integer.parseInt(scanner.nextLine());
+
+        System.out.print("Instituição: ");
+        String banco = scanner.nextLine();
+
+        System.out.print("Agência: ");
+        String agencia = scanner.nextLine();
+
+        System.out.print("ID do funcionário: ");
+        Long id = Long.parseLong(scanner.nextLine());
+
+        Funcionario funcionario = funcionarioService.buscarPorId(id);
+
+        if (funcionario == null) {
+            System.out.println("Funcionário não encontrado.");
+            return null;
+        }
+
+        DadosBancarios dados = new DadosBancarios(
+                conta,
+                banco,
+                agencia,
+                funcionario,
+                true
+        );
+        return dados;
+    }
 
     private static void listarDadosBancarios() {
         ArrayList<DadosBancarios> lista = dadosBancariosService.listarTodos();
@@ -910,39 +989,9 @@ public class MainTerminal {
             switch(opcao) {
                 case 1 -> {
                     try {
+                        FolhaDePagamento folhaDePagamento = criarFolha();
 
-                        System.out.print("Horas trabalhadas: ");
-                        Integer horas = Integer.parseInt(scanner.nextLine());
-
-                        System.out.print("Data emissão (AAAA-MM-DD): ");
-                        LocalDate data = LocalDate.parse(scanner.nextLine());
-
-                        System.out.print("Descontos: ");
-                        Double descontos = Double.parseDouble(scanner.nextLine());
-
-                        System.out.print("Horas extras: ");
-                        Integer extras = Integer.parseInt(scanner.nextLine());
-
-                        System.out.print("ID do funcionário: ");
-                        Long id = Long.parseLong(scanner.nextLine());
-
-                        Funcionario funcionario = funcionarioService.buscarPorId(id);
-
-                        if (funcionario == null) {
-                            System.out.println("Funcionário não encontrado.");
-                            return;
-                        }
-
-                        FolhaDePagamento folha = new FolhaDePagamento(
-                                horas,
-                                data,
-                                descontos,
-                                extras,
-                                funcionario,
-                                true
-                        );
-
-                        folhaDePagamentoService.salvar(folha);
+                        folhaDePagamentoService.salvar(folhaDePagamento);
 
                         System.out.println("Folha cadastrada!");
 
@@ -983,6 +1032,41 @@ public class MainTerminal {
                 default -> System.out.println("Opção inválida!");
             }
         }
+    }
+
+    private static FolhaDePagamento criarFolha() {
+        System.out.print("Horas trabalhadas: ");
+        Integer horas = Integer.parseInt(scanner.nextLine());
+
+        System.out.print("Data emissão (AAAA-MM-DD): ");
+        LocalDate data = LocalDate.parse(scanner.nextLine());
+
+        System.out.print("Descontos: ");
+        Double descontos = Double.parseDouble(scanner.nextLine());
+
+        System.out.print("Horas extras: ");
+        Integer extras = Integer.parseInt(scanner.nextLine());
+
+        System.out.print("ID do funcionário: ");
+        Long id = Long.parseLong(scanner.nextLine());
+
+        Funcionario funcionario = funcionarioService.buscarPorId(id);
+
+        if (funcionario == null) {
+            System.out.println("Funcionário não encontrado.");
+            return null;
+        }
+
+        FolhaDePagamento folha = new FolhaDePagamento(
+                horas,
+                data,
+                descontos,
+                extras,
+                funcionario,
+                true
+        );
+
+        return folha;
     }
 
 
