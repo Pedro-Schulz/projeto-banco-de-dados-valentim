@@ -690,18 +690,58 @@ public class MainTerminal {
     private static void menuContratos() {
         while(true) {
             System.out.println("\n====== CONTRATOS ======");
-            System.out.println("1 - Listar contratos");
-            System.out.println("2 - Buscar contrato");
-            System.out.println("3 - Excluir contrato");
+            System.out.println("1 - Cadastrar contratos");
+            System.out.println("2 - Listar contratos");
+            System.out.println("3 - Buscar contrato");
+            System.out.println("4 - Excluir contrato");
             System.out.println("0 - Voltar");
 
             int opcao = Integer.parseInt(scanner.nextLine());
 
             switch(opcao) {
+                case 1 -> {
+                    try {
 
-                case 1 -> listarContratos();
+                        System.out.print("Status (true/false): ");
+                        Boolean status = Boolean.parseBoolean(scanner.nextLine());
 
-                case 2 -> {
+                        System.out.print("Data emissão (AAAA-MM-DD): ");
+                        LocalDate data = LocalDate.parse(scanner.nextLine());
+
+                        System.out.print("Prazo (dias): ");
+                        Integer prazo = Integer.parseInt(scanner.nextLine());
+
+                        System.out.print("ID do funcionário: ");
+                        Long id = Long.parseLong(scanner.nextLine());
+
+                        Funcionario funcionario = funcionarioService.buscarPorId(id);
+
+                        if (funcionario == null) {
+                            System.out.println("Funcionário não encontrado.");
+                            return;
+                        }
+
+                        Contrato contrato = new Contrato(
+                                status,
+                                data,
+                                prazo,
+                                funcionario,
+                                true
+                        );
+
+                        contratoService.salvar(contrato);
+
+                        System.out.println("Contrato cadastrado!");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new ControllerException("Erro ao cadastrar contrato!");
+                    }
+                }
+
+                case 2 -> listarContratos();
+
+                case 3 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
 
@@ -714,7 +754,7 @@ public class MainTerminal {
                     }
                 }
 
-                case 3 -> {
+                case 4 -> {
                     System.out.print("ID: ");
                     Long id = Long.parseLong(scanner.nextLine());
 
