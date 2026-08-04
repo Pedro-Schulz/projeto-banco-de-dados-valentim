@@ -1,6 +1,7 @@
 package com.app.repository;
 
 import com.app.config.ConnectionFactory;
+import com.app.exception.RepositoryException;
 import com.app.model.*;
 import java.util.ArrayList;
 import java.sql.Connection;
@@ -10,15 +11,15 @@ import java.sql.Statement;
 
 public class ContratoRepository {
 
-    public void salvar(Contrato contrato) throws RuntimeException {
+    public void salvar(Contrato contrato) throws RepositoryException {
         String sql = """
                     INSERT INTO contratos (status_contrato, data_emissao, prazo, id_funcionario)
                     VALUES (?, ?, ?, ?);
                 """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ) {
             p.setBoolean(1, contrato.getStatusContrato());
             p.setDate(2, java.sql.Date.valueOf(contrato.getDataEmissao()));
@@ -35,7 +36,7 @@ public class ContratoRepository {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao salvar contrato!");
+            throw new RepositoryException("Erro ao salvar contrato!");
         }
     }
 
@@ -47,8 +48,8 @@ public class ContratoRepository {
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, id);
 
@@ -69,7 +70,7 @@ public class ContratoRepository {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao buscar contrato!");
+            throw new RepositoryException("Erro ao buscar contrato!");
         }
         return null;
     }
@@ -103,11 +104,11 @@ public class ContratoRepository {
             return contratos;
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao listar os contratos! \n");
+            throw new RepositoryException("Erro ao listar os contratos! \n");
         }
     }
 
-    public void atualizar(Contrato contrato) throws RuntimeException {
+    public void atualizar(Contrato contrato) throws RepositoryException {
         String sql = """
             UPDATE contratos
             SET status_contrato = ?,data_emissao = ?, prazo = ?,  version = version + 1
@@ -125,26 +126,26 @@ public class ContratoRepository {
             p.setInt(5, contrato.getVersion());
 
             if(p.executeUpdate() == 0) {
-                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+                throw new RepositoryException("Este dado foi alterado por outra pessoa. Atualize a página!");
             }
 
             contrato.setVersion(contrato.getVersion() + 1);
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao atualizar contrato!");
+            throw new RepositoryException("Erro ao atualizar contrato!");
         }
     }
 
-    public void desativar(Long id) throws RuntimeException {
+    public void desativar(Long id) throws RepositoryException {
         String sql = """
             UPDATE contratos
             SET ativo = FALSE
             WHERE id_contrato = ? AND ativo = true;
         """;
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, id);
 
@@ -152,11 +153,11 @@ public class ContratoRepository {
 
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao desativar contrato!");
+            throw new RepositoryException("Erro ao desativar contrato!");
         }
     }
 
-    public void desativarPorFuncionario(Long idFuncionario) throws RuntimeException {
+    public void desativarPorFuncionario(Long idFuncionario) throws RepositoryException {
         String sql = """
             UPDATE contratos
             SET ativo = false
@@ -171,11 +172,11 @@ public class ContratoRepository {
             p.executeUpdate();
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao desativar contrato!");
+            throw new RepositoryException("Erro ao desativar contrato!");
         }
     }
 
-    public boolean vinculoFuncionario(Long id_funcionario) throws RuntimeException {
+    public boolean vinculoFuncionario(Long id_funcionario) throws RepositoryException {
         String sql = """
                     SELECT 1
                     FROM contratos
@@ -184,8 +185,8 @@ public class ContratoRepository {
                 """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, id_funcionario);
 
@@ -194,7 +195,7 @@ public class ContratoRepository {
             return rs.next();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao verificar vinculo contrato -> funcionário");
+            throw new RepositoryException("Erro ao verificar vinculo contrato -> funcionário");
         }
     }
 }

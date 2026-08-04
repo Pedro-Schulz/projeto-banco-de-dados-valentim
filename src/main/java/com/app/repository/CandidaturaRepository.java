@@ -1,6 +1,7 @@
 package com.app.repository;
 
 import com.app.config.ConnectionFactory;
+import com.app.exception.RepositoryException;
 import com.app.model.Candidato;
 import com.app.model.Candidatura;
 import com.app.model.FolhaDePagamento;
@@ -21,8 +22,8 @@ public class CandidaturaRepository {
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ) {
             p.setBoolean(1, candidatura.getStatusCandidatura());
             p.setDate(2, Date.valueOf(candidatura.getDataCandidatura()));
@@ -41,7 +42,7 @@ public class CandidaturaRepository {
             }
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao salvar candidatura!");
+            throw new RepositoryException("Erro ao salvar candidatura!");
         }
     }
 
@@ -53,8 +54,8 @@ public class CandidaturaRepository {
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, id);
 
@@ -77,7 +78,7 @@ public class CandidaturaRepository {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao buscar candidatura!");
+            throw new RepositoryException("Erro ao buscar candidatura!");
         }
         return null;
     }
@@ -111,12 +112,12 @@ public class CandidaturaRepository {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao listar candidaturas!");
+            throw new RepositoryException("Erro ao listar candidaturas!");
         }
         return candidaturas;
     }
 
-    public void atualizar(Candidatura candidatura) throws RuntimeException {
+    public void atualizar(Candidatura candidatura) throws RepositoryException {
         String sql = """
             UPDATE candidaturas
             SET status_candidatura = ?,data_candidatura = ?, prazo = ?, etapa = ?, version = version + 1
@@ -135,14 +136,14 @@ public class CandidaturaRepository {
             p.setInt(6, candidatura.getVersion());
 
             if(p.executeUpdate() == 0) {
-                throw new RuntimeException("Este dado foi alterado por outra pessoa. Atualize a página!");
+                throw new RepositoryException("Este dado foi alterado por outra pessoa. Atualize a página!");
             }
 
             candidatura.setVersion(candidatura.getVersion() + 1);
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao atualizar candidatura!");
+            throw new RepositoryException("Erro ao atualizar candidatura!");
         }
     }
 
@@ -154,8 +155,8 @@ public class CandidaturaRepository {
         """;
 
         try (
-            Connection c = ConnectionFactory.getConnection();
-            PreparedStatement p = c.prepareStatement(sql);
+                Connection c = ConnectionFactory.getConnection();
+                PreparedStatement p = c.prepareStatement(sql);
         ) {
             p.setLong(1, id);
 
@@ -163,7 +164,7 @@ public class CandidaturaRepository {
 
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao desativar candidatura!");
+            throw new RepositoryException("Erro ao desativar candidatura!");
         }
     }
 
@@ -183,7 +184,7 @@ public class CandidaturaRepository {
             p.executeUpdate();
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao desativar candidatura!");
+            throw new RepositoryException("Erro ao desativar candidatura!");
         }
     }
 
@@ -203,11 +204,11 @@ public class CandidaturaRepository {
             p.executeUpdate();
         } catch(Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao desativar candidatura!");
+            throw new RepositoryException("Erro ao desativar candidatura!");
         }
     }
 
-    public boolean vinculoVaga(Long idVaga) throws RuntimeException {
+    public boolean vinculoVaga(Long idVaga) throws RepositoryException {
         String sql = """
             SELECT 1
             FROM candidaturas
@@ -227,11 +228,11 @@ public class CandidaturaRepository {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao verificar vínculo candidatura -> vaga");
+            throw new RepositoryException("Erro ao verificar vínculo candidatura -> vaga");
         }
     }
 
-    public boolean vinculoCandidato(Long idCandidato) throws RuntimeException {
+    public boolean vinculoCandidato(Long idCandidato) throws RepositoryException {
         String sql = """
             SELECT 1
             FROM candidaturas
@@ -251,7 +252,7 @@ public class CandidaturaRepository {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao verificar vínculo candidatura -> candidato");
+            throw new RepositoryException("Erro ao verificar vínculo candidatura -> candidato");
         }
     }
 }
